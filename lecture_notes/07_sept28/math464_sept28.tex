@@ -1,0 +1,357 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{bm} % bold in mathmode \bm
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{dsfont} % for indicator function \mathds 1
+\usepackage{tikz,pgf,pgfplots}
+\usepackage{enumerate} 
+\usepackage[multiple]{footmisc} % for an adjascent footnote
+\usepackage{graphicx,float} % figures
+\usepackage{centernot} % for \centernot\implies (wrapped in \nimplies)
+
+%% set noindent by default and define indent to be the standard indent length
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%% some math macros
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % vector norm
+\newcommand*{\vv}[1]{\vec{\mkern0mu#1}} % \vec with arrow on top
+\renewcommand{\Re}{\mathfrak {Re}}
+\renewcommand{\Im}{\mathfrak {Im}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\X}{\mathbb X}
+\newcommand{\powerset}{\mathcal P}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\gm}{\mathrm{gm~}}
+\newcommand{\am}{\mathrm{am~}}
+\newcommand{\trace}{\mathrm{trace~}}
+\newcommand{\Trace}{\mathrm{Trace~}}
+\newcommand{\rank}{\mathrm{rank~}}
+\newcommand{\Rank}{\mathrm{Rank~}}
+\newcommand{\Span}{\mathrm{Span~}}
+\newcommand{\card}{\mathrm{card~}}
+\newcommand{\Card}{\mathrm{Card~}}
+\newcommand{\limplies}{~\Longleftarrow ~} % leftwards implies, for some reason requires spacing to mirror the formatting of \implies (and therefore \rimplies below)
+\newcommand{\rimplies}{\implies} % rightwards implies (for consistency)
+\newcommand{\nimplies}{\centernot\implies} % rightwards implies with line struck through
+\newcommand{\indist}{\,{\buildrel \mathcal D \over \sim}\,}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny 
+	def}}}{=}}} % equal sign with def above
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Real Analysis\\Lecture Notes}
+\author{The Real Number System}
+\date{September 28 2016 \\ Last update: \today{}}
+\maketitle
+
+\section{Open and Closed Sets of $\bm{\R}$ (con't 3)}
+
+\subsection{Closed Sets in $\bm{\R}$ (con't)}
+
+Recall from last class a few definitions relating to closed sets: \\
+
+%
+% Definition, point of closure
+%
+{\bf Definition}: {\em (Point of closure)} A point $x \in E \subset \R$ is said to be a \underline{point of closure} of $E$ if
+\begin{equation*}
+	\forall\,\delta > 0, ~(x - \delta, x + \delta) \cap E \neq \emptyset
+\end{equation*}
+	
+\indent That is, $x$ is a \underline{point of closure} of $E$ if an arbitrarily small open ball around $x$ has some overlap with $E$, i.e. $x$ is in some sense ``deep enough'' within the set $E$. We also presented an alternative, but equivalent, definition for a \underline{point of closure}: A point $x \in E \subset \R$ is said to be a \underline{point of closure} of $E$ if
+\begin{equation*}
+	\forall\,\delta > 0, ~\exists\,y\in E \text{ such that } |x - y| < \delta
+\end{equation*}
+
+\indent That is, $x$ is a \underline{point of closure} of $E$ if we can get arbitrarily close to $x$ while still remaining in $E$. Notice that this definition requires us to be able to get arbitrarily close to $x$ while staying in $E$, i.e. we are still interested in whether $x$ is ``deep enough'' within $E$. \\
+
+%
+% Definition, set of points of closure
+%
+{\bf Definition}: {\em (Set of points of closure)} For a set $E \subset \R$, we denote $\overline{E}$ to be the \underline{set of points of closure} of $E$. That is, $\overline{E}$ contains all $x \in E$ such that $x$ is a point of closure. \\
+
+%
+% Definition, closed sets
+%
+{\bf Definition}: {\em (Closed sets)} A set $F$ is said to be \underline{closed} if $F = \overline{F}$. That is, $F$ is \underline{closed} if the set of points of closure of $F$ is identical to the original set $F$. \\
+
+Some typical examples of closed sets include
+\begin{align*}
+	[a, b], &\quad [1,2] \cup [3,4] \\
+	[a,\infty), &\quad (-\infty, a] \\
+	\R, &\quad \emptyset
+\end{align*}
+
+
+\subsubsection{Properties of Closed Sets}
+
+%
+% Proposition
+%
+{\bf Proposition}: {\em (A union of closed sets is closed)} Let $F_1$ and $F_2$ be closed sets. Then the union $F_1 \cup F_2$ forms a closed set.
+
+\begin{proof} Consider the set of points of closure $\overline{F}_1$ and $\overline{F}_2$,
+\begin{align*}
+	\overline{F_1 \cup F_2} &= \overline{F}_1 \cup \overline{F}_2 \quad \text{(from last class)} \\
+	&= F_1 \cup F_2 \quad \text{(since $F_1$ and $F_2$ are closed)}
+\end{align*}
+
+as desired.
+\end{proof}
+
+%
+% Corollary
+%
+{\bf Corollary}: {\em (Arbitrary intersections of closed sets are closed)} Let $\{F_i\}$ be a collection of closed sets. Then, the intersection
+\begin{equation*}
+	\bigcap_{i\in I} F_i
+\end{equation*}
+
+is closed for arbitrary indexing $i \in I$.
+
+\begin{proof} Consider the intersection $\bigcap_i F_i$ and let $x \in \overline{\bigcap_i F_i}$. Then, by assumption of $x$ in this set we have
+\begin{equation*}
+	\forall\,\delta > 0,~ (x - \delta, x + \delta) \cap \Big( \bigcap_i F_i \Big) \neq \emptyset
+\end{equation*}
+
+so
+\begin{align*}
+	y &\in \bigcap_i F_i \\
+	\implies y &\in F_i
+\end{align*}
+
+Hence, $x$ is a point of closure for all sets $F_i$. That is
+\begin{align*}
+	x &\in \overline{F}_i \\
+	\implies x &\in \bigcap_i \overline{F}_i
+\end{align*}
+
+However, since $F_i$ is closed we have that $F_i = \overline{F}_i$. Thus
+\begin{align*}
+	x &\in \bigcap_i F_i \\
+	\implies \overline{\bigcap_i F_i} &\subset \bigcap_i F_i
+\end{align*}
+
+\indent That is, for $x \in \overline{\bigcap_i F_i}$ we have found that we must have $x \in \bigcap_i F_i$. Since $F \subset \overline{F}$ is always true for any arbitrary set,\footnote{I think I want to prove this at some point...} it is sufficient to show $\overline{\bigcap F} \subset \bigcap F$, as we have done.
+\end{proof}
+
+%
+% Proposition 
+%
+{\bf Proposition}: {\em (The complement of a open set is closed and the complement of a closed set is open)} A subset of the reals is open if and only if its complement is closed.
+
+\begin{proof} $(\implies)$ It is sufficient to show that $\overline{O^c} \subset O^c$ since $O^c \subset \overline{O^c}$ is true for all sets. Let $O$ be some open set and take $x \in O$. By definition of an open set we have that we are guaranteed a sufficiently small open interval around $x \in O$ that remains in $O$. That is,
+\begin{equation*}
+	\exists\,\delta > 0,~ (x - \delta, x + \delta) \subset O
+\end{equation*}
+
+Can $x$ be a point of closure of $O^c = \R \setminus O$? No! Note that
+\begin{equation*}
+	(x - \delta, x + \delta) \cap O^c = \emptyset
+\end{equation*}
+
+since this interval is fully enclosed by $O$. Thus, if $x \in O$ then $x \notin \overline{O^c}$. That is,
+\begin{align*}
+	x \in O &\implies x \notin \overline{O^c}  \\
+	\iff x \in \overline{O^c} &\implies x \notin O \\
+	\iff x \in \overline{O^c} &\implies x \in O
+\end{align*}
+
+Hence, $\overline{O^c} \subset O^c$, and so $O^c$ is a closed set. \\
+
+$(\limplies)$ Let $F$ be some closed set. To show that $F^c$ is open we must show that each point $x \in F^c$ has a small interval around it such that this interval remains fully enclosed in $F^c$. That is, we must show that for all $x \in F^c$
+\begin{equation*}
+	\exists\,\delta > 0,~ (x - \delta, x + \delta) \subset F^c
+\end{equation*}
+
+\indent So, let $x \in F^c$. Can this $x$ be a point of closure for $F$? No! Our point $x$ cannot be a point of closure of $F$ since $x \in F^c \iff x \notin F$, and since $F = \overline{F}$, we have $x \notin \overline{F}$. Thus, $x \in F^c \implies x \notin \overline{F}$. Thus, since $x$ is {\em not} a point of closure of $F$ we have
+\begin{equation*}
+	\exists\,\delta > 0,~(x - \delta, x + \delta) \cap F = \emptyset
+\end{equation*}
+
+\indent That is, there is a sufficiently small ball around $x \in F^c$ which doesn't intersect with $F$. Therefore, if this small ball doesn't intersect $F$ at any point, it must be fully enclosed within $\R \setminus F = F^c$, which is precisely the definition of an open set. Hence if $F$ is closed then $F^c$ is open, as desired.
+
+\end{proof}
+
+%
+% Example
+%
+{\bf Example}: {\em (Is $\N$ closed?)} Is the set of natural numbers $\N = \{1, 2, ...\}$ closed? Is $\N$ compact?\footnote{Compactness: All open covers have a finite subcover.} \\
+
+Consider the open intervals of width $\frac{2}{3}$ around each $n \in \N$, i.e. intervals of the form
+\begin{equation*}
+	\left( 1 - \frac{1}{3}, 1 + \frac{1}{3} \right), ~ \left( 2 - \frac{1}{3}, 2 + \frac{1}{3} \right), ~ \left( 3 - \frac{1}{3}, 3 + \frac{1}{3} \right), ...
+\end{equation*}
+
+In general, denote these open intervals by
+\begin{equation*}
+	O_n = \left( n - \frac{1}{3}, n + \frac{1}{3} \right)
+\end{equation*}
+
+Note that each $O_n$ contains a single point in $\N$, namely $n$. Therefore
+\begin{equation*}
+	O_n \cap \N = \{n\}
+\end{equation*}
+
+Hence
+\begin{equation*}
+	\N \subset O_1 \cup O_2 \cup \cdots = \bigcup^\infty_{i = 1} O_i
+\end{equation*}
+
+\indent That is, we have constructed a countably infinite cover of $\N$. However, removing any single $O_k$ from the cover yields
+\begin{equation*}
+	\N \cap \bigcup^\infty_{i = 1, i \neq k} O_i = \N \setminus \{k\}
+\end{equation*}
+
+and so $\N$ is no longer covered. Therefore, $\N$ cannot be compact. I don't have the proof of whether $\N$ is closed or not for this in my notes, but the intuition is obvious since $\R\setminus \N = (-\infty, 1)\cup(1, 2)\cup(2, 3)\cup\cdots$ is an open set (a union of open sets is open).\footnote{From the Sept. 19 notes}. If this isn't enough, show that $(-\infty, 1)$ is open and all $(n - 1, n)$ is open. Therefore, the complement $(\R\setminus\N)^c = \N$ must be closed. \\
+
+\subsection{Heine-Borel Theorem}
+
+\indent This work on open, closed, and compact sets has essentially been for us to work up to this point. Finally, we are able to state an important result: \\
+
+%
+% Theorem
+%
+{\bf Theorem}: {\em (Heine-Borel Theorem)} If $F$ is a closed bounded subset of $\R$, then $F$ is compact, i.e. every open cover of closed bounded sets $F$ have a finite subcover.
+
+\begin{proof} Let $F$ be a closed bounded subset of real numbers. We consider the following case: \\
+
+{\bf \em (Case 1)}: $F = [a,b],~a < b,~ a,b \in \R$. \\
+
+Consider some open cover $\{O_i\}_{i \in I}$ of $F = [a,b]$ and consider the set $E$ such that
+\begin{equation*}
+	E = \left\{ x ~:~ a \leq x \leq b \text{ and } [a,x] \text{ can be covered by a finite subcover} \right\}
+\end{equation*}
+
+\indent By construction it should be clear that $E$ is bound above by $b$. Is $E = \emptyset$? No! Our set $E$ contains at least a single point $a \in E$ since
+\begin{equation*}
+	a \in \{ x~:~a \leq x \leq b \text{ and $[a,a] = a$ can be covered by some open set} \}
+\end{equation*}
+
+\indent  Since the original open covering $\{O_i\}_{i\in I}$ covers $F = [a,b]$, there exists at least one open set, say $O'$, where we may find $a \in O'$ such that $O' \in \{O_i\}_{i\in I}$. Thus,
+\begin{equation*}
+	E \neq \emptyset
+\end{equation*}
+
+\indent Therefore, since $E$ nonempty and bounded above by $b$, we may invoke the {\em completeness of $\R$} to conclude that our set $E$ has some supremum $c \in \R$. Since $b$ is an upper bound and $c$ is the {\em least upper bound} we clearly have
+\begin{equation*}
+	\sup E = c \leq b
+\end{equation*}
+
+\indent Since $c \in [a,b]$ we have that $c$ must be covered by some $O \in \{O_i\}_{i\in I}$. That is, 
+\begin{equation*}
+	\exists\,O \in \{O_i\}_{i\in I},~ c \in O
+\end{equation*}
+
+and since $O$ is open we have that there must be a sufficiently small interval around $c$ that remains enclosed by $O$:
+\begin{equation*}
+	\exists\,\delta > 0,~(c - \delta, c + \delta) \subset O
+\end{equation*}
+
+\indent If $c + \delta$ extends past our original interval $F = [a,b]$, i.e. $c + \delta \geq b \iff \delta \geq b - c$, then shrink our small open interval by replacing $\delta$ with
+\begin{equation*}
+	\epsilon = \frac{b - c}{2}
+\end{equation*}
+
+so that $(c - \epsilon, c + \epsilon) \subset O$ also becomes a subset of $F = [a,b]$. Now, $c - \epsilon$ cannot an upper bound of $E$ since $c$ is the {\em least upper bound} and so there must be since there is some other $x \in E$ such that $x > c - \epsilon$. However, by construction of $E$ and since $x \in E$, there must be a finite cover $\{O_i\}^n_{i = 1}$ which covers $[a,x]$. \\
+
+\indent Therefore, combining $(c - \epsilon, c + \epsilon) \subset O$ with this finite subcover $\{O_i\}^n_{i = 1}$, we find that the interval $[a, x] \cup (c - \epsilon, c + \epsilon) = [a, c + \epsilon)$ has the finite subcover $\{O_i\}^n_{i = 1} \cup \{O\}$. \\
+
+\indent However, we recall that $E$ was defined to be the set of elements in $[a,b]$ that have a finite subcover. Thus, each point $c^* \in [c, c + \epsilon)$ is an element of $E$ if the point $c^* \leq b$. But $\sup E = c$ and so no point of $[c, c + \epsilon)$ except $c$ can possibly be an element of $E$! Therefore, we must have that $c = b$. Hence, $[a,c] = [a,b]$ can be finitely covered by $\{O_i\}^n_{i = 1} \cup \{O\}$. That is, $[a,b] = F$ is compact, as desired. \\
+
+{\bf \em (Case 2)}: $F$ is closed and bounded, but not of the form $[a,b]$ (i.e., $F$ is not necessarily a connected set). {\em Left for next class.}
+\end{proof}
+
+%
+% Corollary
+%
+{\bf Corollary}: The Cantor set is compact.
+
+\begin{proof} The Cantor set is a subset of $[0, 1]$ and so it is bounded. Additionally, we can show that the Cantor set is a closed set. Let $\mathfrak C$ be the Cantor set. Recall that the Cantor set is constructed by recursively removing the middle thirds of subsets from the unit interval. That is, if we take intermediate sets $C_i$ to be
+\begin{align*}
+	C_1 &= [0, 1] \\
+	C_2 &= \left[ 0, \frac{1}{3} \right] \cup \left[ \frac{2}{3}, 1 \right] \\
+	C_3 &= \left[ 0, \frac{1}{9} \right] \cup \left[ \frac{2}{9}, \frac{3}{9} \right] \cup \left[ \frac{6}{9}, \frac{7}{9} \right] \cup \left[ \frac{8}{9}, 1 \right] \\
+	&\vdots
+\end{align*}
+
+we get
+\begin{equation*}
+	\mathfrak C = \bigcap^\infty_{i = 1} C_i
+\end{equation*}
+
+and if we note that $C_1 \supset C_2 \supset \cdots \supset C_i \supset \cdots$ we may see that
+\begin{equation*}
+	\mathfrak C = \bigcap^\infty_{i = 1} C_i = \left\{ \text{the set of all endpoints of the form } \frac{d}{3^k},~d \in \{0, 1 , 2\},~k\in \N \right\}
+\end{equation*}
+
+\indent However, we see that we have constructed the Cantor set $\mathfrak C$ from an intersection of the closed $C_n$ (each $C_n$ is closed since it is a finite union of closed sets). Since an intersection of closed sets is closed we may conclude that $\mathfrak C$ is closed. Therefore, since the Cantor set $\mathfrak C$ is a closed bounded set we may invoke the Heine-Borel Theorem to conclude that it is compact, as desired.
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

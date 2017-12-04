@@ -1,0 +1,324 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{bm} % bold in mathmode \bm
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{dsfont} % for indicator function \mathds 1
+\usepackage{tikz,pgf,pgfplots}
+\usepackage{enumerate} 
+\usepackage[multiple]{footmisc} % for an adjascent footnote
+\usepackage{graphicx,float} % figures
+\usepackage{centernot} % for \centernot\implies (wrapped in \nimplies)
+
+%% set noindent by default and define indent to be the standard indent length
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%% some math macros
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % vector norm
+\newcommand*{\vv}[1]{\vec{\mkern0mu#1}} % \vec with arrow on top
+\renewcommand{\Re}{\mathfrak {Re}}
+\renewcommand{\Im}{\mathfrak {Im}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\X}{\mathbb X}
+\newcommand{\powerset}{\mathcal P}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\gm}{\mathrm{gm~}}
+\newcommand{\am}{\mathrm{am~}}
+\newcommand{\trace}{\mathrm{trace~}}
+\newcommand{\Trace}{\mathrm{Trace~}}
+\newcommand{\rank}{\mathrm{rank~}}
+\newcommand{\Rank}{\mathrm{Rank~}}
+\newcommand{\Span}{\mathrm{Span~}}
+\newcommand{\card}{\mathrm{card~}}
+\newcommand{\Card}{\mathrm{Card~}}
+\newcommand{\limplies}{~\Longleftarrow ~} % leftwards implies, for some reason requires spacing to mirror the formatting of \implies (and therefore \rimplies below)
+\newcommand{\rimplies}{\implies} % rightwards implies (for consistency)
+\newcommand{\nimplies}{\centernot\implies} % rightwards implies with line struck through
+\newcommand{\indist}{\,{\buildrel \mathcal D \over \sim}\,}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny 
+	def}}}{=}}} % equal sign with def above
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Real Analysis\\Lecture Notes}
+\author{Metric Spaces}
+\date{October 19 2016 \\ Last update: \today{}}
+\maketitle
+
+\section{Basics}
+
+\indent We seek to abstract away form the structure of the reals in order to be able to arrive to some interesting results. Our plan is to use this abstraction in order to remove any irrelevant properties of $\R$ that do not assist our study.
+
+{\bf Definition}: A \underline{metric space} is a set $X$ and a distance function $\rho(x,y)$ defined for $x,y \in X$ such that $\rho$ is some sense of a ``distance'' function between elements $x$ and $y$ satisfying
+\begin{enumerate}
+	\item $\rho(x, y) \geq 0$ for all $x, y$.
+	\item $\rho(x, y) = \rho(y, x)$.
+	\item $\rho(x, y) = 0 \iff x = y$.
+	\item $\rho(x, z) \leq \rho(x, y) + \rho(y, z)$ for all $x, y, z$ (triangle inequality).
+\end{enumerate}
+
+The function $\rho$ is called a \underline{metric}. \\
+
+\indent What kind of results can we get with this kind of abstraction? Consider first $X = \R$ and $\rho(x, y) = |x - y|$. We call this the ``usual metric'' or the ``Euclidean metric'' since this is the metric that we've been working in up until now. Consider $X = \R^n$ and $\rho(\vec{x},\vec{y}) = \sqrt{\sum (x_i - y_i)^2}$. This is essentially the same Euclidean metric but now in arbitrary integer dimension. Another common metric is 
+\begin{equation*}
+	\rho(x, y) = |x_1 - y_1| - |x_2 - y_2|
+\end{equation*}
+
+defined on $X = \R^2$. This is called the ``taxicab'' or ``Manhattan'' metric since this would be the distance travelled by a cab between two points in a grid-like city structure. Consider the metric $\rho_d$ on $\R$ defined to be
+\begin{align*}
+	\rho_d(x, x) &= 0 \\
+	\rho_d(x, y) &= 1, \quad x \neq y
+\end{align*}
+
+\indent We say that this metric $\rho_d$ is the \underline{discrete metric} on $\R$. Take $a < b$ and consider the closed interval $[a,b]$. Our metric space $X = \{\text{all functions that are continuous from $[a,b]\to\R$}\}$. We abbreviate this to
+\begin{align*}
+	X &= \{f:[a,b]\stackrel{\text{continuous}}{\longrightarrow}\R\} \\
+	X &= \mathcal C[a,b]
+\end{align*}
+
+\indent Note that all these functions are uniformly continuous since they are defined on a closed interval $[a,b]$. Since $[a,b]$ is closed we have he intermediate value property and $f$ must attain its maximum and minimum on $[a,b]$. Now, consider the metric
+\begin{equation*}
+	\rho(f, g) = \sup |f(x) - g(x)|, \quad x \in [a,b]
+\end{equation*}
+
+\indent We know that $f,g$ being continuous $\implies |f - g|$ is continuous. Therefore, $|f - g|$ must assume its maximum and minimum on $[a,b]$. Hence, somewhere on $[a,b]$ there must be a {\em greatest distance} between $f([a,b])$ and $g([a,b])$. Does this triangle inequality hold for this metric? That is, do we satisfy
+\begin{equation*}
+	\rho(f, h) \stackrel{?}{\leq} \rho(f,g) + \rho(g,h)
+\end{equation*}
+
+\indent Consider the points in the closed interval $[a,b]$ for which we are looking at. Since $[a,b]$ is closed we know that the continuous function $|f - h|$ must attain its supremum (also its maximum) on $[a,b]$. That is,
+\begin{equation*}
+	\exists\,x_0 \in [a,b],~|f(x_0) - h(x_0)| = \rho(f, h)
+\end{equation*}
+
+and exploiting the typical Euclidean triangle inequality
+\begin{align*}
+	|f(x_0) - h(x_0)| &= |f(x_0) - h(x_0) + g(x_0) - g(x_0)| \\
+	&= |f(x_0) - g(x_0) + g(x_0) - h(x_0)| \\
+	&\leq |f(x_0) - g(x_0)| + |g(x_0) - h(x_0)|
+\end{align*}
+
+\indent However, even if $\rho(f,h) = |f(x_0) - h(x_0)$ it is not necessarily the case that $|f(x_0) - g(x_0)|$ since we may find a point in $[a,b]$ where there is a larger gap between $f$ and $g$. Fortunately, this is an easy fix since by the definition of the supremum
+\begin{equation*}
+	|f(x_0) - g(x_0)| \leq \sup_{x\in[a,b]} |f(x) - g(x)|
+\end{equation*}
+
+Therefore,
+\begin{align*}
+	\rho(f,h) &= |f(x_0) - h(x_0)| \\
+	&\leq |f(x_0) - g(x_0)| + |g(x_0) - h(x_0)| \\
+	&\leq \sup_{x\in[a,b]} |f(x) - g(x)| + \sup_{x\in[a,b]} |g(x) - h(x)| \\
+	&= \rho(f,g) + \rho(g,h)
+\end{align*}
+
+and so we have satisfied the triangle inequality for this metric $\rho(f,g) = \sup_{x\in[a,b]} |f(x) - g(x)|$. 
+
+\section{Open and Closed Sets}
+
+\indent Since we're trying to form generalizations from our results in $\R$ we will need to generalize what it means to be an open set. We will often call these sets ``open spheres'' in our metric space $(X, \rho)$. \\
+
+%
+% Definition
+%
+{\bf Definition}: {\bf \em(Open spheres)}. Consider the metric space $(X, \rho)$ and take $x \in X$ and $\rho > 0, \rho \in \R$. An \underline{open sphere} $S_{x,\delta}$ is the set
+\begin{equation*}
+	\{y\in X ~:~ \rho(x,y) < \delta\}
+\end{equation*}
+
+%
+% Example
+%
+{\bf Example}: Let $X = \R$ with the Euclidean metric $\rho(x,y) = |x - y|$. Then the open sphere $S_{7,3}$ forms the interval $(7 - 3, 7 + 3) = (4, 10)$ in $\R$.  \\
+
+%
+% Example
+%
+{\bf Example}: Let $X = \R^2$ with the Euclidean metric (in $\R^2$) $\rho(x,y) = \sqrt{(x_1 - y_1)^2 + (x_2 - y_2)^2}$ and consider the point $x = (1, 2)$ with radius $\delta = 3$. Then, the open sphere $S_{x,\delta} = S_{(1,2), 3}$ forms an open circle centered at $x = (1,2)$ with radius $\delta = 3$. \\
+
+%
+% Example
+%
+{\bf Example}: Take $\rho_d$ on $\R$ to be the ``discrete metric'' given by
+\begin{equation*}
+	\rho_d(x, y) = 
+	\begin{cases} 
+		1 & \text{if $x \neq y$} \\
+		0 & \text{if $x = y$}
+	\end{cases}
+\end{equation*}
+
+Consider the point $x = 7$ and $\delta = \frac{1}{2}$. Then, the open sphere $S_{7,\frac{1}{2}}$ forms the set
+\begin{equation*}
+	S_{7,\frac{1}{2}} = \left\{y \in \R ~:~ \rho_d\left(7, \frac{1}{2}\right) < \frac{1}{2} \right\} = \{7\}
+\end{equation*}
+
+since $7$ is the only point for which $\rho_d\left(7, y\right) < \frac{1}{2}$ by construction of $\rho_d$. Similarly,
+\begin{equation*}
+	S_{7, 2} = \{ y \in \R ~:~ \rho_d(7, y) < 2 \} = \R
+\end{equation*}
+
+since all points $y \in \R$ satisfy this inequality. \\
+
+%
+% Example
+%
+{\bf Example}: Consider the set of continuous functions on the closed interval $\mathcal C[2,10]$ under the $\sup$ metric
+\begin{equation*}
+	\rho(f,g) = \sup_{x\in[2,10]} \sup |f(x) - g(x)|
+\end{equation*}
+
+and consider the function $g(x) = x^2$ and $\delta = 1$. What is the set formed by the open sphere $S_{x^2, 1}$? By definition this open sphere is the set
+\begin{equation*}
+	S_{7,1} = \{ f \in \mathcal C[2,10] ~:~ \sup_{x\in[2,10]} |f(x) - x^2| < 1\}
+\end{equation*}
+
+\indent Clearly any translation of $g$ given by $g(x) + c = x^2 + c$ for $|c| < 1$ will satisfy this inequality since it will be within $\delta < 1$ of the original $g(x) = x^2$. This translation of $g$ by $\pm 1$ forms a curved region parallel to $g(x)$ on $[2,10]$. From this construction we should note that every function must lie within this region although it need not be parallel to $g$, say some sinusoidal/parabolic mix that remains within $\pm 1$ of $g$ in $[2, 10]$. \\
+
+%
+% Definition
+%
+{\bf Definition}: {\bf \em Open sets in metric spaces}. Let $S_{x, \delta}$ be an open sphere in some metric space $(X, \rho)$. A set $O \subset X$ is \underline{open} if
+\begin{equation*}
+	\forall\,x\in O,~\exists\,\delta > 0 \text{ such that } S_{x,\delta} \subset O
+\end{equation*}
+
+where $O$ is a union of sets of the form $\S_{x,\delta}$. We find that openness is maintained by arbitrary unions. \\
+
+\indent From this definition of openness we get essentially all the same definitions \& results as we had before with $\R$ under the Euclidean metric. For example, $x$ is a \underline{point of closure} of a set $E$, for all $\delta > 0$, then
+\begin{equation*}
+	S_{x,\delta} \cap E \neq \emptyset
+\end{equation*}
+
+and defining $\overline{E}$ to be the set of points of closure of $E$, we say that a set $E$ is closed if $\overline{E} = E$. We also find that closed sets are complements of open sets (and vice-versa), and closed sets are closed under arbitrary intersections and finite unions. \\
+
+%
+% Lemma
+%
+{\bf Lemma}: Let $0 < \epsilon < \delta - \rho(x, z) \iff \rho(x, z) < \delta$, then
+\begin{equation*}
+	S_{z,\epsilon} \subset S_{x,\delta}
+\end{equation*}
+
+where $\rho(x, z) < \delta$ corresponds to a ball centered at $x$ composed of all points $z$ within radius $\delta$ of $x$. That is, given a point $x$ and radius $\delta$ in some space we must pick some $z$ within radius $\delta$ of $x$. Then, this point $z$ will have a small ball around it $S_{z,\epsilon}$ such that this ball is wholly enclosed by $S_{x,\delta}$. \\
+
+\begin{proof} Take $t \in S_{z,\epsilon}$ a point within the open sphere centered at $z$ with radius $\epsilon$. Then
+\begin{equation*}
+	\rho(z, t) < \epsilon
+\end{equation*}
+
+We want the point $t \in S_{z,\epsilon}$ to be within the ball $x \pm \delta$. Hence
+\begin{align*}
+	\rho(x, t) &< \delta \\
+	\implies \rho(x, t) &\leq \rho(x, z) + \rho(z, t)
+\end{align*}
+
+by the definition of a metric $\rho$. However, $0 < \epsilon < \delta - \rho(x, z)$ so
+\begin{align*}
+	\rho(x, z) < \delta - \epsilon \quad \text{and} \quad \rho(z, t) < \epsilon
+\end{align*}
+
+hence
+\begin{align*}
+	\rho(x,t) &\leq \rho(x, z) + \rho(z, t) \\
+	&< \delta - \epsilon + \epsilon \\
+	&= \delta
+\end{align*}
+
+as desired.
+\end{proof}
+
+%
+% Corollary
+%
+{\bf Corollary} {\em (Without proof)} The set $S_{x,\delta}$ is open, and $S_{x,\delta}$ is a union of $S_{z,\epsilon}$. \\
+
+%
+% Definition
+%
+{\bf Definition}: {\bf \em Separable metric spaces}. A metric space is said to be \underline{separable} if it has a countable and dense\footnote{Denseness: A set $A$ in a topological space $X$ is said to be {\em dense} if every point $x \in X$ is either an element of $A$ or a limit point of $A$. This is equivalent to every point $x \in X$ is in $\overline{D}$. That is, a dense set in a space $X$ is a set whose closure is the entire space $X$.} subset $D$ such that closure of $D$,  $\overline{D} = X$. \\
+
+\indent Note that a subset of a metric space intuitively remains a metric space since all points in the subset are able to inherit the parent metric $\rho$. \\
+
+%
+% Example
+%
+{\bf Example}: A countable metric space is separable. For example, 
+\begin{enumerate}
+	\item The metric space $\Q$ is countable and dense, so $\Q$ is separable.
+	\item Take $X = \R$ and the subset $\Q \subset \R$. We have already shown that $\overline{\Q} = \R$ and $\Q$ is countable. Therefore, $\R$ is a separable space since it contains the countable and dense subset $\Q$.
+	\item Consider $X = \R$ under the discrete metric $\rho_d$ and $D$ some discrete set. Now, the complement $R\setminus D$ is open and so $D$ must be closed. Since $D$ is closed $D = \overline{D}$. Can we construct a countable and dense subset whose closure is $\R$?
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

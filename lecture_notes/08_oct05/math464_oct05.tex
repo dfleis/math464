@@ -1,0 +1,572 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{bm} % bold in mathmode \bm
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{dsfont} % for indicator function \mathds 1
+\usepackage{tikz,pgf,pgfplots}
+\usepackage{enumerate} 
+\usepackage[multiple]{footmisc} % for an adjascent footnote
+\usepackage{graphicx,float} % figures
+\usepackage{centernot} % for \centernot\implies (wrapped in \nimplies)
+
+%% set noindent by default and define indent to be the standard indent length
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%% some math macros
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % vector norm
+\newcommand*{\vv}[1]{\vec{\mkern0mu#1}} % \vec with arrow on top
+\renewcommand{\Re}{\mathfrak {Re}}
+\renewcommand{\Im}{\mathfrak {Im}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\X}{\mathbb X}
+\newcommand{\powerset}{\mathcal P}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\gm}{\mathrm{gm~}}
+\newcommand{\am}{\mathrm{am~}}
+\newcommand{\trace}{\mathrm{trace~}}
+\newcommand{\Trace}{\mathrm{Trace~}}
+\newcommand{\rank}{\mathrm{rank~}}
+\newcommand{\Rank}{\mathrm{Rank~}}
+\newcommand{\Span}{\mathrm{Span~}}
+\newcommand{\card}{\mathrm{card~}}
+\newcommand{\Card}{\mathrm{Card~}}
+\newcommand{\limplies}{~\Longleftarrow ~} % leftwards implies, for some reason requires spacing to mirror the formatting of \implies (and therefore \rimplies below)
+\newcommand{\rimplies}{\implies} % rightwards implies (for consistency)
+\newcommand{\nimplies}{\centernot\implies} % rightwards implies with line struck through
+\newcommand{\indist}{\,{\buildrel \mathcal D \over \sim}\,}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny 
+	def}}}{=}}} % equal sign with def above
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Real Analysis\\Lecture Notes}
+\author{The Real Number System}
+\date{October 5 2016 \\ Last update: \today{}}
+\maketitle
+
+\section{Open and Closed Sets of $\bm{\R}$ (con't 4)}
+
+\subsection{Heine-Borel Theorem (con't)}
+
+\indent Last class we started the Heine-Borel Theorem and managed to prove the first case, that closed-bounded intervals of real numbers, $F = [a,b]$, $a < b$, are indeed compact sets. We now extend this result to the case where $F$ is closed and bounded, but not necessarily a connected interval. \\
+
+%
+% Theorem
+%
+{\bf Theorem}: {\em (Heine-Borel Theorem (con't)} 
+
+\begin{proof}
+
+{\bf \em (Case 2)}: $F$ is closed and bounded, but not of the form $[a,b]$ (i.e., $F$ is not necessarily a connected set). \\
+
+\indent Take $F$ to be a closed and bounded set of real numbers. Since $F$ is bounded there exists real numbers $a$ and $b$ such that $F \subset [a,b]$. Consider an open cover of $F$ given by
+\begin{equation*}
+	F \subset \bigcup_{i \in I} O_i
+\end{equation*}
+
+Since $F$ is closed its complement $F^c$ must be open. Thus,
+\begin{equation*}
+	\{ O_i \}_{i \in I} \cup \{F^c\}
+\end{equation*}
+
+forms an open covering. In fact, since
+\begin{equation*}
+	\R = F^c \cup F \subset F^c \cup \{O_i\}_{i \in I}
+\end{equation*}
+
+we see that this open cover $\{ O_i \}_{i \in I} \cup \{F^c\}$ forms a cover for all of $\R$, and so it must also form an open cover for $[a,b]$. Since $[a,b]$ is a closed bounded interval we may conclude that $\{ O_i \}_{i \in I} \cup \{F^c\}$ has a finite subcover such that
+\begin{equation*}
+	[a,b] \subset \left( \bigcup^n_{i = 1} O_i \right) \cup F^c \subset \left( \bigcup_{i \in I} O_i \right) \cup F^c
+\end{equation*}
+
+and so this finite cover must also cover $F$. However, $F^c$ clearly plays no role in covering $F$. Thus,
+\begin{equation*}
+	F \subset \bigcup^n_{i = 1} O_i \subset \bigcup_{i\in I} O_i
+\end{equation*}
+
+That is, $F$ is compact, as desired.
+\end{proof}
+
+\section{Borel Sets}
+
+\indent As we have seen, we typically denote open sets by $O$ and closed sets by $F$. We also consider the following notations
+\begin{align*}
+	F_\sigma &\quad \text{a countable union of closed sets} \\
+	G_\delta &\quad \text{a countable intersection of open sets}
+\end{align*}
+
+where  $F$ is from the French {\em ferm\'{e}}, $\sigma$ from the French {\em somme}, $G$ from the German {\em gebiet} (area, neighbourhood), and $\delta$ from the German {\em durchschnitt} (intersect). What is the relationship between $F_\sigma$ sets and $G_\delta$ sets? Note 
+
+\begin{align*}
+	\R \setminus F_\sigma &= \R \setminus \left( \bigcup^\infty_{n = 1} F_n \right) \\
+	&= \R \cap \left( \bigcup^\infty_{n = 1} F_n \right)^c \\
+	&= \R \cap \left( \bigcap^\infty_{n = 1} F_n^c \right) \\
+	&= \bigcap^\infty_{n = 1} \R \cap F^c_n \\
+	&= \bigcap^\infty_{n = 1} \R \setminus F_n
+\end{align*}
+
+and since each $F_n$ is closed we have that each $\R \setminus F_n$ is open. Thus,
+\begin{align*}
+	\R \setminus F_\sigma &= \bigcap^\infty_{n = 1} \R \setminus F_n \\
+	&= \bigcap^\infty_{n = 1} G_n \\
+	&= G_\delta
+\end{align*}
+
+Similarly,
+\begin{align*}
+	\R \setminus G_\delta &= \R \setminus \left( \bigcap^\infty_{n = 1} O_n \right) \\
+	&= \bigcup^\infty_{n = 1} \R \setminus O_n \\
+	&= F_\sigma
+\end{align*}
+
+\indent Therefore, if you know what your $F_\sigma$ set is then you know the corresponding $G_\delta$, and vice-versa. In a previous assignment we had shown that the set of real numbers $\R$ is both an open and a closed set. Thus, $\R$ is both a $F_\sigma$ and a $G_\delta$. \\
+
+What about the rationals $\Q$? Well we may write $Q$ as
+\begin{align*}
+	\Q &= \bigcup_{q \in \Q} \{q\} \\
+	\implies \Q &= F_\sigma 
+\end{align*}
+
+since $\Q$ is countable. In fact, any countable set $A$ is a $F_\sigma$ set since we may write $A$ as
+\begin{align*}
+	A &= \bigcup_{a \in \Q} \{a\} \\
+	\implies A &= F_\sigma 
+\end{align*}
+
+On the other hand, the set of irrationals $\R \setminus \Q$ can be written as
+\begin{align*}
+	\R \setminus \Q &= \R \setminus F_\sigma \quad \text{since $\Q$ = $F_\sigma$} \\
+	&= G_\delta \quad \text{(shown above)}
+\end{align*}
+
+\indent It's not obvious but we can prove that, unlike $\R$, $\Q$ is {\bf not} a $G_\delta$ and that $\R \setminus \Q$ is {\bf not} a $F_\sigma$,\footnote{I think this is known as the ``Baire-Category Theorem''.} and so we have some examples of sets that are one but not the other. \\
+
+\indent Consider the open interval $(a, b) = \{x ~:~ a < x < b,~ a,b \in \R\}$ and the nested closed interval $\left[ a + \frac{1}{n}, b - \frac{1}{n} \right]$ for $n \in \N$. As $n\to\infty$ we should see that we are expanding are closed set towards $(a, b)$. Consider the countable union
+\begin{equation*}
+	\bigcup_{n\in \N} \left[ a + \frac{1}{n}, b - \frac{1}{n} \right]
+\end{equation*}
+
+\indent This union cannot contain $a$ or $b$ since for any $n \in \N$ we have $a < a + \frac{1}{n}$ and $b - \frac{1}{n} < b$. However, for any $x \in (a, b)$ there exists some $N \in \N$ sufficiently large such that
+\begin{equation*}
+	x \in \bigcup^N_{n = 1} \left[ a + \frac{1}{n}, b - \frac{1}{n} \right]
+\end{equation*}
+
+Therefore,
+\begin{equation*}
+	\bigcup^\infty_{n = 1} \left[ a + \frac{1}{n}, b - \frac{1}{n} \right] = (a, b)
+\end{equation*}
+
+and so by definition the open interval $(a, b)$ is a $F_\sigma$. Recall that every open set is at most a countable union of disjoint open intervals $I_x = (a_x, b_x)$.\footnote{This comes from the fact that because we're over the reals we have some rational $q$ such that $a_x \leq q \leq b_x$ so form a bijection from $\Q$ to $\{I_x\}$.} Thus, every open set is a countable union of $F_\sigma$'s, and so is itself a $F_\sigma$. That is, every open set in $\R$ is a $F_\sigma$ set. \\
+
+\indent Taking the complement of this we symmetric result we get (since the complement of an open interval is closed and vice-versa): Every closed set in $\R$ is a $G_\delta$. However, there turns out to be some $F_\sigma$ sets that are not $G_\delta$ sets and $G_\delta$ sets that are not $F_\sigma$ sets. \\
+
+\subsection{Borel Hierarchy}
+
+\indent Consider countably many closed sets $F$ and take their union $F_\sigma$. If we take a countable union of countably many such $F_\sigma$ it remains a countable union. That is,
+\begin{equation*}
+	(F_\sigma)_\sigma = F_{\sigma\sigma} = F_\sigma
+\end{equation*}
+
+However, it is less immediately obvious what the countable intersection of countably many $F_\sigma$ would be. That is, we can consider collections of the form
+\begin{equation*}
+	(F_\sigma)_\delta = F_{\sigma\delta}
+\end{equation*}
+
+Iterating on this process we can consider the collections
+\begin{align*}
+	((F_\sigma)_\delta)_\sigma &= F_{\sigma\delta\sigma} \quad \text{or} \\
+	((G_\delta)_\sigma)_\delta &= G_{\delta\sigma\delta}
+\end{align*}
+
+and so on. Doing this we find an easy way to construct bigger and bigger families from subsets of $\R$. That is, we are taking any closed sets and taking all countable unions and countable intersections in all the ways we can. \\
+
+\indent Let $f:\R\to\R$. It turns out that the set of points of $\R$ where $f$ is continuous is a $G_\delta$ (countable intersection of open sets, e.g. the irrationals but {\em not} the rationals). So, we can find functions $f:\R\to\R$ that is continuous at every irrational point but discontinuous at every rational point $q \in \Q$. However, the converse is not true! There is no function $f:\R\to\R$ that is continuous at every rational point $q \in \Q$ and discontinuous at every irrational point $r \in \R\setminus\Q$. 
+
+\section{Continuous Functions}
+
+%
+% Definition
+%
+{\bf Definition}: {\em (Continuous at a point)} Let $E \subset \R$ and consider $f:E\to\R$. We say that $f$ is \underline{continuous at a point} $x \in \E$ if
+\begin{equation*}
+	\forall\,\epsilon > 0,~\exists\,\delta > 0,~ f(x - \delta, x + \delta) \subset (f(x) - \epsilon, f(x) + \epsilon)
+\end{equation*}
+
+or equivalently,
+\begin{equation*}
+	\forall\,\epsilon > 0,~\exists\,\delta > 0,~|x - y| < \delta \implies |f(x) - f(y)| < \epsilon
+\end{equation*} 
+
+\indent We can show that this second definition in indeed equivalent by manipulating the implication as follows
+\begin{align*}
+	|x - y| < \delta &\implies |f(x) - f(y)| < \epsilon \\
+	-\delta < x - y < \delta &\implies -\epsilon < f(x) - f(y) < \epsilon \\
+	y - \delta < x < y + \delta &\implies f(y) - \epsilon < f(x) < f(y) < \epsilon \\
+	x \in (y - \delta, y + \delta) &\implies f(x) \in (f(y) - \epsilon, f(y) + \epsilon)
+\end{align*}
+
+\indent Thus, we are guaranteed to map the interval $(y - \delta, y + \delta)$ within $(f(y) - \epsilon, f(y) + \epsilon)$. That is,
+\begin{equation*}
+	f(y - \delta, y + \delta) \subset (f(y) - \epsilon, f(y) + \epsilon)
+\end{equation*} 
+
+as desired. \\
+
+%
+% Definition
+%
+{\bf Definition}: {\em (Continuous functions)} Let $E \subset \R$ and consider $f:E\to\R$. We say that $f$ is \underline{continuous} if $f$ is continuous at each $x \in E$.  \\
+
+%
+% Proposition
+%
+{\bf Proposition}: Suppose $f:\R\to\R$. For all open subsets $O \subset \R$ the function $f$ is continuous on $\R$ if and only if the inverse imagine $f^{-1}(O)$ is open on $\R$.\footnote{Note that we are now interested in when the inverse function $f^{-1}$ is ``well-behaved'', which is perhaps surprising.}
+
+\begin{proof} $(\limplies)$ Suppose $f^{-1}(O)$ is open in $\R$ for all open sets $O \subset \R$. Take $x \in \R$ and let $\epsilon > 0$ be fixed. Consider the the interval
+\begin{equation*}
+	I = (f(x) - \epsilon, f(x) + \epsilon)
+\end{equation*}
+
+\indent Since $I$ is open by assumption the inverse image $f^{-1}(I)$ is open by hypothesis. By the openness of $f^{-1}(I)$ we have, for $x \in f^{-1}(I)$,
+\begin{equation*}
+	\exists\,\delta > 0,~(x - \delta, x + \delta) \subset f^{-1}(I)
+\end{equation*}
+
+Now, by definition of $f^{-1}$ we have for $x \in f^{-1}(I)$
+\begin{equation*}
+	f(x) \in I
+\end{equation*}
+
+hence
+\begin{align*}
+	f(x - \delta, x + \delta) &\subset I \\
+	f(x - \delta, x + \delta) &\subset (f(x) - \epsilon, f(x) + \epsilon)
+\end{align*}
+
+which is precisely the definition of the continuity of $f$, as desired. \\
+
+$(\implies)$ Suppose $f$ is continuous and let $O$ be open for all $O \subset \R$. Consider the point $x \in f^{-1}(O)$. By definition of $f^{-1}$ we have that $f(x) \in O$ for open $O$, and since $O$ is open we find
+\begin{equation*}
+	\exists\,\delta > 0,~ (f(x) - \epsilon, f(x) + \epsilon) \subset O
+\end{equation*}
+
+Additionally, since $f$ is continuous we find
+\begin{equation*}
+	\exists\,\delta > 0,~ f(x - \delta, x + \delta) \subset (f(x) - \epsilon, f(x) + \epsilon)
+\end{equation*}
+
+
+Putting these two lines together yields
+\begin{equation*}
+	f(x - \delta, x + \delta) \subset (f(x) - \epsilon, f(x) + \epsilon) \subset O
+\end{equation*}
+
+so
+\begin{equation*}
+	f(x - \delta, x + \delta) \subset O
+\end{equation*}
+
+Thus
+\begin{equation*}
+	(x - \delta, x + \delta) \subset f^{-1}(O)
+\end{equation*}
+
+which is precisely the definition of $f^{-1}(O)$ being open, as desired.
+\end{proof} \hfill
+
+\indent The following results (Propositions 17, 18, and 19) were not done in class but we were asked to review them independently before the next class. \\
+
+%
+% Proposition
+%
+{\bf Proposition 17: Extreme Value Theorem. A continuous real valued function on a closed and bounded set is bounded and attains its maximum and minimum.} \\
+
+{\bf Proposition 17}: Let $f:F\to \R$ be continuous for $F$ a closed and bounded subset of $\R$. Then, (1) $f$ is bounded on $F$ and (2) $f$ assumes its maximum and minimum on $F$. That is, 
+\begin{equation*}
+	\exists\,x_1,x_2 \in F, ~ \forall\,x\in F,~f(x_1) \leq f(x) \leq f(x_2)
+\end{equation*}
+
+\begin{proof} We will first show that $f$ is bounded on $F$. Let $f$ be continuous on every point $x \in F$ Since $f$ is continuous on $F$, for all $x \in F$, we have that $f$ satisfies
+\begin{equation*}
+	\forall\,\epsilon > 0,~\exists\,\delta > 0,~|x - y| < \delta \implies |f(x) - f(y)| < \epsilon
+\end{equation*}
+
+where
+\begin{equation*}
+	|x - y| < \delta \iff y - \delta < x < y + \delta
+\end{equation*}
+
+That is, for $x \in (y - \delta, y + \delta) \cap F$ we have
+\begin{align*}
+	|f(x) - f(y)| &< \epsilon \\
+	\Big| |f(x)| - |f(y)| \Big| &< |f(x) - f(y)| < \epsilon \quad \text{(reverse triangle inequality)} \\
+	|f(y)| - \epsilon &< |f(x)| < |f(y)| + \epsilon \\
+	\implies |f(x)| &< |f(y)| + \epsilon
+\end{align*}
+
+and so $f$ is bounded for $x \in (y - \delta, y + \delta)$. Now, note that the collection 
+\begin{equation*}
+	\{ (y - \delta, y + \delta) \}_{y \in F}
+\end{equation*}
+
+forms an open cover of $F$. However, since $F$ is closed and bounded we may apply the Heine-Borel Theorem to conclude that there is a finite subcover
+\begin{equation*}
+	F \subset \bigcup^n_{i = 1} (y_i - \delta, y_i + \delta) \subset \bigcup_{y \in F} (y - \delta, y + \delta)
+\end{equation*}
+
+\indent Since $F$ is covered by $\{(y_i - \delta, y_i + \delta)\}^n_{i = 1}$ we have that each $x \in F$ has some open interval such that $x \in (y_k - \delta, y_k + \delta)$. Thus,
+\begin{align*}
+	\forall\,x\in F,~\exists\,k\in \{1,...,n\} \text{ such that } |f(y_k)| - \epsilon < f(x) &< |f(y_k)| + \epsilon \\
+	\implies \forall\,x\in F,~\exists\,k\in \{1,...,n\} \text{ such that } |f(x)| &< |f(y_k)| + \epsilon
+\end{align*}
+
+\indent At this point we see that this $k$ is not necessarily fixed for every $x \in F$. A simple solution for this is to find the maximum over all $k$, letting
+\begin{equation*}
+	|f(y_M)| = \max \{|f(y_1)|, ..., |f(y_n)|\}
+\end{equation*}
+
+where it was meaningful to consider the maximum since we have only a finite number of elements $k$. Clearly, by construction we have that $|f(x)| < |f(y_M)| + \epsilon$ for all $x \in F$. So, letting
+\begin{equation*}
+	M = |f(y_M)| + \epsilon
+\end{equation*}
+
+we find
+\begin{equation*}
+	\forall\,x\in F,~\exists\,M > 0 \quad |f(x)| < M
+\end{equation*}
+
+\indent Therefore $f$ is indeed bounded by $M$ on $F$. Next, we wish to show that $f$ attains its extrema on $F$. We must show that there is some $x^* \in F$ such that $f(x^*) = \sup_{x\in F} f(x)$. Since $f$ is bounded we have that this supremum
+\begin{equation*}
+	m = \sup_{x\in F} f(x)	
+\end{equation*}
+
+is exists and is finite. Let $n \in N$. If $m$ is supremum of $f$ on $F$. Since $m$ is the {\em least upper bound}, $m - \frac{1}{n}$ cannot be an upper bound for $f$ on $F$. Therefore, for $n \in \N$ 
+\begin{equation*}
+	\exists\,x_n \in F \text{ such that } m - \frac{1}{n} < f(x_n)
+\end{equation*}
+
+Therefore, we have defined a sequence $(x_n)$ such that
+\begin{equation*}
+	m - \frac{1}{n} < f(x_n) < m
+\end{equation*}
+
+and as $n \to \infty$
+\begin{equation*}
+	m - \frac{1}{n} \to m < f(x_n) < m
+\end{equation*}
+
+so we get that this sequence $(x_n)$ is constructs a convergent sequence $(f(x_n)) \to m$. Furthermore, since $F$ is bounded we have that our sequence $(x_n)$ must be bounded and so by the Bolanzo-Weierstrauss Theorem\footnote{Every bounded sequence has a convergent subsequence.} we may conclude that there is a convergent subsequence $(x_{k_i})$ such that this subsequence is convergent to some value
+\begin{equation*}
+	(x_{n_i}) \to x^*
+\end{equation*}
+
+and that this subsequence maintains the convergence
+\begin{equation*}
+	(f(x_{n_i})) \to m
+\end{equation*}
+
+\indent Now, since $F$ is closed we must have that $(x_{n_i}) \to x^* \in F$. Finally, since $f$ is continuous on $F$ we must have that $f$ is continuous at $x^*$ so that $f(x^*) = m^*$. However, we already know that
+\begin{equation*}
+	(f(x_{n_i})) \to m
+\end{equation*}
+
+Therefore
+\begin{equation*}
+	m^* = f(x^*) = m
+\end{equation*}
+
+as desired. An essentially identical proof can be done with the minimum by considering $\inf_{x\in F} f(x) = m$, the sequence $m + \frac{1}{n} > m$ and $m + \frac{1}{m} \to m$ as $n \to \infty$, and defining the sequence $(x_n) \in F$, bounded on $F$ by closure, such that $m < f(x_n) < m + \frac{1}{n}$ since $m + \frac{1}{n}$ is not a {\em greatest lower bound} of $f$ on $F$.
+\end{proof}
+
+%
+% Proposition
+%
+{\bf Proposition 18}: Let $f$ be a real-valued function defined in $(-\infty, \infty)$. Then $f$ is continuous {\em if and only if} for each open set $O$ of real numbers $f^{-1}(O)$ is an open set, where
+\begin{equation*}
+	f^{-1}(O) = \{x ~:~ f(x) \in O\}
+\end{equation*}
+
+\begin{proof} $(\implies)$ Suppose $f:(-\infty,\infty) \to \R$ is continuous and let $O \subset \R$ be an arbitrary open set. Since $f$ is continuous
+\begin{equation*}
+	\forall\,\epsilon > 0,~\exists,\delta > 0,~f(x - \delta, x + \delta) \subset (f(x) - \epsilon, f(x) + \epsilon)
+\end{equation*}
+
+Applying $f^{-1}$
+\begin{align*}
+	f^{-1}(f(x - \delta, x + \delta)) &\subset f^{-1}(f(x) - \epsilon, f(x) + \epsilon) \\
+	\implies (x - \delta, x + \delta) &\subset f^{-1}(f(x) - \epsilon, f(x) + \epsilon)
+\end{align*}
+
+\indent However, since $O$ is arbitrary we may let $O = (f(x) - \epsilon, f(x) + \epsilon)$ since this set is indeed continuous for $\epsilon > 0$. Thus,
+\begin{equation*}
+	\exists\,\delta > 0,~ (x - \delta, x + \delta) \subset f^{-1}(O)
+\end{equation*}
+
+and since $(x - \delta, x + \delta)$ is open for $\delta > 0$ we have there exists some small ball $(x - \delta, x + \delta)$ such that this ball is fully enclosed by $f^{-1}(O)$. That is, $f^{-1}(O)$ satisfies the definition of an open set, as desired.
+
+$(\limplies)$ Suppose that $f^{-1}(O)$ is open for all open sets $O \subset \R$. Since $f^{-1}(O)$ is open we have that there is a small ball centered at each $x \in f^{-1}(O)$ such that this ball is fully enclosed by $f^{-1}(O)$. That is,
+\begin{equation*}
+	\exists\,\delta > 0,~(x - \delta, x + \delta) \subset f^{-1}(O)
+\end{equation*}
+
+Thus
+\begin{equation*}
+	f(x - \delta, x + \delta) \subset f(f^{-1}(O)) = O
+\end{equation*}
+
+Since $O$ is any open set $O \subset \R$, let $O = (f(x) - \epsilon, f(x) + \epsilon)$ for all $\epsilon > 0$. Thus,
+\begin{equation*}
+	\forall\,\epsilon > 0,~\exists\,\delta > 0,~ f(x - \delta, x + \delta) \subset (f(x) - \epsilon, f(x) + \epsilon)
+\end{equation*}
+
+which is precisely the definition of continuity, as desired.
+\end{proof}
+
+%
+% Proposition
+% 
+{\bf Proposition 19: Intermediate Value Theorem.} Let $f$ be a continuous real-valued function defined on a closed interval $[a,b]$ and suppose that $f(a) \leq \gamma \leq f(b)$ (or vice-versa). Then, there exists a point $c \in [a,b]$ such that $f(c) = \gamma$. That is, for any point in $[f(a), f(b)]$ there is some point in the domain $[a,b]$ for which $f$ is in the range $[f(a), f(b)]$.
+
+\begin{proof} If $\gamma = f(a)$ or $\gamma = f(b)$ then the proof is trivial. So, without loss of generality, suppose $f(a) < \gamma < f(b)$. Since $f$ is continuous on $[a,b]$, for all points in $x \in [a,b]$ we satisfy
+\begin{equation*}
+	\forall\,\epsilon > 0,~\exists\,\delta > 0,~|x - y| < \delta \implies |f(x) - f(y)| < \epsilon
+\end{equation*}
+
+where this $y$ which satisfies $|x - y| < \delta$ is within $[a,b]$. So, letting $y = c$ we have for all $x \in [a,b]$, whenever $c - \delta < x < c + \delta$
+\begin{equation*}
+	f(c) - \epsilon < f(x) < f(c) + \epsilon
+\end{equation*}
+
+or equivalently
+\begin{equation*}
+	x \in (c - \delta, c + \delta) \implies f(x) \in (f(c) - \epsilon, f(c) + \epsilon)
+\end{equation*}
+
+Now, construct $c$ as follows. For the interval [a,b] consider the subset
+\begin{equation*}
+	\{x \in [a,b] ~:~ f(x) < \gamma\}
+\end{equation*}
+
+\indent Clearly this set is nonempty since it contains at least $a$ since we supposed that $f(a) < \gamma < f(b)$. Hence, since this set is bound above by $b$ we have that the supremum of this set exists. That is, let $c$ satisfy
+\begin{equation*}
+	c = \sup \{x \in [a,b] ~:~ f(x) < \gamma\}
+\end{equation*}
+
+\indent Clearly $c \in [a,b]$ since this set was shown to be bound below by $a$ and above by $b$. Now, for $\delta > 0$ satisfying continuity at $c \in [a,b]$ we have some $x^*$ in the half interval $x^* \in (c - \delta, c]$ such that
+\begin{equation*}
+	f(c) - \epsilon < f(x^*) < \gamma
+\end{equation*}
+
+where $f(x^*) < \gamma$ follows since $x^* \leq c$ and $c$ was the supremum of the values for which $f(x) < \gamma$. So, choose some other point $x^{**}$ in the other half interval $[c, c + \delta)$. By definition this $x^{**}$ will not satisfy $f(x) < \gamma$ since $c$ was the supremum of these satisfying $x$. Therefore
+\begin{equation*}
+	f(c) + \epsilon > f(x^{**}) \geq \gamma
+\end{equation*}
+
+Now, we may rearrange these two inequalities to yield
+\begin{align*}
+	f(c) < f(x^*) + \epsilon < \gamma + \epsilon \\
+	f(c) > f(x^{**}) - \epsilon \geq \gamma - \epsilon
+\end{align*}
+
+Thus,
+\begin{align*}
+	f(c) < \gamma + \epsilon \\
+	f(c) > \gamma - \epsilon \\
+	\implies \gamma - \epsilon < f(c) < \gamma + \epsilon
+\end{align*}
+
+for all $\epsilon > 0$. Therefore, we must conclude that $f(c) = \gamma$, as desired.
+\end{proof}
+
+%
+% Definition
+%
+{\bf Definition: (Uniform continuity)} A function $f$ on a set $E$ is \underline{uniformly continuous} on $E$ if
+\begin{equation*}
+	\forall\,\epsilon > 0,~\exists\,\delta > 0,~\forall\,x,y\in E,~|x - y| < \delta \implies |f(x) - f(y)| < \epsilon
+\end{equation*}
+
+That is, $\delta > 0$ remains constant across all points $x, y \in E$.\footnote{However, $\delta$ can (and probability will) depend on $\epsilon$.}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

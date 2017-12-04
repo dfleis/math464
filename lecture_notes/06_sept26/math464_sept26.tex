@@ -1,0 +1,291 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{bm} % bold in mathmode \bm
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{dsfont} % for indicator function \mathds 1
+\usepackage{tikz,pgf,pgfplots}
+\usepackage{enumerate} 
+\usepackage[multiple]{footmisc} % for an adjascent footnote
+\usepackage{graphicx,float} % figures
+\usepackage{centernot} % for \centernot\implies (wrapped in \nimplies)
+
+%% set noindent by default and define indent to be the standard indent length
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%% some math macros
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % vector norm
+\newcommand*{\vv}[1]{\vec{\mkern0mu#1}} % \vec with arrow on top
+\renewcommand{\Re}{\mathfrak {Re}}
+\renewcommand{\Im}{\mathfrak {Im}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\X}{\mathbb X}
+\newcommand{\powerset}{\mathcal P}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\gm}{\mathrm{gm~}}
+\newcommand{\am}{\mathrm{am~}}
+\newcommand{\trace}{\mathrm{trace~}}
+\newcommand{\Trace}{\mathrm{Trace~}}
+\newcommand{\rank}{\mathrm{rank~}}
+\newcommand{\Rank}{\mathrm{Rank~}}
+\newcommand{\Span}{\mathrm{Span~}}
+\newcommand{\card}{\mathrm{card~}}
+\newcommand{\Card}{\mathrm{Card~}}
+\newcommand{\limplies}{~\Longleftarrow ~} % leftwards implies, for some reason requires spacing to mirror the formatting of \implies (and therefore \rimplies below)
+\newcommand{\rimplies}{\implies} % rightwards implies (for consistency)
+\newcommand{\nimplies}{\centernot\implies} % rightwards implies with line struck through
+\newcommand{\indist}{\,{\buildrel \mathcal D \over \sim}\,}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny 
+	def}}}{=}}} % equal sign with def above
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Real Analysis\\Lecture Notes}
+\author{The Real Number System}
+\date{September 26 2016 \\ Last update: \today{}}
+\maketitle
+
+\section{Open and Closed Sets of $\bm{\R}$ (con't 2)}
+
+\subsection{Lindel\"{o}f Condition (con't)} 
+
+\indent Last class we introduced the definition of a Lindel\"{o}f collection: A collection $C$ of sets is said to be \underline{Lindel\"{o}f} if every open cover has a countable subcover. We continue this topic with a quick example of a countable subcover. \\
+
+%
+% Example
+%
+{\bf Example}: {\em (Example of the Lindel\"{o}f condition)} Consider the covering of the reals
+\begin{equation*}
+	\{(a, b)~:~a < b,~ a, b \in \R\}
+\end{equation*}
+
+\indent That is, consider the covering of $\R$ given by the collection of all open intervals $(a,b)$ for real numbers $a < b$. Hopefully it is clear that we have uncountably many choices for $a$ and $b$. However, we also have the countable subcollection
+\begin{equation*}
+	\{(-n, n)~:~n\in\N\}
+\end{equation*}
+
+\subsection{Closed Sets in $\bm{\R}$}
+
+%
+% Definition, point of closure
+%
+{\bf Definition}: {\em (Point of closure)} Take $E \subset \R$. We say that a point $x$ is a \underline{point of closure} if
+\begin{equation*}
+	\forall\,\delta > 0,~(x - \delta, x + \delta) \cap E \neq \emptyset
+\end{equation*}
+
+or equivalently, $x$ is a point of closure if
+\begin{equation*}
+	\forall\,\delta > 0,~\exists\,y\in E \text{ such that } |x - y| < \delta
+\end{equation*}
+
+%
+% Example
+%
+{\bf Example}: {\em (Example using points of closure)} Let $E = [1, 2)$. We find that $2$ is a point of closure since
+\begin{equation*}
+	\forall\,\delta > 0 ~ (2 - \delta, 2 + \delta) \cap [1, 2) \neq \emptyset
+\end{equation*}
+
+since the points in $E$ given by $(2-\delta, 2)$ will overlap with $(2 - \delta, 2 + \delta)$. Likewise, $1$ is a point of sure by the same argument
+\begin{equation*}
+	\forall\,\delta > 0 ~ (1 - \delta, 1 + \delta) \cap [1, 2) \neq \emptyset
+\end{equation*}
+
+since the points in $E$ given by $[1, 1 + \delta)$ will overlap with $(1 - \delta, 1 + \delta)$. In fact have that the set $E = [1, 2)$ has points of closure in $[1, 2]$. In general, each point $x \in E$ of a set $E \subset \R$ is trivially a point of closure of $E$.\footnote{To show this note that for all $x \in A$ the condition $\forall\,\delta > 0~ (x - \delta, x + \delta) \cap A \neq \emptyset$ is trivially satisfied since this intersection will always contain at least $x$.} We denote the \underline{set of points of closure} by $\overline{E}$. Thus,
+\begin{equation*}
+	E \subset \overline{E}
+\end{equation*}
+
+%
+% Example
+%
+{\bf Example}: Let $E = \Q$. What are the points of closure for $E$? Clearly $\pi \notin \Q$, but by the density of $\Q$ in $\R$ we are guaranteed some rational number $q \in (\pi - \delta, \pi + \delta)$ for all $\delta > 0$. That is,
+\begin{equation*}
+	\forall\,\delta > 0,~\exists\,q\in\Q \text{ such that } q \in (\pi - \delta, \pi + \delta)
+\end{equation*}
+
+\indent Therefore, the intersection $(\pi - \delta, \pi + \delta) \cap E \neq \emptyset$ since $(\pi - \delta, \pi + \delta)$ contains at least one rational number. Hence, by definition, $\pi$ is indeed a point of closure of $\Q$. In fact, by this argument, take arbitrary $r \in \R$, then
+\begin{equation*}
+	\forall\,r\in\R,~\forall\,\delta > 0,~\exists\,q\in\Q \text{ such that } q \in (r - \delta, r + \delta)
+\end{equation*}
+
+by the density of $\Q$ in $\R$. Therefore, the intersection $(r - \delta, r + \delta) \cap \Q \neq \emptyset$ since it contains at least one rational point $q \in \Q$ from the density of $\Q$. Since $r\in\R$ was arbitrary we conclude that $\R$ is the set of points of closure of $\Q$. \\
+
+%
+% Definition, set of points of closure
+%
+{\bf Definition}: {\em (Set of points of closure)} Let $E \subset \R$. We denote by $\overline{E}$ to be the \underline{set of points of closure} of $E$. For example,
+\begin{align*}
+	\overline{[0,1]} &= [0,1] \\
+	\overline{[0,1)} &= [0,1] \\
+	\overline{(0,1)} &= [0,1] \\
+	\overline{\Q} &= \R \\
+	\overline{\R\setminus\Q} &= \R \\
+	\overline{\emptyset} &= \emptyset
+\end{align*}
+
+%
+% Proposition
+%
+{\bf Proposition}: 
+\begin{enumerate}[(a)]
+	\item If $A \subset B$ then $\overline{A} \subset \overline{B}$.
+ 	\item If $A \subset B$ then $\overline{A\cup B} = \overline{A} \cup \overline{B}$.
+\end{enumerate}
+
+\begin{enumerate}[(a)]
+	\item 
+	\begin{proof} Let $x \in \overline{A}$. That is, $x$ is a point of closure of $A$. Take $\delta > 0$, then
+	\begin{equation*}
+		(x - \delta, x + \delta) \cap A \neq \emptyset \implies (x - \delta, x + \delta) \cap B \neq \emptyset
+	\end{equation*}
+	
+	since $A \subset B$. More formally,
+	\begin{equation*}
+		\exists\,y\in \{(x - \delta, x + \delta) \cap A\}
+	\end{equation*}
+	
+	Thus, we have some $y \in A$. Since $A \subset B$ we also find that $y \in B$. Therefore,
+	\begin{equation*}
+		\exists\,y\in \{(x - \delta, x + \delta) \cap B\}
+	\end{equation*}
+	
+	\indent That is, $(x - \delta, x + \delta) \cap B \neq \emptyset$, so $x$ is a point of closure of $B$, $x \in \overline{B}$. Since $x \in \overline{A}$ was arbitrary we find
+	\begin{equation*}
+		\overline{A} \subset \overline{B}
+	\end{equation*}
+	
+	as desired.
+	\end{proof}
+	
+	\item
+	\begin{proof} Take $A \subset A \cup B$ and $B \subset A \cup B$. From part (a) we have that
+	\begin{align*}
+		\overline{A} &\subset \overline{A \cup B} \\
+		\overline{B} &\subset \overline{A \cup B}
+	\end{align*}
+	
+	\indent So $\overline{A} \cup \overline{B} \subset \overline{A \cup B}$ which completes the first direction. We proceed using proof by contrapositive. Instead of showing $x \in \overline{A\cup B} \implies x \in \overline{A} \cup \overline{B}$ we will show $x \notin \overline{A} \cup \overline{B} \implies x \notin \overline{A\cup B}$
+	
+	
+	Now, suppose $x \notin \overline{A} \cup \overline{B}$ so that $x \notin \overline{A}, x \notin \overline{B}$. Then
+	\begin{align*}
+		\exists\,\delta_1 > 0 \text{ such that } (x - \delta_1, x + \delta_1) \cap A = \emptyset \\
+		\exists\,\delta_2 > 0 \text{ such that } (x - \delta_2, x + \delta_2) \cap B = \emptyset
+	\end{align*}
+	
+	\indent Taking the minimum $\delta^* = \min\{\delta_1, \delta_2\}$ we still satisfy both equalities with respect to $A$ and $B$ and so
+	\begin{equation*}
+		(x - \delta^*, x + \delta^*) \cap (A \cup B) = \emptyset
+	\end{equation*}
+	
+	\indent But this is precisely the definition of {\em not} being a point of closure of $(A \cup B)$! Therefore, if $x \notin \overline{A} \cup \overline{B}$ then $x \notin \overline{A \cup B}$	. Taking the contrapositive statement we get
+	\begin{equation*}
+		x \in \overline{A\cup B} \implies x \in \overline{A} \cup \overline{B}
+	\end{equation*}
+	
+	which is precisely $\overline{A\cup B} \subset \overline{A} \cup \overline{B}$. Thus, taking both directions we get
+	\begin{equation*}
+		\overline{A\cup B} = \overline{A} \cup \overline{B}
+	\end{equation*}
+	
+	as desired.
+	\end{proof}
+\end{enumerate}
+
+%
+% Definition, closed sets
+% 
+{\bf Definition}: {(\em What does is mean to be a {\bf \em closed} set?)} A set $F$ is\footnote{The notation $F$ for a closed set is from the French {\em ferm\'{e}}.} \underline{closed} if $F = \overline{F}$. \\
+
+%
+% Proposition
+%
+{\bf Proposition}: $\overline{\overline{E}} = \overline{E}$. That is, the set of points of closure of $\overline{E}$ is precisely $\overline{E}$. Equivalently, $\overline{E}$ is a closed set.
+
+\begin{proof} Let $x \in \overline{\overline{E}}$. Take $\delta > 0$ and consider $\frac{\delta}{2} > 0$. Since $x$ is a point of closure of $\overline{E}$ we must have some $y$ in the intersection of $\left(x - \frac{\delta}{2}, x + \frac{2}{\delta}\right)$ and $\overline{E}$. That is,
+\begin{equation*}
+	\exists\,y\in \left( \overline{E} \cap \left(x - \frac{\delta}{2}, x + \frac{\delta}{2} \right) \right)
+\end{equation*}
+
+hence, we have some $y$ satisfying
+\begin{equation*}
+	|x - y| < \frac{\delta}{2}
+\end{equation*}
+
+\indent Since $y\in \left( \overline{E} \cap \left(x - \frac{\delta}{2}, x + \frac{\delta}{2} \right) \right)$ we have that $y \in \overline{E}$. Since $y$ is a point of closure of $E$ we must have some $z$ in the intersection of $\left(y - \frac{\delta}{2}, y + \frac{2}{\delta}\right)$ and $E$. That is,
+\begin{align*}
+	\left( y - \frac{\delta}{2}, y + \frac{\delta}{2} \right) &\cap E \neq \emptyset \\
+	\exists\,z &\in \left( E \cap \left(y - \frac{\delta}{2}, y + \frac{\delta}{2}\right) \right) \\
+	|y - z| &< \frac{\delta}{2}
+\end{align*}
+
+Thus,
+\begin{align*}
+	|x - y| &< \frac{\delta}{2} \\
+	|y - z| &< \frac{\delta}{2} \\
+	\implies |x - y| + |y - z| &= \frac{\delta}{2} + \frac{\delta}{2} = \delta, \quad \text{but} \\
+	|x - y| + |y - z| &\geq |x - y + y - z| \quad \text{(triangle inequality)} \\
+	&= |x - z| \\
+	\implies |x - z| &\leq |x - y| + |y - z| < \delta \\
+	\implies |x - z| < \delta
+\end{align*}
+
+That is, for $x \in \overline{\overline{E}}$ there is some $z \in E$ such that
+\begin{equation*}
+	|x - z| < \delta
+\end{equation*}
+
+or equivalently,
+\begin{equation*}
+	\exists\,z\in E \quad \text{ such that } (x - \delta, x + \delta) \cap E \neq \emptyset
+\end{equation*}
+
+So $x \in \overline{\overline{E}}$ is a point of closure of $E$, so $x \in \overline{E}$, as desired.
+
+\end{proof}
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,264 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{bm} % bold in mathmode \bm
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{dsfont} % for indicator function \mathds 1
+\usepackage{tikz,pgf,pgfplots}
+\usepackage{enumerate} 
+\usepackage[multiple]{footmisc} % for an adjascent footnote
+\usepackage{graphicx,float} % figures
+\usepackage{centernot} % for \centernot\implies (wrapped in \nimplies)
+
+%% set noindent by default and define indent to be the standard indent length
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%% some math macros
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % vector norm
+\newcommand*{\vv}[1]{\vec{\mkern0mu#1}} % \vec with arrow on top
+\renewcommand{\Re}{\mathfrak {Re}}
+\renewcommand{\Im}{\mathfrak {Im}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\X}{\mathbb X}
+\newcommand{\powerset}{\mathcal P}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\gm}{\mathrm{gm~}}
+\newcommand{\am}{\mathrm{am~}}
+\newcommand{\trace}{\mathrm{trace~}}
+\newcommand{\Trace}{\mathrm{Trace~}}
+\newcommand{\rank}{\mathrm{rank~}}
+\newcommand{\Rank}{\mathrm{Rank~}}
+\newcommand{\Span}{\mathrm{Span~}}
+\newcommand{\card}{\mathrm{card~}}
+\newcommand{\Card}{\mathrm{Card~}}
+\newcommand{\limplies}{~\Longleftarrow ~} % leftwards implies, for some reason requires spacing to mirror the formatting of \implies (and therefore \rimplies below)
+\newcommand{\rimplies}{\implies} % rightwards implies (for consistency)
+\newcommand{\nimplies}{\centernot\implies} % rightwards implies with line struck through
+\newcommand{\indist}{\,{\buildrel \mathcal D \over \sim}\,}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny 
+	def}}}{=}}} % equal sign with def above
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Real Analysis\\Lecture Notes}
+\author{Set Theory}
+\date{September 12 2016 \\ Last update: \today{}}
+\maketitle
+
+\section{Countability \& Countable Sets}
+
+\indent Last class we spoke about some countable finite sets. We now consider \underline{countably infinite} sets. Let $S$ be some countably infinite set. Such sets $S$ are said to be countably infinite if they are not finite and if such sets are are an image of the naturals $\N$. That is, a countably infinite set is one that is an image of some infinite sequence $\{x_1, x_2, x_3, ... \} = \{ f(1), f(2), f(3),  ...\}$. \\
+
+\indent We can show that this definition is equivalent to the statement that a countably infinite set is a set for which there exists a bijective mapping with $\N$:
+\begin{proof} Let some infinite set $S$ be an image of the sequence $\{x_1, x_2, x_3,...\}$. Essentially, we now must show that there exists some bijection between the sequence $\{x_1, x_2, x_3,...\}$ and $\N$. Define $f$ as follows:
+\begin{align*}
+	(1)& \quad \text{Map $x_1 \stackrel{f}{\to} 1$.} \\
+	(2)& \quad \text{If $x_2 \neq x_1$, map $x_2 \stackrel{f}{\to} 2$.} \\
+	(3)& \quad \text{If $x_3 \neq x_2, x_3 \neq x_1$, map $x_3 \stackrel{f}{\to} 3$.} \\
+	&\vdots \\
+	(k)& \quad \text{If $x_k \neq x_i,~\forall\,1 \leq i \leq k - 1$, map $x_k \stackrel{f}{\to} k$.} \\
+	&\vdots 
+\end{align*}
+
+\indent In general, we find that $x_{k + 1}$ will map to the smallest value $f(x_{k + 1}) = m$ such that $x_m \neq x_i$ for all preceding $i \leq f(n)$. Since $S$ is an infinite set, there will always be such a smallest $m \in \N$ to satisfy $f(n + 1)$ (this actually uses the {\em well-ordering principle} for $\N$). We see that this mapping
+\begin{equation*}
+	x_{f(k)} \to k
+\end{equation*}
+
+is bijective since we can retrieve arbitrary $k$ given $x_{f(k)}$ and vice-versa.\footnote{A more rigorous proof would go through the definitions if surjectivity and injectivity... maybe I'll include that later.} Therefore, our statements are indeed equivalent, as desired.
+\end{proof} \hfill\\
+
+{\bf Proposition}: Every subset of a countably finite set is countable.
+
+\begin{proof} Let $S = \{x_1, x_2, x_3,...\}$ be countably infinite. Take some subset $A \subset S$, $A \neq \emptyset$ (if $A = \emptyset$ then $A$ is countable by definition). \\
+
+\indent Let $x \in A$ be some fixed arbitrary element of $A$. Now, define the sequence $\{y_1, y_2, y_3, ...\}$ such that $y_n = x_n$ if $x_n \in A$ and $y_n = x$ if $x_n \notin A$. Therefore, all $y_n \in A$ by construction.
+
+By this construction we have successfully placed the set $A$ in the range of our sequence $\{y_1, y_2, ...\}$. This is precisely our definition of countability above: An infinite set which is the image of some infinite sequence. Therefore, since $A$ was arbitrary, we have that every subset of a countably infinite set must be countable, as desired.
+\end{proof} \hfill\\
+
+{\bf Proposition}: Let $A$ be a countable set. The set of all finite sequences from $A$ is countable. 
+
+\begin{proof} Since $A$ is countable it has some bijective correspondence with some subset of $\N$. From this, we see that it is sufficient to show that the set $S$ set of finite sequences of $\N$ is countable. \\
+
+\indent Note that from the Fundamental Theorem of Arithmetic we have that every $n > 1$ can be expressed as a {\em unique} product of primes. That is, for some $n \in \N$, $n > 1$, we have 
+\begin{equation*}
+	n = p_1^{k_1} p_2^{k_2} \cdots p_m^{k_m}, \quad p_m \geq 2, k_i \geq 0
+\end{equation*}
+
+where $p_1, p_2, ..., p_m$ are the first $m$ primes. For example, we may decompose the following integers into their product of primes as follows:
+\begin{align*}
+	40 &= 2^3 \cdot 3^0 \cdot 5^1 \\
+	24 &= 2^3 \cdot 3^1 \\
+	9 &= 2^0 \cdot 3^2
+\end{align*}
+
+\indent Therefore, we define $f:\N \to \{\text{finite sequences from $\N \cup \{0\}$}\}$ using this prime power decomposition. As an illustrative example, our above integers would map to the finite sequences
+\begin{align*}
+	f(40) &= (3, 1) \\
+	f(24) &= (3, 0, 1) \\
+	f(9) &= (0, 2)
+\end{align*}
+
+\indent Note that under this construction we don't have a definition for $f(1)$ since we were forced to limit ourselves to $n > 1$. However, since this is only finitely many values we can just ``throw it into the trash'' to some finite sequence, say
+\begin{equation*}
+	f(1) = (0)
+\end{equation*}
+
+\indent Is this $f$ surjective? Do we get {\em {\bf all}} finite sequences from $\N \cup \{0\}$? Yes! We can show this more rigorously, but we should be able to immediately see that any sequence $(n_1, n_2, ..., n_k)$ will uniquely define some $n \in \N$. \\
+
+\indent Is this $f$ injective? Yes! By the Fundamental Theorem of Arithmetic we have that all $n \in \N$ have some unique sequence $(n_1, n_2, ..., n_k)$ given by $f$. \\
+
+\indent So, the image of $f$ is countably infinite and contains all finite sequences defined using elements $n \in \N$. Therefore, our set $S$ is indeed in the range of $f$, and so it must be countably infinite itself, as desired.
+\end{proof} \hfill\\
+ 
+\indent We have shown before that the set of integers $\Z = \{0, \pm 1, \pm 2, ...\}$ is countable. From this we can show that the set of rationals $\Q = \left\{ \frac{z_1}{z_2} ~:~ z_1, z_2 \in \Z, z_2 \neq 0 \right\}$ is also countable: Note that some rational number $q \in \Q$ is determined by a {\em pair} of integers $(z_1, z_2)$, $z_2 \neq 0$. Note that these pairs of integers are clearly a finite sequence formed from the countable set $\Z$. Therefore, by the above proposition we may conclude that $\Q$ is indeed countable. \\
+
+{\bf Proposition}: A \underline{countable union} of countable sets is countable. 
+
+\begin{proof} Let $\mathcal A = \bigcup^\infty_{n = 1} A_n$, $A_n \neq \emptyset$ for all $n$. Our sets $A_n$ look something like $A_n = \{x_{n,m}\}^\infty_{m = 1}$. Now, note that $(n,m)$ is a finite sequence made from elements in $\N$, and so the set of $\{(n,m) ~:~ n,m \in \N\}$ must be countable. Therefore, the mapping 
+\begin{equation*}
+	(n, m) \to x_{n,m}
+\end{equation*}
+
+is a mapping of ordered pairs from $\N$ onto the elements $x_{n,m} \in A_n$. That is, the mapping from $(n,m)$ to $x_{n,m}$ is a mapping onto the countable union $\mathcal A$. Since we have determined that the set of ordered pairs $(n,m)$ must be countable, we conclude that this union $\mathcal A$ must also be countable since we have shown the necessary mapping exists.
+\end{proof} \hfill\newline
+
+\indent We say that the cardinality of countably infinite sets is given by the cardinal number $\aleph_0$ (aleph-null). That is,
+\begin{equation*}
+	\card \N = \card \Z = \card \Q = \card \Big( \underbrace{ \N \times \N \times \cdots \times \N}_{\text{countably many times}} \Big) = \aleph_0
+\end{equation*}
+\\
+
+{\bf Proposition}: We claim that there exists a set $S$ of all countable sequences from $\{0, 1\}$ that is {\em not} countable.
+
+\begin{proof} Suppose $S$ is countable. Then, we may express $S$ by
+\begin{equation*}
+	S = \{s_1, s_2, s_3, ...\}
+\end{equation*}
+
+
+We may list the elements of $S$ as follows:
+\begin{align*}
+	s_1 &= (s_{1,1},~ s_{1,2},~ s_{1,3},~ ...) \\
+	s_2 &= (s_{2,1},~ s_{2,2},~ s_{2,3},~ ...) \\
+	s_3 &= (s_{3,1},~ s_{3,2},~ s_{3,3},~ ...) \\
+	&\vdots
+\end{align*}
+
+where all $s_{n,m} \in \{0, 1\}$. Now, construct the sequence $s$ such that the $k^\text{th}$ element in $s$ is given by $s_{k,k} + 1 \mod 2$ so that $s$ differs from $s_1$ in the first position, $s$ differs from $s_2$ in the second position, $s$ differs from $s_3$ in the third position, and so on. For example, if $S$ is given by the sequences
+\begin{align*}
+	s_1 &= (\underline{0}, 1, 0, 0, ...) \\
+	s_2 &= (0, \underline{0}, 1, 0, ...) \\
+	s_3 &= (1, 1, \underline{1}, 1, ...) \\
+	s_4 &= (0, 0, 0, \underline{0}, ...) \\
+	&\vdots
+\end{align*}
+
+Then the first four elements of $s$ will be given by
+\begin{equation*}
+	s = (1, 1, 0, 1, ...)
+\end{equation*}
+
+\indent Since the $k^\text{th}$ digit of $s$ will differ from from the $k^\text{th}$ sequence in the $k^\text{th}$ term, we see that $s$ cannot be in our set $S$. That is, $s$ is a sequence from $\{0, 1\}$ and $s \notin S$. But we had stated that $S$ contains all sequences from $\{0, 1\}$! Contradiction: We must conclude that $S$ cannot be a countable set (we say it is {\em uncountable}) whose cardinality $\card S$ is given by $2^{\aleph_0}$. \\
+
+In this course we will not provide the proof for $\aleph_0 < 2^{\aleph_0}$.
+\end{proof} \hfill\\
+
+{\bf Continuum Hypothesis}: The ``Continuum Hypothesis'' states that there is no ``infinity'' (cardinality) strictly between the cardinality of the naturals $\aleph_0$ and $2^{\aleph_0}$ (this turns out to be the cardinality of the reals, $\R$). \\
+
+
+\section{Orderings}
+
+In the previous class we introduced the notion of partially ordered and totally ordered sets. A partially ordered set $S$ satisfies:
+\begin{align*}
+	(1)& \quad \text{For all $a \in S$, $a \leq a$. (reflexivity) } \\
+	(2)& \quad \text{if $a \leq b$ and $b \leq a$ then $a = b$. (antisymmetry)} \\
+	(3)& \quad \text{if $a \leq b$ and $b \leq c$ then $a \leq c$. (transitivity)}
+\end{align*}
+
+A totally ordered set $S$ requires a fourth criteria:
+\begin{equation*}
+	(4) \quad \text{For all $a, b \in S$ then either $a \leq b$ or $b \leq a$.}
+\end{equation*}
+
+\indent We also introduced the notion of a well-ordered set. A well-ordered set $S$ is a totally ordered set if and only if every nonempty subset of $S$ has a least element. \\
+
+\indent Consider a set $S$ and let the least element of $S$ be $s_1$. Now consider the difference $S \setminus \{s_1\}$. If $S \setminus \{s_1\} = \emptyset$ then $S = \{s_1\}$ and so $S$ is finite and trivially well ordered. So, suppose $S \setminus \{s_1\} \neq \emptyset$. By the well-ordering principle $S \setminus \{s_1\}$ has a least element, and since $s_1 \notin S$ this least element cannot be $s_1$. We call this new least element $s_2$. Clearly $s_2 \neq s_1$. \\
+
+If $S$ is not a finite set then by this process we get the ordering on $S$ 
+\begin{equation*}
+	s_1 < s_2 < s_3 < \cdots
+\end{equation*}
+
+\indent Clearly this ordering of $(s_1, s_2, s_3, ...)$ is in a bijection with $\N$ and so it is countable. With this in mind we introduce the following: \\
+
+
+{\bf Well-ordering principle}: Every set $X$ can be well-ordered. That is, there exists a ordering relation $\prec$ that well orders $X$. \\
+
+\indent Note that this well-ordering principle is not constructive. Obviously we won't use the total order $<$ on $\R$ since this won't yiesld a well-order (i.e. we will have open subsets without a least element). It's not intuitively obvious what such an order on $\R$ would be. As a result, there are uncountable well-ordered sets. \\
+
+{\bf Proposition}: There exists an uncountable set $X$ that is well-ordered by a relation $\prec$ so that:
+\begin{enumerate}[(i)]
+	\item There is a largest element $\Omega \in X$.
+	\item If $x \in X$ and $x \neq \Omega$ then $x$ has only a countable number of predecessors. That is, the set $\{y \in X ~:~ y < x, x \in X, x \neq \Omega\}$ is countable.
+\end{enumerate}
+
+\indent Recalling our construction of $S = \{s_1, s_2, s_3, ...\}$, we may picture $X$, with the well-order $\prec$, to look something like
+\begin{equation*}
+	X = \{ s_1, s_2, s_3, ..., \Omega\}
+\end{equation*}
+
+\begin{proof} {\em Proof given next class.}
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,295 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{bm} % bold in mathmode \bm
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{dsfont} % for indicator function \mathds 1
+\usepackage{tikz,pgf,pgfplots}
+\usepackage{enumerate} 
+\usepackage[multiple]{footmisc} % for an adjascent footnote
+\usepackage{graphicx,float} % figures
+\usepackage{centernot} % for \centernot\implies (wrapped in \nimplies)
+
+%% set noindent by default and define indent to be the standard indent length
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%% some math macros
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % vector norm
+\newcommand*{\vv}[1]{\vec{\mkern0mu#1}} % \vec with arrow on top
+\renewcommand{\Re}{\mathfrak {Re}}
+\renewcommand{\Im}{\mathfrak {Im}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\X}{\mathbb X}
+\newcommand{\powerset}{\mathcal P}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\gm}{\mathrm{gm~}}
+\newcommand{\am}{\mathrm{am~}}
+\newcommand{\trace}{\mathrm{trace~}}
+\newcommand{\Trace}{\mathrm{Trace~}}
+\newcommand{\rank}{\mathrm{rank~}}
+\newcommand{\Rank}{\mathrm{Rank~}}
+\newcommand{\Span}{\mathrm{Span~}}
+\newcommand{\card}{\mathrm{card}}
+\newcommand{\Card}{\mathrm{Card}}
+\newcommand{\limplies}{~\Longleftarrow ~} % leftwards implies, for some reason requires spacing to mirror the formatting of \implies (and therefore \rimplies below)
+\newcommand{\rimplies}{\implies} % rightwards implies (for consistency)
+\newcommand{\nimplies}{\centernot\implies} % rightwards implies with line struck through
+\newcommand{\indist}{\,{\buildrel \mathcal D \over \sim}\,}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny 
+	def}}}{=}}} % equal sign with def above
+\newcommand{\cl}{\mathrm{cl}} % closure of a set cl(X)
+\newcommand{\Cl}{\mathrm{Cl}} % closure of a set Cl(X)
+\newcommand{\closure}{\mathrm{closure}} % closure of a set closure(X)
+\newcommand{\Closure}{\mathrm{Closure}} % closure of a set Closure(X)
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Real Analysis\\Lecture Notes}
+\author{Metric Spaces}
+\date{October 31 2016 \\ Last update: \today{}}
+\maketitle
+
+\section{Distance in Metric Spaces}
+
+\indent What is a reasonable way of defining distance in some space? Suppose we are given some set $A$ and points $x \notin A$ and $a \in A$. Clearly, under the definition of a metric we have
+\begin{equation*}
+	\rho(x, a) \geq 0
+\end{equation*}
+
+\indent However, what is a good way of defining the distance from $x$ to the entire set $A$? We typically evaluate this as
+\begin{equation*}
+	\rho(x, A) = \inf_{a\in A} \rho(x,a)
+\end{equation*}
+
+Suppose now that $A$ is a circle given by
+\begin{equation*}
+	A = \{(x,y) ~:~ x^2 + y^2 \leq 4\}
+\end{equation*}
+
+Then, under our definition for $\rho(x,A)$ we have
+\begin{equation*}
+	\rho(\text{(origin)}, A) = \rho((0,0), A) = 0
+\end{equation*}
+
+Suppose $A = [1,2) \subset \R$. We find that
+\begin{align*}
+	\rho(3, A) &= 1 \\
+	\rho(2, A) &= 0
+\end{align*}
+
+\indent Note that $\rho(2, A) = 0$ despite the fact that $\rho(2, a \in A) > 0$ since our distance $\rho(2, A)$ is given by the infimum $\inf_{a \in A} \rho(2, a)$. \\
+
+Recall the $\sup$ metric between functions given by
+\begin{equation*}
+	\rho(f,g) = \sup_{x\in D} |f(x) - g(x)|	
+\end{equation*}
+
+and consider the open ``{\em sphere}'' $B_{\sin x, \frac{1}{2}, \sup \text{metric} }$. This sphere defines a cloud around the function $\sin x$ with open boundaries given by $\sin x \pm \frac{1}{2}$. In particular, any function within these bounds will lie within the open sphere $B_{\sin x, \frac{1}{2}, \sup \text{metric} }$. \\
+
+%
+% Example
+%
+{\bf Example:} Let $X$ be a metric space and let $A \subset X$, $A \neq \emptyset$. Let $d$ be a metric on $X$ and define the distance from set $A$ by
+\begin{equation*}
+	d(x, A) = \inf_{a\in A} d(x, a) = f(x)
+\end{equation*}
+
+%
+% Claim
+% 
+{\bf Claim: {\em $\bm f$ is continuous}.} That is, $f:A\to\R^+$ given by $f(x) = d(x,A) = \inf_{a\in A} d(x,a)$ is continuous.
+
+\begin{proof} For all $a \in A$ and $\forall\,x,y \in X$ the distance $f(y)$ is bound above by
+\begin{equation*}
+	f(y) = d(x,A) = \in_{a\in A} d(x,a) \leq d(y, a)
+\end{equation*}
+
+by the definition of the infimum. Using the triangle inequality gives us
+\begin{align*}
+	f(y) &\leq d(y, a) \\
+	&\leq d(y, x) + d(x, a) 
+\end{align*}
+
+Taking the infimum over $A$ of both sides yields
+\begin{align*}
+	\inf_{a \in A} f(y) &= \inf_{a\in A} d(a, A) \\
+	&= \inf_{a\in A} \left[ \inf_{a \in A} d(x, a) \right] \\
+	&= \inf_{a \in A} d(x, a) \\
+	&= f(y) \\
+	\inf_{a \in A} d(y, x) &= d(y, x) \\
+	\inf_{a \in A} d(x, a) &= d(x, A) \\
+	&= f(x) 
+\end{align*}
+
+Therefore, we may express our 
+\begin{equation*}
+	f(y) \leq d(y, x) + d(x, a)
+\end{equation*}
+
+as
+\begin{align*}
+	f(y) &\leq d(y, x) + f(x) \\
+	\implies f(y) - f(x) &\leq d(y, x) \\
+	\iff f(x) - f(y) &\leq d(x, y) \\
+	\implies |f(x) - f(y)| &\leq d(x, y)
+\end{align*}
+
+Hence, $\forall\,\epsilon > 0$, take the distance between points $x$ and $y$ to be bound above by $\delta = \epsilon$ so that $d(x, y) < \delta = \epsilon$. That is,
+\begin{equation*}
+	\forall\,\epsilon > 0,~\exists\,\delta > 0, |x - y| < \delta \implies |f(x) - f(y)| \leq d(x, y) < \delta = \epsilon
+\end{equation*}
+
+which is precisely the definition of continuity, as desired.
+\end{proof}
+
+%
+% Proposition
+%
+{\bf Proposition: {\em A subspace of a metric space is a metric space.}} Consider some metric space $X$ with metric $d$ and some subspace $S\subset X$. Is the topology on $S$ given by $(S, d)$ also a metric space? Yes!
+
+\begin{proof} Recall the basic properties of a metric $d$, for all $x,y,z \in X$:
+\begin{enumerate}
+	\item $d(x, y) \geq 0$ 
+	\item $d(x, y) = d(y, x)$ 
+	\item $d(x, y) = 0 \iff x = y$
+	\item $d(x, z) \leq d(x, y) + d(y, z)$
+\end{enumerate}
+
+\indent Therefore, if we take points $x, y, z \in S \subset X$ we see that all four properties hold under the metric space $(X,d)$ by assumption. So, since $x, y, z$ were arbitrary points from $S$ we have that all four properties of a metric space $(S, d)$ must be satisfied by inheritance from $X$.
+\end{proof}
+
+\indent Although we have just shown that $S \subset X$ inherits its metric from its superspace space $X$, potential ambiguities arise if we consider subtopologies $(E, d)$ and $(S, d)$ such that $E \subset S \subset X$. That is, when considering subspaces $E \subset S \subset X$ a natural question to ask is: How can we relate being {\em close in $X$} with being {\em closed in S}? \\
+
+%
+% Example
+%
+{\bf Example:} Let $X = \R$ and let subspaces $S$ and $E$ be given by
+\begin{align*}
+	S = (0, 1) \\
+	E = \left( 0, \frac{1}{2} \right)
+\end{align*}
+
+so that $E \subset S \subset X$. Clearly, the closure of $E$ in $\mathbb R$ is
+\begin{equation*}
+	\cl(E) = \overline{E} = \left[ 0, \frac{1}{2} \right] 
+\end{equation*}
+
+However, the closure of $E$ in $S$ must be
+\begin{equation*}
+	\cl_S(E) = \overline{E}_S = \left( 0, \frac{1}{2} \right]
+\end{equation*}
+
+%
+% Proposition
+% 
+{\bf Proposition:} Let $X$ be a metric space and $E$, $S$ be subspaces $E \subset S \subset X$. The {\em closure of $E$ relative to $S$} is
+\begin{equation*}
+	\cl_S(E) = \overline{E}_S = \overline{E}\cap S
+\end{equation*}
+
+where $\overline{E}$ is the {\em closure of $E$ relative to the common parent space $X$}. We say that subspace $A \subset S$ is {\em closed} in $S$ if
+\begin{equation*}
+	A = S \cap F
+\end{equation*}
+
+for some closed set $F$ which is closed in $X$. Analogously, subspace $A \subset S$ is {\em open} in $S$ if
+\begin{equation*}
+	A = S \cap O
+\end{equation*}
+
+for some open set $O$ which is open in $X$.
+
+Let $A$ be any subset of $X$, $A \subset X$ and $S$ a subspace of $X$, $S \subset X$. To generate a subset of $S$ we may perform the intersection $A \cap S$. That is, if $A \subset X$ then
+\begin{equation*}
+	A \cap S \subset S
+\end{equation*}
+
+If we want to produce open sets in $S$ then suppose sets $O_i \subset X$ are open in $X$ so that
+\begin{equation*}
+	O_i \cap S \subset S
+\end{equation*}
+
+\indent In the next set of notes we will prove that by considering the intersection $O_i \cap S$ we will see that $S$ inherits the relative topology from that defined in $X$. \\
+
+%
+% Example
+%
+{\bf Example:} Let $X = \R$ and $S = \Q$, so that we are considering the subspace $\Q \subset \R$. What happens if we consider the intersection with the intervals $[e, \pi]$ and $(e, \pi)$? Using our previous proposition we must conclude that these intersections 
+\begin{align*}
+	[e,\pi] &\cap \Q  \quad \text{is {\em closed} in $\Q$, but} \\
+	(e, \pi) &\cap \Q \quad \text{is {\em open} in $\Q$!}
+\end{align*}
+
+since the intersection with an open set is open and the intersection with a closed set is closed. However, since $e \notin \Q$ and $\pi notin \Q$ we find
+\begin{equation*}
+	[e,\pi] \cap \Q = (e, \pi)
+\end{equation*}
+
+\indent Therefore, we must conclude that , unlike the set of reals $\R$, the set of rationals $\Q$ contains sets that are {\em both closed and open}!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

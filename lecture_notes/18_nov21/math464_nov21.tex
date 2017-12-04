@@ -1,0 +1,327 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{bm} % bold in mathmode \bm
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{dsfont} % for indicator function \mathds 1
+\usepackage{tikz,pgf,pgfplots}
+\usepackage{enumerate} 
+\usepackage[multiple]{footmisc} % for an adjascent footnote
+\usepackage{graphicx,float} % figures
+\usepackage{centernot} % for \centernot\implies (wrapped in \nimplies)
+
+%% set noindent by default and define indent to be the standard indent length
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%% some math macros
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % vector norm
+\newcommand*{\vv}[1]{\vec{\mkern0mu#1}} % \vec with arrow on top
+\renewcommand{\Re}{\mathfrak {Re}}
+\renewcommand{\Im}{\mathfrak {Im}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\X}{\mathbb X}
+\newcommand{\powerset}{\mathcal P}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\gm}{\mathrm{gm~}}
+\newcommand{\am}{\mathrm{am~}}
+\newcommand{\trace}{\mathrm{trace~}}
+\newcommand{\Trace}{\mathrm{Trace~}}
+\newcommand{\rank}{\mathrm{rank~}}
+\newcommand{\Rank}{\mathrm{Rank~}}
+\newcommand{\Span}{\mathrm{Span~}}
+\newcommand{\card}{\mathrm{card}}
+\newcommand{\Card}{\mathrm{Card}}
+\newcommand{\limplies}{~\Longleftarrow ~} % leftwards implies, for some reason requires spacing to mirror the formatting of \implies (and therefore \rimplies below)
+\newcommand{\rimplies}{\implies} % rightwards implies (for consistency)
+\newcommand{\nimplies}{\centernot\implies} % rightwards implies with line struck through
+\newcommand{\indist}{\,{\buildrel \mathcal D \over \sim}\,}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny 
+	def}}}{=}}} % equal sign with def above
+\newcommand{\cl}{\mathrm{cl}} % closure of a set cl(X)
+\newcommand{\Cl}{\mathrm{Cl}} % closure of a set Cl(X)
+\newcommand{\closure}{\mathrm{closure}} % closure of a set closure(X)
+\newcommand{\Closure}{\mathrm{Closure}} % closure of a set Closure(X)
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Real Analysis\\Lecture Notes}
+\author{Metric Spaces}
+\date{November 21 2016 \\ Last update: \today{}}
+\maketitle
+
+\section{Compactness}
+
+Recall that last time we introduce the notion of a {\em Lebesgue number}: \\
+
+%
+% Definition
+%
+{\bf Definition: {\em (Lebesgue number)}.} Let $\mathcal U$ be some open covering of $X$, $\mathcal U = \{U_i\}_{i \in I}$. We say that $\epsilon > 0$ is a \underline{Lebesgue number} of $\mathcal U$ if
+\begin{equation*}
+	\forall\,\delta < \epsilon,~\forall\,x\in X,~\exists\,O\in\mathcal U,~S_{x,\delta} \subset O
+\end{equation*}
+
+%
+% Proposition
+%
+{\bf Proposition:} If $X$ is a sequentially compact space and $\mathcal U$ is an open covering of $X$, then $\mathcal U$ has a {\em Lebesgue number}.
+
+\begin{proof} Suppose $X \in \mathcal U$. That is, $X$ is one of the open sets $O \in \{U_i\}_{i\in I} = \mathcal U$. Then we see that $\delta = 2$ satisfies our definition of the Lebesgue number of $X$ since for $\delta = 2$ we have
+\begin{equation*}
+	\forall\,x\in X,~\exists\,O\in\mathcal U,~S_{x,2} \subset O
+\end{equation*}
+
+and $S_{x,2} \subset O = X \in \mathcal U$ with
+\begin{equation*}
+	S_{x,2} = \{y\in X~:~ \rho(x,y) < 2\}
+\end{equation*}
+
+So if $X \in \mathcal U$, $X$ trivially has a Lebesgue number. \\
+
+Assume now that $X \notin \mathcal U$ so that $X$ may only be the nontrivial union of open sets
+\begin{equation*}
+	X \subset \bigcup_i U_i
+\end{equation*}
+
+for each $U_i \in \mathcal U$. Define the function $\phi:X\to\R$ such that
+\begin{equation*}
+	\phi(r) = \sup \{ r ~:~ \exists\,O\in\mathcal U,~ S_{x,r} \subset O \}
+\end{equation*}
+
+\indent That is, $\phi$ finds the largest radius such that the open spheres $S_{x,r}$ are still enclosed within open sets of the covering $\mathcal U$. We claim that
+\begin{equation*}
+	0 < \phi(r) < \infty
+\end{equation*}
+
+Since $X$ is sequentially compact by assumption we have that 
+\begin{align*}
+	\text{$X$ is sequentially compact } &\implies \text{ $X$ is totally bounded} \\
+	&\implies \text{ $X$ is bounded.}
+\end{align*}
+
+Let $M \in \R$, $M < \infty$ be our bounding constant so that $\forall\,x\in X,~-M < x < M$. Thus,
+\begin{equation*}
+	\forall\,y\in X,~\rho(x,y) < M
+\end{equation*}
+
+If $\phi(x) = \infty$ then there is some finite radius $r \in R$, $r < \phi(x)$, with $r > M$ such that
+\begin{equation*}
+	S_{x,r} \subset O \in \mathcal U
+\end{equation*}
+
+but
+\begin{equation*}
+	X \subset S_{x,r} \subset O 
+\end{equation*}
+
+and
+\begin{equation*}
+	O \subset X
+\end{equation*}
+
+by assumption that $X$ is not composed of a single set $O \in \mathcal U$. Thus,
+\begin{equation*}
+	X \subset O \subset X
+\end{equation*}
+
+so
+\begin{equation*}
+	X = O
+\end{equation*}
+
+which is solved by case 1. \\
+
+\indent Thus, in either case $X \in \mathcal U$ or $X \notin \mathcal U$ we have that $X$ has a Lebesgue number $\delta$. That is, if $X$ is a sequentially compact set then a covering $\mathcal U$ of $X$ has a Lebesgue number, as desired. \\
+
+We now consider the general case without setting $\delta = 2$.
+
+%
+% Claim
+%
+{\bf Claim:} With the above definition of $\phi(x) = \sup \{ r ~:~ \exists\,O\in\mathcal U,~ S_{x,r} \subset O \}$ we claim that
+\begin{equation*}
+	\forall\,x,y\in X,~\phi(y) \geq \phi(x) - \rho(x,y)
+\end{equation*}
+
+\begin{proof} If $\phi(x) \leq \rho(x,y)$ then our claim trivially holds since $\phi(x) - \rho(x,y) \leq 0$ and $\phi(y) > 0$ by definition. \\
+
+\indent So, we need only consider the case $\phi(x) > \rho(x,y)$. That is, suppose the distance between any two points in $x,y \in X$ is {\em less than} the maximal radius that the open sphere $S_{x,r}$ may be to still remain fully closed by at least one open sets $O \in \mathcal U$. \\
+
+Consider the difference $r - \rho(x,y)$. Since $\phi(y)$ is the greatest such radius we must have
+\begin{equation*}
+	r - \rho(x,y) \leq \phi(y)
+\end{equation*}
+
+since $\rho(x,y) \geq 0$ by assumption. Taking the sup over all such $r$ yields our result, for $\phi(y) = \sup_{x\in X} r$
+\begin{equation*}
+	\phi(y) \geq \phi(x) - \rho(x,y)
+\end{equation*}
+
+as desired.
+\end{proof}
+
+Now, using this result note that if $\phi(y) \geq \phi(x) - \rho(x,y)$ then
+\begin{align*}
+	\phi(y) &\geq \phi(x) - \rho(x,y) \\
+\iff \phi(x) &\geq \phi(y) - \rho(x,y)
+\end{align*}
+
+by symmetry since $x$ and $y$ are arbitrary points in $X$. Noting that the distance $\rho(x,y)$ is identical in both inequalities we may state that
+\begin{equation*}
+	|\phi(x) - \phi(y)| \leq \rho(x,y)
+\end{equation*}
+
+So, for $\rho(x,y) < \delta = \epsilon$ we get that
+\begin{equation*}
+	\rho(x,y) < \delta \implies |\phi(x) - \phi(y)| < \epsilon
+\end{equation*}
+
+and so $\phi$ is a continuous function. That is, if our inequality is indeed true we get that $\phi$ is a continuous function. However, since $X$ is sequentially compact by assumption, we have that all function $f:X\to\R$ {\em must} be continuous, and so $\phi$ {\em must} be a continuous function. \\
+
+\indent Since $\phi$ must be continuous we know that it must achieve its infimum. So, there exists some $x$ for which $\inf_{x\in X} \phi(x)$ is attained. Let this infimum $\inf_{x\in X} \phi(x)= \epsilon$. We claim that this $\epsilon = \inf_{x\in X}$ is a Lebesgue number for our cover $\mathcal U$. \\
+
+\indent To see this take $\delta$ so that $0 < \delta < \epsilon$. The small value of $\phi$ must be $\epsilon$ by definition of $\epsilon = \inf_{x\in X} \phi(x)$ (since $\phi$ achieves its infimum on $X$). Therefore,
+\begin{equation*}
+	\forall\,x\in X,~\delta < \phi(x)
+\end{equation*}
+
+since $\delta < \epsilon = \inf_{x\in X} \phi(x) <  \phi(x)$. Hence,
+\begin{equation*}
+	\delta < \sup \{r ~:~ S_{x,r} \subset O \in \mathcal U\}
+\end{equation*}
+
+or more completely
+\begin{equation*}
+	\forall\,\delta < \epsilon,~\forall\,x\in X,~\exists\,O\in\mathcal U,~S_{x,\delta} \subset O
+\end{equation*}
+
+which is precisely the definition for $\epsilon$ satisfying the definition of a Lebesgue number for $\mathcal U$. That is, since $X$ is compact there will always be such $\delta < \epsilon = \inf_{x \in X} \phi(x)$ to act as a Lebesgue number since $\phi(x)$ is continuous and thus it must achieve such an infimum. Thus, for a compact set $X$, $\epsilon = \inf_{x \in X} \phi(x)$ works as our general Lebesgue number for our cover $\mathcal U$ of $X$, as desired.
+\end{proof}
+
+{\bf A good final question may be to prove such a result under the restriction that $X$ is a metric space.} \\
+
+%
+% Definition
+%
+{\bf Definition: {\em (Compactification)}.} Let $X$ be some topological space. We say that a \underline{compactification} of $X$ is a compact space $K$ such that $X$ is a {\em dense subset} of $K$. \\
+
+Recall for a moment the definition of a {\em dense subset} $X$ of $K$:
+\begin{equation*}
+	\forall\, O\neq \emptyset, O \text{ open in K},~O \cap X \neq \emptyset
+\end{equation*}
+
+\indent That is, $X$ is a dense subset of $K$ if all open subsets of $K$ form nonempty intersections with $X$. Equivalently, $X$ is dense in $K$ if
+\begin{equation*}
+	\overline{X} = K
+\end{equation*}
+
+\indent For example, the set of rationals $\Q$ is dense in $\R$ since any open set in $\R$ must contain at least one $q \in \Q$. However, $\N$ is not dense in $\R$ since we may construct nonempty open sets that do not contain a single natural number $n \in \N$, say $(2,3) \subset \R$. \\
+
+%
+% Example
+%
+{\bf Example: {\em (Example of a compactification)}.} Consider the real interval $(0, 1)$. We have shown that such an interval is not compact since we were able to construct a covering with no finite subcover. However, we can construct the set $[0,1]$ which will be the {\em two-point compactification} of $(0,1)$ since the closure of $(0,1)$ is exactly $[0,1]$, and so $(0,1)$ is dense in $[0,1]$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

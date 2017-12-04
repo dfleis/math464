@@ -1,0 +1,512 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{bm} % bold in mathmode \bm
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{dsfont} % for indicator function \mathds 1
+\usepackage{tikz,pgf,pgfplots}
+\usepackage{enumerate} 
+\usepackage[multiple]{footmisc} % for an adjascent footnote
+\usepackage{graphicx,float} % figures
+\usepackage{centernot} % for \centernot\implies (wrapped in \nimplies)
+
+%% set noindent by default and define indent to be the standard indent length
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%% some math macros
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % vector norm
+\newcommand*{\vv}[1]{\vec{\mkern0mu#1}} % \vec with arrow on top
+\renewcommand{\Re}{\mathfrak {Re}}
+\renewcommand{\Im}{\mathfrak {Im}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\X}{\mathbb X}
+\newcommand{\powerset}{\mathcal P}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\gm}{\mathrm{gm~}}
+\newcommand{\am}{\mathrm{am~}}
+\newcommand{\trace}{\mathrm{trace~}}
+\newcommand{\Trace}{\mathrm{Trace~}}
+\newcommand{\rank}{\mathrm{rank~}}
+\newcommand{\Rank}{\mathrm{Rank~}}
+\newcommand{\Span}{\mathrm{Span~}}
+\newcommand{\card}{\mathrm{card}}
+\newcommand{\Card}{\mathrm{Card}}
+\newcommand{\limplies}{~\Longleftarrow ~} % leftwards implies, for some reason requires spacing to mirror the formatting of \implies (and therefore \rimplies below)
+\newcommand{\rimplies}{\implies} % rightwards implies (for consistency)
+\newcommand{\nimplies}{\centernot\implies} % rightwards implies with line struck through
+\newcommand{\indist}{\,{\buildrel \mathcal D \over \sim}\,}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny 
+	def}}}{=}}} % equal sign with def above
+\newcommand{\cl}{\mathrm{cl}} % closure of a set cl(X)
+\newcommand{\Cl}{\mathrm{Cl}} % closure of a set Cl(X)
+\newcommand{\closure}{\mathrm{closure}} % closure of a set closure(X)
+\newcommand{\Closure}{\mathrm{Closure}} % closure of a set Closure(X)
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Real Analysis\\Lecture Notes}
+\author{Metric Spaces}
+\date{November 2 2016 \\ Last update: \today{}}
+\maketitle
+
+\section{Relative Topologies}
+
+%
+% Definition
+%
+{\bf Definition: {\em Closed and open sets in a subspace}.} Let $S$ and $X$ be metric spaces such that $S \subset X$ and $A$ some set $A \subset X$. We say that \underline{$A$ is closed in subspace $S$} and \underline{$A$ is open in subspace $S$} if
+\begin{equation*}
+	A = F \cap S \quad \text{for some closed set $F \subset X$}
+\end{equation*}
+
+and
+\begin{equation*}
+	A = O \cap S \quad \text{for some closed set $O \subset X$}
+\end{equation*}
+
+respectively. \\
+
+%
+% Proposition
+%
+{\bf Proposition: {\em A closed set in a subspace is the intersection of the subspace with a closed set in the superspace}.} Let $X$ be some metric space and $E \subset S \subset X$. The closure of $E$ relative to $S$ is the closure of $E$ relative to $X$ intersected with $S$.
+
+\begin{proof} A point of closure $x \in E \subset X$ is a point of $X$ in which its neighbourhood in $X$ intersects with $E$. That is, $x \in E$ is a point of closure of $E$ if a small ball $S_{x,\epsilon}$ centered at $x$ contains a point in $E \subset X$. Similarly, a point of closure $x \in E \subset S$ is a point of $S$ in which its neighbourhood in $S$ intersects with $E$. \\
+
+\indent Clearly the closure of $E$ in $S$, denoted by $\cl_S(E) = \overline{E}_S$, is the closure of $X$ intersected with $S$ since $S \subset X$. That is,
+\begin{align*}
+	\overline{E} &\quad \text{closed in $X$} \\
+	\implies \overline{E} \cap S &\quad \text{closed in $S$}
+\end{align*}
+
+\indent Suppose $A$ is closed in $S$. Then the closure of $A$ in $S$ must be the set $A$ itself, $\overline{A} \cap S = A$, by the definition of a closed set: $\overline{F} = F$. \\
+
+\indent However, since this closure is $\overline{A} \cap S$ where $\overline{A}$ is closed in $X$, and since $A$ was an arbitrary subset $A \subset S \subset X$, we may conclude that every closed set in $S$ is the intersection over $S$ of some closed set in $X$. 
+\end{proof} \hfill
+
+%
+% Proposition
+%
+{\bf Proposition: {\em A closed set in a superspace intersected with a subspace is closed in the subspace}.} This is the the converse proposition: If $F$ is a closed set in $X$ then the intersection $\overline{F} \cap S$ closed. 
+
+\begin{proof} Note that we have the intersection 
+\begin{equation*}
+	S \cap \overline{ \left( S \cap F \right) } \subset S
+\end{equation*}
+
+Now, clearly $S \cap F \subset S$ and so, by our earlier results on set closures,
+\begin{equation*}
+	\overline{ \left( S \cap F \right) } \subset \overline{S}
+\end{equation*}
+
+and by the definition of intersection we must also have $\left( S \cap F \right) \subset F$ and so
+\begin{equation*}
+	\overline{ \left( S \cap F \right) } \subset \overline{F}
+\end{equation*}
+
+Therefore
+\begin{equation*}
+	\overline{ \left( S \cap F \right) } \subset \overline{S} \cap \overline{F}
+\end{equation*}
+
+but
+\begin{align*}
+	S \cap \overline{ \left( S \cap F \right) } &\subset S \cap \left( \overline{S} \cap \overline{F} \right) \\
+	&= S \cap \overline{S} \cap \overline{F} \\
+	&= \left(S \cap \overline{S}\right) \cap \overline{F} \\
+	&= S \cap \overline{F} \\ 
+	&= S \cap F \quad \text{(since $F$ is closed)} 
+\end{align*}
+
+Hence, if $F$ is closed in $X$ and $S \subset X$, then
+\begin{equation*}
+	S \cap \overline{ \left( S \cap F \right) } \subset S \cap F
+\end{equation*}
+
+but since $F \subset S$, we also note that
+\begin{align*}
+	F &\subset S \cap F \\
+	\implies \overline{F} &\subset \overline{S \cap F} \\
+	\implies F &\subset \overline{S \cap F} \quad \text{(since $\overline{F} = F$)} \\
+	\implies S \cap F &\subset S \cap \overline{S \cap F} 
+\end{align*}
+
+and since both
+\begin{align*}
+	S \cap \overline{ \left( S \cap F \right) } &\subset S \cap F \\
+	S \cap F &\subset S \cap \overline{S \cap F} 
+\end{align*}
+
+we may conclude that
+\begin{equation*}
+	S \cap F = S \cap \overline{S \cap F} 
+\end{equation*}
+
+for $\overline{\left(S \cap F\right)}$ the closure of $S \cap F = S \cap \overline{F}$ in $X$. Therefore, then $S \cap F = S \cap \overline{F}$ is indeed closed in $S$ since it satisfies the definition of closure:
+\begin{equation*}
+	\text{Set A is closed in $S \subset X$ if $A = F' \cap S$ for some closed set $F' \subset X$}
+\end{equation*} 
+
+with $A = S \cap F = S \cap \overline{F}$ and $F' = \overline{S \cap F}$ clearly closed in $X$, as desired.
+\end{proof} \hfill
+
+Putting our two propositions together we get the following result: \\
+%
+% Theorem
+%
+{\bf Theorem:} Let $S \subset X$ for spaces $S$ and $X$ and $A$ some subset of $X$. Then,
+\begin{equation*}
+	\text{A set $A$ is closed in $S$ $\iff$ $A = F \cap S$ for $F$ some closed set in $X$}
+\end{equation*} 
+
+\begin{proof} $(\implies)$ Our proof follows immediately from our two propositions above.
+\end{proof} \hfill
+
+%
+% Theorem
+%
+{\bf Theorem: {\em (The analogous Theorem for open sets).}} Let $S \subset X$ for spaces $S$ and $X$ and $A$ some subset of $X$. Then,
+\begin{equation*}
+	\text{A set $A$ is open in $S$ $\iff$ $A = O \cap S$ for $O$ some open set in $X$}
+\end{equation*}
+
+\begin{proof} We consider now open sets in our subspace. Suppose that $A$ is now {\em open} in $S$. Then, using our results on the complements of open sets, the intersection
+\begin{equation*}
+	S \setminus A = S \cap A^c
+\end{equation*}
+
+must be closed in $S$. Therefore, from the above Theorem on closed sets, there exists  a closed set $F$ in $X$ such that
+\begin{align*}
+	S \setminus A &= F \cap S \\
+	\iff S\cap A^c &= F \cap S \\
+	\implies A^c &= F  \\
+	\implies X \setminus A^c &= X \setminus F \\
+	\iff X \cap \left(A^c\right)^c &= X \setminus F \\
+	\iff X \cap A &= X \setminus F \\
+	\iff A &= X \setminus F  \\
+\end{align*}
+
+Since $F$ is closed in $X$ then $X \setminus F = X \cap F^c$ is open in $X$. Hence
+\begin{equation*}
+	S \cap A = \left(X \setminus F\right) \cap S
+\end{equation*}
+
+That is, if $A$ is some open set in $S$ then $A = \left(X \setminus F\right) \cap S$ for some open set $\left(X \setminus F\right)$, for some open set $\left(X \setminus F\right)$ in $X$, or more succinctly:
+\begin{equation*}
+	\text{If $A$ is some open set in $S \implies A = O \cap S$ for $O = \left(X \setminus F\right)$ some open set in $X$.}
+\end{equation*}
+
+which completes the first direction. \\
+
+$(\limplies)$ Conversely, take $J$ some open set $J \subset X$. Then the intersection
+\begin{equation*}
+	 X \setminus J = X \cap J^c
+\end{equation*}
+
+is {\em closed} in $X$. Now, let $A$ be given by
+\begin{equation*}
+	A = \left( X \setminus J \right) \cap S = \left( X \cap J^c \right) \cap S
+\end{equation*}
+
+and from our second proposition regarding closed sets in a superspace we may conclude that $A$ is closed in $S$. However,
+\begin{align*}
+	A &= \left( X \setminus J \right) \cap S \\
+	&= \left( X \cap J^c \right) \cap S \\
+	&= X \cap J^c \cap S \\	
+	&= X \cap S \cap J^c \\
+	&= \left( X \cap S \right) \cap J^c \\
+	&= S \cap J^c \\
+	&= S \setminus J 
+\end{align*}
+
+and so if $A$ is closed in $S$ then the complement $S\setminus A = S \cap A^c$ must be open in $A$, but
+\begin{align*}
+	A &= S \setminus J \\
+	\implies S \setminus A &= S \setminus \left( S \setminus J \right) \\
+	&= S \cap \left( S \setminus J \right)^c \\
+	&= S \cap \left( S \cap J^c \right)^c \\	
+	&= S \cap \left( S^c \cup \left(J^c\right)^c \right) \\	
+	&= S \cap \left( S^c \cup J \right) \\		
+	&= S \cap S^c \cup S \cap J \\
+	&= \emptyset \cup S \cap J \\
+	&= S \cap J \\
+	A &= S \cap J
+\end{align*}
+
+That is, if $A = \left( X \setminus J \right) \cap S$ for some closed set $\left( X \setminus J \right)$ then $A = \left( X \setminus J \right) \cap S$ is closed in $S$ and so $S \setminus A = S \cap J$ is open in $S$. Putting this all together:
+\begin{equation*}
+	\text{If $A = O \cap S$ for some open set $O = J$ in $X \implies A$ is open in $S$.}
+\end{equation*}
+
+completing the converse direction. 
+
+Placing these two conclusions together gives us the result
+\begin{equation*}
+	\text{A set $A$ is open in $S$ $\iff$ $A = O \cap S$ for $O$ some open set in $X$}
+\end{equation*}
+
+which completes our analogous Theorem for relative topologies with respect to open sets, as desired.
+\end{proof} \hfill
+
+Recall that a metric space is separable by definition
+\begin{equation*} 
+	\iff \text{it has a countable dense subset}
+\end{equation*}
+
+However, we have also proven that a metric space is separable
+\begin{equation*}
+	\iff \text{there is a countable {\em base} for the topology}
+\end{equation*}
+
+where a {\em base} is a family of open sets $\mathcal O = \{O_i\}_{i \in I}$ such that every open set in the metric space can be generated by a union of base elements. \\
+
+%
+% Claim
+%
+{\bf Claim: {\em Any subspace of a metric space is separable}.} 
+
+\begin{proof} Let $X$ be a separable metric space. By definition $X$ must have a countable base $\mathcal O = \{O_i\}^\infty_{i = 1}$. Let $S$ be a subspace of $X$ so that $S \subset X$. It is sufficient to show that
+\begin{equation*}
+	\mathcal B = \left\{ \{O_1 \cap S\}, \{O_2 \cap S\}, ... \right\}
+\end{equation*}
+
+forms a base for $S$ since this would be the desired countable base to yield separability. Take $J$ some open set in $S$. From our earlier result we know that $J$ can be written as the intersection of some open set $O$ in $X$ so that
+\begin{equation*}
+	J = O \cap S
+\end{equation*}
+
+However, since the family $\{O_i\}^\infty_{i = 1}$ is a base for $X$ we have that our open set $O \subset X$ must be expressible as a union of base elements
+\begin{equation*}
+	O = \bigcup_{k \in K} O_k, \quad K \subset \mathbb N
+\end{equation*}
+
+Thus
+\begin{align*}
+	J &= O \cap S \\
+	&= \left( \bigcup_{k \in K} O_k \right) \cap S \\
+	&= \bigcup_{k \in K} \left( O_k \cap S \right) 
+\end{align*}
+
+\indent Therefore, since $J$ was an arbitrary open set in $S$, we have that the desired family of sets $\mathcal B$ may be given by the union of all possible $O_i \cap S$. That is, the family
+\begin{align*}
+	\mathcal B = \left\{ \{O_i \cap S\} \right\}^\infty_{i = 1}
+\end{align*}
+
+is countable since $\mathcal O = \{O_i\}^\infty_{i = 1}$ is countable. Since $S$ has a countable base $\mathcal B$ for its topology we may conclude that $S$ is indeed separable, as desired.
+\end{proof} \hfill
+
+%
+% Corollar
+%
+{\bf Corollary:} The set of real numbers $\R$ has as its base $\Q$, and since $\Q$ is countable and dense, $\R$ is a separable metric space. Furthermore, since the set of {\em irrationals}, $\R \setminus \Q$, is a subspace of $\R$ we have that $\R \setminus \Q$ is separable (i.e. it has a countable dense subset). Similarly, since the set of natural numbers $\N$ is a subspace of $\R$ we are giving that $\N$ is separable.\footnote{Separability of the natural numbers $\N$ is obvious from the fact that it's a countable set, and so it clearly has a countable dense subset (dense subset with respect to $\N$).}
+
+%
+% Example
+%
+{\bf Example}: {\em (Example of open and closed sets not surviving the ambient topology)}. Let us revisit the example introduced in the previous set of notes. Consider the metric spaces $X = \R$ and $S = \Q$, and the intervals $(e,\pi)$ and $[e,\pi]$. Clearly the intervals
+\begin{align*}
+	(e,\pi) \\
+	[e,\pi]
+\end{align*}
+
+are open and closed in $\R$ by construction. If we consider the intersections
+\begin{equation*}
+	(e,\pi) \cap \Q
+\end{equation*}
+
+we see that $(e,\pi) \cap \Q$ is {\em open} in $\Q$ since $(e,\pi)$ is open in $\R$ (i.e. a direct application of our earlier Theorem for open sets). On the other hand, the intersection
+\begin{equation*}
+	[e,\pi] \cap \Q
+\end{equation*}
+
+is {\em closed} in $\Q$ by the analogous Theorem for closed sets. However,
+\begin{equation*}
+	(e,\pi) \cap \Q = [e,\pi] \cap \Q
+\end{equation*}
+
+since neither $e$ nor $\pi$ in $[e,\pi]$ are elements of $\Q$. Therefore, $\Q$ contains sets which are {\em both open and closed}! Such sets which are both open and closed are said to be \underline{clopen sets}. \\
+
+\indent We have been working with open and closed sets and their interaction with metric spaces and their subspaces. We found that open/closed sets may not survive as open/closed into the subspace. For this reason we wish to create a notion similar to {\em openness} and {\em closedness} which remains unaffected when considering subspaces of metric spaces. \\
+
+We suggest now that the ``next best thing'' to a closed set will be a {\em compact set}. \\
+
+%
+% Results
+%
+{\bf Result:} Let $X$ be a metric space such that $A \subset S \subset X$.
+
+\begin{enumerate}[{Statement} 1:]
+	\item $A$ is a {\em compact} subset of $X$. That is, if $A$ is covered by the open cover $\mathcal P = \{P_i\}_{i\in I}$, for open sets $P_i \subset X$, then $A$ is covered by a finite number of such $P_i$ to form the finite subcover $\{P_{1}, P_{2}, ..., P_{n} \}$ so that $A \subset \bigcup^{n}_{i = 1} P_{i}$.
+
+	\item $A$ is a {\em compact} subset of $S$. That is, if $A$ is covered by the open cover $\mathcal J = \{J_i\}_{i\in I}$, for open sets $J_i \subset S$, then $A$ is covered by a finite number of such $J_i$ to form the finite subcover $\{J_{1}, J_{2}, ..., J_{n}\}$ so that $A \subset \bigcup^{n}_{i = 1} J_{i}$.
+\end{enumerate}
+
+\begin{enumerate}
+	\item {\em Proof of Statement 1}. 
+
+	\begin{proof} $(2 \implies 1)$ Suppose Statement 2 holds so that $A$ is compact in 	$S$. Then $A$ has the finite subcover of open sets $J_i \subset S$
+	\begin{equation*}
+		A \subset \bigcup^n_{i = 1} J_i \quad \text{$J_i$ open in $S$}
+	\end{equation*}
+	
+	but
+	\begin{align*}
+		A &\subset \bigcup^n_{i = 1} J_i \\
+		\implies A \cap S &\subset \left( \bigcup^n_{i = 1} J_i \right) \cap S \\
+		\iff A \cap S &\subset \bigcup^n_{i = 1} \left( J_i \cap S \right) \\
+		\iff A &\subset \bigcup^n_{i = 1} \left( J_i \cap S \right) \quad \text{(since $A \subset S$)}
+	\end{align*}
+	
+	Since each $\left( J_i \cap S \right) \subset X$ we have that
+	\begin{equation*}
+		\bigcup^n_{i = 1} \left( J_i \cap S \right) \subset X
+	\end{equation*}
+
+	so that the family of open sets
+	\begin{equation*}
+		A \subset \mathcal P = \{P_i\}^n_{i = 1} = \left\{ J_i \cap S \right\}^n_{i = 1}
+	\end{equation*}
+	
+	form a finite open cover for $A$ in $X$. Therefore, $A$ is compact in $X$, as desired.
+\end{proof}
+	
+	\item {\em Proof of Statement 2}.
+
+	\begin{proof} $(1\implies 2)$ Suppose Statement 1 holds. Take $A \subset \bigcup J_i$ for $J_i$ open sets in $S$. Since each $J_i$ are open we have from our earlier Theorems that
+	\begin{equation*}
+		J_i = P_i \cap S \quad \text{for some $P_i$ open set in $X$}
+	\end{equation*}
+	
+	and by assumption of Statement 1 we have that $A$ is compact in $X$ so that
+	\begin{equation*}
+		A \subset \bigcup^{n}_{i = 1} P_{i}
+	\end{equation*}
+	
+	for $P_i$ open sets in $X$. Therefore, to generate a finite subcover of $S$ we may intersect $A$ with $S$ to produce the union
+	\begin{align*}
+		A \cap S &= \left( \bigcup^{n}_{i = 1} P_i \right) \\
+		&= \bigcup^{n}_{i = 1} \left( P_i \cap S \right) 
+	\end{align*}
+	
+	Letting each $J_i = P_i \cap S$ we form the finite subcover $\mathcal J = \{J_i\}^n_{i = 1}$ such that
+	\begin{equation*}
+		A \subset \bigcup^{n}_{i = 1} J_i
+	\end{equation*}
+	
+	for arbitrary compact set $A \subset X$. That is, $A$ is covered by the finite open cover $\{J_i\}^n_{i = 1}$ of open sets $J_i \subset S$, so $A$ is compact in $S$, as desired.
+\end{proof}	
+\end{enumerate}
+
+%
+% Goal
+%
+{\bf Goal}: Our present and upcoming goal will be to {\em characterize compact metric spaces} in greater detail. We will soon make use of a fairly involved proof by contrapositive. Recall that this method of proof uses the logical identity
+\begin{equation*}
+	\left( p \implies q \right) \iff \left( \neg q \implies \neg p \right)
+\end{equation*}
+
+In particular, let
+\begin{align*}
+	p ~&:~ \{O_i\} \text{ cover $X$} \\
+	q ~&:~ \text{ finitely many $\{O_i\}$ cover $X$}
+\end{align*}
+
+\indent We said that a set is compact in some space of all its covers have a finite subcover. In this case we may express this definition as
+\begin{equation*}
+	\text{Compactness} \iff \left( p \implies q \right)
+\end{equation*}
+
+Negating these statements yield 
+\begin{align*}
+	\neg q ~&:~ \text{ finitely many $\{O_i\}$ {\em do not} cover $X$ } \\
+	\neg p ~&:~ \text{ $\{O_i\}$ {\em do not} cover $X$ }
+\end{align*}
+
+Note that if $\{O_i\}$ {\em do not cover} $X$ then $X \nsubseteq \{O_i\}$ which is equivalent to
+\begin{align*}
+	\{O_i\} &\text{ do not cover $X$} \\
+	\iff X &\nsubseteq \{O_i\} \\
+	\implies X^c &\nsupseteq \{O_i\}^c \\
+	\implies \left(X \cap X^c\right) &\nsupseteq \left( X \cap \{O_i\}^c \right) \\
+	\implies \emptyset &\nsupseteq X \setminus \{O_i\} \\
+	\implies X \setminus \{O_i\} &\neq \emptyset
+\end{align*}
+
+Therefore, we can simplify our contrapositive definition of compactness to
+
+\begin{align*}
+	\neg q ~&:~ \text{ $X \setminus \{O_i\} \neq \emptyset$ for finitely many $O_i$ } \\
+	\neg p ~&:~ \text{ $X \setminus \{O_i\} \neq \emptyset$ }
+\end{align*}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

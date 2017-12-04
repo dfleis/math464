@@ -1,0 +1,285 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{bm} % bold in mathmode \bm
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{dsfont} % for indicator function \mathds 1
+\usepackage{tikz,pgf,pgfplots}
+\usepackage{enumerate} 
+\usepackage[multiple]{footmisc} % for an adjascent footnote
+\usepackage{graphicx,float} % figures
+\usepackage{centernot} % for \centernot\implies (wrapped in \nimplies)
+
+%% set noindent by default and define indent to be the standard indent length
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%% some math macros
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % vector norm
+\newcommand*{\vv}[1]{\vec{\mkern0mu#1}} % \vec with arrow on top
+\renewcommand{\Re}{\mathfrak {Re}}
+\renewcommand{\Im}{\mathfrak {Im}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\X}{\mathbb X}
+\newcommand{\powerset}{\mathcal P}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\gm}{\mathrm{gm~}}
+\newcommand{\am}{\mathrm{am~}}
+\newcommand{\trace}{\mathrm{trace~}}
+\newcommand{\Trace}{\mathrm{Trace~}}
+\newcommand{\rank}{\mathrm{rank~}}
+\newcommand{\Rank}{\mathrm{Rank~}}
+\newcommand{\Span}{\mathrm{Span~}}
+\newcommand{\card}{\mathrm{card~}}
+\newcommand{\Card}{\mathrm{Card~}}
+\newcommand{\limplies}{~\Longleftarrow ~} % leftwards implies, for some reason requires spacing to mirror the formatting of \implies (and therefore \rimplies below)
+\newcommand{\rimplies}{\implies} % rightwards implies (for consistency)
+\newcommand{\nimplies}{\centernot\implies} % rightwards implies with line struck through
+\newcommand{\indist}{\,{\buildrel \mathcal D \over \sim}\,}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny 
+	def}}}{=}}} % equal sign with def above
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Real Analysis\\Lecture Notes}
+\author{The Real Number System}
+\date{October 17 2016 \\ Last update: \today{}}
+\maketitle
+
+\section{Borel Sets}
+
+\indent Last class we briefly introduced the notion of countable unions of closed sets $F_\sigma$ and countable intersections of open sets $G_\delta$. We had shown that
+\begin{align*}
+	\R \setminus F_\sigma &= G_\delta \\
+	\R \setminus G_\delta &= F_\sigma
+\end{align*}
+
+\indent We also found that the rationals $\Q$ were a $F_\sigma$ since we can consider the closed sets (in $\R$) $\{q\}$ for $q \in \Q$ and construct the countable union
+\begin{equation*}
+	\Q = \bigcup_{q\in\Q} \{q\}
+\end{equation*}
+
+and that the irrationals $\R\setminus\Q$ were a $G_\delta$ since
+\begin{align*}
+	\R\setminus \Q &= \R \setminus (F_\sigma) \\
+	&= G_\delta
+\end{align*}
+
+\indent Furthermore, we had stated without proof that, unlike $\R$, the set of rationals $\Q$ is {\em not} a $G_\delta$ and that $R\setminus\Q$ is {\em not} a $F_\sigma$. Another important result was that every open interval $(a, b)$ is a $F_\sigma$ since
+\begin{equation*}
+	\bigcup^\infty_{n = 1} \left[ a + \frac{1}{n}, b - \frac{1}{n} \right]
+\end{equation*}
+
+in which the union considers expanding closed intervals $\left[a + \frac{1}{n}, b - \frac{1}{n}\right]$ that are inversely proportional to $n$. Since every open set $O$ can be expressed as a countable union of disjoint open intervals $I_x = (a_x, b_x)$\footnote{Countably comes from the density of $\Q$ in $\R$ since we can form a bijection on a rational $q \in (a_x, b_x)$, and since our intervals are disjoint this rational $q$ uniquely identifies $(a_x, b_x)$.} Therefore, since we have shown that every open {\em interval} is a $F_\sigma$, then we may conclude that every open {\em set} is also a $F_\sigma$ since it is a countable union of $F_\sigma$'s. That is, every open set in $\R$ is a $F_\sigma$. \\
+
+\indent By considering the complement of this result we obtain the symmetric result that every close set in $\R$ is a $G_\delta$, since the complement of an open set is a closed set. \\
+
+\indent We also introduced the notion of the Borel Hierarchy. If we consider the union of countably many closed sets $F$ we know that we form a $F_\sigma$. However, we consider the union of countably many such $F_\sigma$ sets we should see that it remains a countable union. Hence
+\begin{equation*}
+	(F_\sigma)_\sigma = F_{\sigma\sigma} = F_\sigma
+\end{equation*}
+
+Similarly, we find that
+\begin{equation*}
+	(G_\delta)_\delta
+\end{equation*}
+
+\indent It's less obvious what the countable intersection of $F_\sigma$ sets or the countable union of $G_\delta$ sets would be. That is, we wish to think about collections of the form
+\begin{equation*}
+	(F_\sigma)_\delta = F_{\sigma\delta}
+\end{equation*}
+
+We can iterate on this process to form the collections
+\begin{align*}
+	((F_\sigma)_\delta)_\sigma = F_{\sigma\delta\sigma} \\
+	((G_\delta)_\sigma)_\delta = G_{\delta\sigma\delta}
+\end{align*}
+
+and so on. This process provides us with an easy way to construct larger and larger families from subsets of $\R$. Finally, we also stated the following result: Let $f:\R\to\R$. The set of all points $\R$ where $f$ is continuous is a $G_\delta$ (i.e. $\R\setminus\Q$). That is, we can find functions $f:\R\to\R$ that are continuous at every irrational point and discontinuous at every rational point, but not vice-versa. We cannot construct a function that is continuous on $\Q$ and discontinuous on $\R\setminus\Q$. \\
+
+Now, we call \underline{borel sets} of $\R$ to be the result of all possible iterations
+\begin{align*}
+	F_{\sigma\delta\sigma\delta...} \\
+	G_{\delta\sigma\delta\sigma...}
+\end{align*}
+
+\indent It turns out that the probability of choosing a Borel subset of $\R$ (assuming uniform selection across all possible subsets of $\R$) is 0. However, it's difficult to actually pick anything that's not a Borel subset. That is, the cardinality of Borel subsets is less than the cardinality of all possible subsets of $\R$. \\
+
+{\bf Example: pg. 53, \# 53}. Suppose $f$ is a real-valued function defined for all $\R$. Prove that the set of all points at which $f$ is continuous is a $G_\delta$ (intersection of open sets) set. \\
+
+\begin{proof} Let $f$ be continuous at $x$ so that $x\mapsto f(x)$. By the definition of continuity
+\begin{equation*}
+	\forall\,\epsilon > 0,~\exists\,\delta > 0,~f(x - \delta, x + \delta) \subset (f(x) - \epsilon, f(x) + \epsilon)
+\end{equation*}
+
+Therefore, since $f$ is continuous we have that $f^{-1}(O)$ is open for all open sets $O \subset \R$. That is,
+\begin{equation*}
+	f^{-1}(f(x) - \epsilon, f(x) + \epsilon)
+\end{equation*}
+
+is open. In particular, for all $n$, the inverse image
+\begin{equation*}
+	f^{-1} \left(f(x) - \frac{1}{n}, f(x) + \frac{1}{n} \right)
+\end{equation*}
+
+must be open since $f$ is continuous. Thus, knowing that $f$ is continuous at $x$ becomes the question: Are all inverse images of the form
+\begin{equation*}
+	f^{-1} \left(f(x) - \frac{1}{n}, f(x) + \frac{1}{n} \right)
+\end{equation*}
+
+open in $\R$? Now, let $f$ be continuous at $x \in \R$ and let $n \in \N$. Consider the open interval $\left( f(x) - \frac{1}{n}, f(x) + \frac{1}{n} \right)$ centered at $f(x)$ with radius $\frac{1}{n}$. Using continuity we have that
+\begin{equation*}
+	\exists\,\delta_{x,n} > 0,~ f(x - \delta_{x,n}, x + \delta_{x,n}) \subset \left(f(x) - \frac{1}{n}, f(x) + \frac{1}{n} \right)
+\end{equation*}
+
+Let $U_{n,x} = (x - \delta_{x,n}, x + \delta_{x,n})$ and let
+\begin{equation*}
+	U_n = \bigcup_{\text{all $x$ where $f$ is continuous at $x$}} U_{n,x}
+\end{equation*}
+
+\indent Since each $U_{n,x}$ is open we have that $U_n$ must be open since an arbitrary union of open sets is open. Now, each $x$ is $f$ is continuous must lie in all $U_n$ for all $n$. That is, the points where $f$ is continuous lies in
+\begin{equation*}
+	\bigcap_{n} U_n
+\end{equation*}
+
+which is precisely a countable intersection of open sets, and so the set of points where $x$ is continuous is a $G_\delta$. \\
+
+Conversely, if $x \in \bigcap_n U_n$ then the interval
+\begin{equation*}
+	f^{-1} \left( f(x) - \frac{1}{n}, f(x) + \frac{1}{n} \right)
+\end{equation*}
+
+is open for all $x$ and all $n$, and since we have proven that continuity $\iff$ $f^{-1}(O)$ is open for all open sets $O$ we may conclude that $f$ is continuous at $x$, as desired.
+\end{proof}
+
+\indent As an application of this result (the set of points where $f$ is continuous is a $G_\delta$) we will prove the Baire Category Theorem (next week), which will give us that $\Q$ is not a $G_\delta$. That is, there is no function which is continuous on $Q$ but discontinuous on $\R\setminus\Q$. \\
+
+{\bf Example: pg. 53, \# 54}. Suppose we have a sequence of functions $(f_n)^\infty_{n = 1}$ with each $f_n:\R\to\R$ continuous. Prove that the set of points $C \subset \R$ where all $f_n$ converge is a $F_{\sigma\delta}$ (a countable intersection of countable unions of closed sets), i.e. show that $C \subset \R$ can be expressed as
+\begin{equation*}
+	C = \bigcap^\infty_{n} \bigcup^\infty_{m_n} F_{m_n}
+\end{equation*}
+
+\begin{proof} For example, if we had the function
+\begin{equation*}
+	f_n(x) = n
+\end{equation*}
+
+then the set of points for which $(f_n(x))$ converge is $C = \emptyset$. If we tried
+\begin{equation*}
+	f_n(x) = \frac{1}{n}
+\end{equation*}
+
+then $f_n(x)\to 0$ for all $x$ and so $C = \R$. Trying
+\begin{equation*}
+	f_n(x) = 
+	\begin{cases}
+		0 & x \in (-\infty, 0] \\
+		nx & x \in (0, \infty]
+	\end{cases}
+\end{equation*}
+
+so that we only have convergence on the negative reals $x \in (-\infty, 0] = C$. With $f_n(x) = \frac{\sin x}{n}$ we find convergence on $\R$ and $f_n(x) = n\sin x$ we only find convergence at every $2k\pi$. \\
+
+\indent So, we have $\R$ and a subset $C \subset \R$ and we want to show that this $C$ must always be a $F_{\sigma\delta}$. What does it {\em mean} to say that $f$ belongs to $C$? We require that
+\begin{equation*}
+	(f_n(x)) \to f(x)
+\end{equation*}
+
+where convergence means (using the Cauchy criteria)
+\begin{equation*}
+	\forall\,\epsilon,~\exists\,N\geq 1,~\forall\,n,k \geq N,~ |f_k(x) - f_n(x)| \leq \frac{1}{m} < \epsilon
+\end{equation*}
+
+\indent Furthermore, if $(f_n)$ is continuous then the difference $f_k - f_n$ is continuous and the absolute value $|f_k - f_n|$ is continuous. Now, we ask the question: What is the inverse image of the {\bf \em closed} set $\left[-\frac{1}{m}, \frac{1}{m}\right]$? Again, from our earlier result we know that continuity $\iff$ $f$ maps closed sets to closed sets and open sets to open sets. Thus,
+\begin{equation*}
+	|f_k - f_n|\left( \left[-\frac{1}{m}, \frac{1}{m}\right] \right)
+\end{equation*}
+
+Let $F_{n,m}$ be the set
+\begin{equation*}
+	F_{n,m} = \left\{ x \in \R ~:~ |f_k(x) - f_n(x)| \leq \frac{1}{m},~ \forall\,k \geq n \right\}
+\end{equation*}
+
+\indent That is, $F_{n,m}$ is the preimage $|f_k - f_n|^{-1}$ of $\left[ -\frac{1}{m}, \frac{1}{m} \right]$, which we have said to be a closed set by the continuity of $f$ for fixed $m$. Thus, $F_{n,m}$ is closed for each $n, m$. \\
+
+\indent Now, the statement $x \in C$ means that for all $m$ there is some $n$ sufficiently large such that $|f_k - f_n(x)| \leq \frac{1}{m}$ (for all $k \geq n$). Therefore, by the construction of these closed sets we find
+\begin{equation*}
+	x \in F_{n,m} \implies x \in \bigcup_{\text{all $n$ sufficiently large}} F_{n,m}
+\end{equation*}
+
+and
+\begin{equation*}
+	\implies x \in \bigcap_{\text{all $m$}} \left[ \bigcup_{\text{all $n$ sufficiently large}} F_{n,m} \right]
+\end{equation*}
+
+which is precisely the definition of a $F_{\sigma\delta}$. Conversely, suppose $x \in \bigcap_m \bigcup_n F_{n,m}$ take $\epsilon > 0$ and find $M$ such that $\frac{1}{M} < \epsilon$. Then
+\begin{align*}
+	\implies x &\in F_{n,M} \text{ for some } n \\
+	\implies |f_k(x) - f_n(x)| &< \frac{1}{M}, \quad \forall\,k\geq n
+\end{align*}
+
+which is the definition of convergence at $x$, as desired.
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

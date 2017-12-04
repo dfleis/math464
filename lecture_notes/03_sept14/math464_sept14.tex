@@ -1,0 +1,250 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{bm} % bold in mathmode \bm
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{dsfont} % for indicator function \mathds 1
+\usepackage{tikz,pgf,pgfplots}
+\usepackage{enumerate} 
+\usepackage[multiple]{footmisc} % for an adjascent footnote
+\usepackage{graphicx,float} % figures
+\usepackage{centernot} % for \centernot\implies (wrapped in \nimplies)
+
+%% set noindent by default and define indent to be the standard indent length
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%% some math macros
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % vector norm
+\newcommand*{\vv}[1]{\vec{\mkern0mu#1}} % \vec with arrow on top
+\renewcommand{\Re}{\mathfrak {Re}}
+\renewcommand{\Im}{\mathfrak {Im}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\X}{\mathbb X}
+\newcommand{\powerset}{\mathcal P}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\gm}{\mathrm{gm~}}
+\newcommand{\am}{\mathrm{am~}}
+\newcommand{\trace}{\mathrm{trace~}}
+\newcommand{\Trace}{\mathrm{Trace~}}
+\newcommand{\rank}{\mathrm{rank~}}
+\newcommand{\Rank}{\mathrm{Rank~}}
+\newcommand{\Span}{\mathrm{Span~}}
+\newcommand{\card}{\mathrm{card~}}
+\newcommand{\Card}{\mathrm{Card~}}
+\newcommand{\limplies}{~\Longleftarrow ~} % leftwards implies, for some reason requires spacing to mirror the formatting of \implies (and therefore \rimplies below)
+\newcommand{\rimplies}{\implies} % rightwards implies (for consistency)
+\newcommand{\nimplies}{\centernot\implies} % rightwards implies with line struck through
+\newcommand{\indist}{\,{\buildrel \mathcal D \over \sim}\,}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny 
+	def}}}{=}}} % equal sign with def above
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Real Analysis\\Lecture Notes}
+\author{Set Theory \& The Real Number System}
+\date{September 14 2016 \\ Last update: \today{}}
+\maketitle
+
+\section{Well-Ordering Principle}
+
+\indent Recall the well-ordering principle we introduced last class: Every set $X$ can be well-ordered. That is, there exists a ordering relation $\prec$ that well orders $X$. \\
+
+{\bf Proposition}: There exists an uncountable set $X$ that is well-ordered by a relation $\prec$ so that:
+\begin{enumerate}[(i)]
+	\item There is a largest element $\Omega \in X$.
+	\item If $x \in X$ and $x \neq \Omega$ then $x$ has only a countable number of predecessors. That is, the set $\{y \in X ~:~ y < x, x \in X, x \neq \Omega\}$ is countable.
+\end{enumerate}
+
+\begin{proof} Take any uncountable set $Y$. By the well-ordering principle, there exists some well-ordering, say $<$, on $Y$. If $Y$ has a largest/last element then call this element $\alpha$. If $Y$ does not have a last element, then take some $\alpha \notin Y$ and form the union $Y \cup \{\alpha\}$ such that $y < \alpha$ for all $y \in Y$.
+
+\indent We should first confirm that this set new set $Y \cup \{\alpha\}$ well-ordered. To verify this we must verify that any nonempty subset has a least element. To this end, take an arbitrary nonempty subset $S \subseteq Y$. We now consider two cases for possible subsets $S$: \\
+
+{\em Case 1}: $S = \{\alpha\}$. Clearly this has a least element.\\
+
+{\em Case 2}: $S \neq \{\alpha\}$ ($S$ contains at least one element that is not $\alpha$). Take the intersection $S \cap Y$. Since $S \neq \emptyset$ and $S \subseteq Y$ we have that $S \cap Y$ cannot be empty. Additionally, it is clear that $S \cap Y \subseteq Y$ by the definition of intersection. By our initial assumption that $Y$ is well-ordered we find that $S \cap Y$ is well-ordered since a subset of a well-ordered set inherits its well-order.\footnote{This was established in the first lecture.} Hence, $S \cap Y$ has a least element. Label this least element $\beta$. If we take $S$ to be the entire set $Y$, we see that some $\beta$ is also the least element of $S$. Thus, $Y \cup \{\alpha\}$ is indeed well-ordered.
+
+\indent Basically, we've shown that this process of appending some last element $\alpha$ to our original set $Y$ doesn't damage its well-ordering. \\
+
+\indent Moving on, we note that $\alpha$ has an uncountable number of predecessors since $Y$ has an uncountable number of elements. That is, we have essentially placed a largest $\alpha$ ahead of an uncountable number of elements. \\
+
+\indent Let $F$ be the set of {\em all} the elements of $Y \cup \{\alpha\}$ which have an uncountable number of predecessors. Clearly $F$ is not empty since we have just established that $\alpha \in F$. However, note that $Y \cup \{\alpha\}$ is well-ordered and so every nonempty subset has a least element. Therefore, our set $F = \{ \text{elements with an uncountable number of predecessors} \}$ must have a least element since $F$ is itself a subset of $Y \cup \{\alpha\}$. \\
+
+\indent Let $\Omega$ be this least element of $F$. So, $\Omega$ has an uncountable number of predecessors. In fact, $\Omega$ is the ``smallest'' element with an uncountable number of predecessors in our uncountable set $Y \cup \{\alpha\}$. \\
+
+Finally, construct the set $X$ such that
+\begin{equation*}
+	X = \big\{ y \in Y ~:~ y \leq \Omega \big\}
+\end{equation*}
+
+\indent Clearly $\Omega \in X$, satisfying our first goal in the proof. Furthermore, if we consider the subset, for $x \in X$ and $x \neq \Omega$,
+\begin{equation*}
+	\{ y \in X ~:~ y < x \}
+\end{equation*}
+
+then since $\Omega$ was the smallest element with an uncountable number of predecessors, the all elements of $\{ y \in X ~:~ y < x \}$ must have only a countable number of predecessors, and so the set itself must be countable,\footnote{I'm a little shaky on this final point: Is it immediately obvious that if all $x$ in this set have a countable number of predecessors then the set must be countable?} which satisfies our second goal, as desired.
+\end{proof} \hfill\\
+
+\indent We call the last element $\Omega \in X$ to be the first {\em uncountable ordinal}, and the set $X$ is called the set of ordinals less than or equal to the first uncountable ordinal. The elements $x < \Omega$ are called {\em countable ordinals}. If the set $\{y ~:~ y < x\}$ is finite, then $x$ is called a {\em finite ordinal}. Suppose $\omega$ is the first {\em nonfinite ordinal}. Then the set $\{ x ~:~ x < \omega \}$ is the set of finite ordinals and is equivalent (in the sense of an ordered set), to the set of naturals $\N$.\footnote{i.e. It is countable?} \hfill\\
+
+\section{A Review of Basic Algebra}
+
+\subsection{Groups}
+
+A \underline{group} is some set $G$ with a binary operation $\theta$ defined for elements $g \in G$ such that
+\begin{enumerate}[(1)]
+	\item If $g_1, g_2 \in G$ then $g_1 ~\theta~ g_2 \in G$ ($\theta$-closure).
+	\item $(g_1 ~\theta~ g_2) ~\theta~ g_3) = g_1 ~\theta~ (g_2 ~\theta~ g_3)$ (associativity).
+	\item $\exists\, z$ such that $z$ is unique and $g_1 ~\theta~ z = z ~\theta~ g_1 = g_1$ (identity element).\footnote{``It is easy to prove that such a $z$ must be unique.''} 
+	\item $\forall\, g \in G,~\exists\,h_1$ such that $h_1$ is unique and $g_1 ~\theta~ h_1 = h_1 ~\theta~ g_1 = z$ (inverse element).
+\end{enumerate}
+
+\indent If we stop at criteria (1) and (2) then we form a semigroup. Stopping at criteria (1) through (3) form the definition of a monoid. If our group also satisfies $g_1 ~\theta~ g_2 = g_2 ~\theta~ g_1$ then we call our group an {\em Abelian} group. \\
+
+\subsubsection{Rings}
+
+\indent Let $R$ be an Abelian group and let $r_1, r_2 \in R$ with operation $+$, identity element $0$, and inverse element $-r$. We say that $R$ is a \underline{ring} if it equipped with two binary operators $+$ and $\cdot$ which satisfy the following: $R$ is an Abelian group under addition, the second operation (say, multiplication) satisfies
+\begin{enumerate}[(1)]
+	\item $\forall\,r_1, r_2 \in R, ~r_1 \cdot r_2 \in R$ (closure under multiplication).\footnote{Presumably this is generalized to closure under our second operation.}
+	\item $\exists\,e \in R,~\forall\,r_1 \in R$ such that $r_1 \cdot e = e \cdot r_1 = r_1$ (multiplicative identity).
+	\item For technical reasons we also require associativity under multiplication: $(r_1 \cdot r_2) \cdot r_3 = r_1 \cdot (r_2 \cdot r_3)$.
+\end{enumerate}
+
+\indent That is, $R$ is a monoid under multiplication $\cdot$. Finally, a ring $R$ must also satisfy multiplicative distributivity with respect to addition:
+\begin{align*}
+	r_1 \cdot (r_2 + r_3) = r_1 \cdot r_2 + r_1 \cdot r_3 \quad \text{(left distributivity)} \\
+	(r_1 + r_2) \cdot r_3 = r_1 \cdot r_3 + r_2 \cdot r_3 \quad \text{(right distributivity)}
+\end{align*}
+
+\indent There exists a distinction within rings where we may wish to consider commutative rings (if multiplication commutes: $\forall\,r_1, r_2 \in R, ~r_1 \cdot r_2 = r_2 \cdot r_1)$ and noncommutative rings. \\
+
+{\bf Example}: {(\em Commutative ring)} The set $\Z = \{0, \pm 1, \pm 2, ...\}$. We can verify that this set equipped with the natural addition and multiplication is satisfies all the criteria of a commutative ring. \\
+
+{\bf Example} {\em (Noncommutative ring)} The set of $2\times 2$ matrices over $\Z$ under matrix multiplication. We can verify that the set of $2\times 2$ matrices over $\Z$ is a noncommutative ring with additive identity (Abelian group identity)
+\begin{equation*}
+	z = 
+	\begin{bmatrix}
+		0 & 0 \\
+		0 & 0
+	\end{bmatrix}
+\end{equation*}
+
+and multiplicative identity (monoid identity)
+\begin{equation*}
+	e = 
+	\begin{bmatrix}
+		1 & 0 \\
+		0 & 1
+	\end{bmatrix}
+\end{equation*} \hfill\\
+
+{\bf Example}: {\em (Boolean rings)} A boolean ring is a ring for which the set $R$ satisfies $R = \{r \in \R ~:~ r^2 = r \}$. \\
+
+{\bf Example}: Consider the set of continuous real-valued functions $\mathcal C(x) = \{ f ~:~ X \to \R \}$. Is this set a ring? Recall that if $f, g \in \mathcal C$ then $f + g \in \mathcal C$. Also, we have our additive identity $\overline{0}(x) = 0 \in \mathcal C$ such that $f + \overline{0} = f$. We also have the multiplicative identity $\overline{1}(x) = 1$ such that $f \cdot \overline{1} = f$. We can verify the remaining criteria to conclude that the set of continuous real-valued functions form a ring. \\
+
+We can introduce the following requirement:
+\begin{equation*}
+	\forall\, x \neq 0,~ \exists\, y \in R \text{ such that } x\cdot y = 1
+\end{equation*}
+
+When this criteria is satisfies in a ring we say that this ring is a {\em division ring}. \\
+
+\indent It turns out that you don't need to satisfy commutativity in order to have an identity element: Hamilton quaternions have an identity element under multiplicative but fail commutativity. 
+
+\subsubsection{Fields}
+
+\indent A \underline{field} is a commutative ring with identity element $e$ in which all nonzero elements have a multiplicative inverse: $x \cdot x^{-1} = e$. \\
+
+{\bf Example}: {\em (Examples of fields)} $\Z$? No! We fail to have inverse elements such that $z_1 \cdot z_1 = 1$. $\Q$? Yes! For all $\frac{a}{b} \in \Q$, $a, b \neq 0$, we have an inverse element $\frac{b}{a} \in \Q$ such that $\frac{a}{b} \cdot \frac{b}{a} = 1$. \\
+
+\indent We also have examples of finite fields: $\Z_2 = \{0, 1\}$ the set of integers modulo 2. In fact, we can show (but we won't) that $\Z_2$ is the smallest finite field. We can also show that $\Z_p = \{0, 1, ..., p - 1\}$, $p$ prime, is also a (finite) field. However, $\Z_n$, $n \in \N$, is not a field. For example, if we consider $\Z_6 = \{0, 1, 2, 3, 4, 5\}$ then we may note that we generate the following multiplication table (mod 6):
+
+\begin{center}
+\begin{tabular}{ c | c | c | c | c | c | c }			
+  $(\Z_6, \cdot)$ & 0 & 1 & 2 & 3 & 4 & 5 \\
+  \hline
+  0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+  \hline
+  1 & 0 & 1 & 2 & 3 & 4 & 5 \\
+  \hline
+  2 & 0 & 2 & 4 & 0 & 2 & 4 \\
+  \hline
+  3 & 0 & 3 & 0 & 3 & 0 & 3 \\
+  \hline
+  4 & 0 & 4 & 2 & 0 & 4 & 2 \\
+  \hline
+  5 & 0 & 5 & 4 & 3 & 2 & 1 \\
+\end{tabular}
+\end{center}
+
+\indent Note that we fail to have a multiplicative inverse for $2$ since there is no element in $z \in \Z_6$ such that $2 \cdot z = 1$.
+
+\section{The Real Number System}
+
+\indent Although we will be constructing the real numbers $\R$ from the bottom-up, it turns out that $\R$ is a field. \\
+
+
+\indent Note that we can break up the real line into 3 part: positives, zero, and negatives. From this, note that $\exists\,P \subset \R$ such that
+\begin{enumerate}[(1)]
+	\item $x, y \in P \implies x + y \in P$ (additive closure).
+	\item $x, y \in P \implies xy \in P$ (multiplicative closure).
+	\item $x \in P \implies -x \notin P$.
+	\item If $x \in \R$ then exactly one of the following hold:
+	\begin{enumerate}[(i)]
+		\item $x = 0$.
+		\item $x \in P$.
+		\item $x \notin P$.
+	\end{enumerate}
+\end{enumerate}
+
+\indent If a set $X$ satisfies the above criteria, in addition to the field axioms (not introduced in this lecture), then we say that $X$ is an \underline{ordered field}, and so $\R$ is indeed an ordered field.
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

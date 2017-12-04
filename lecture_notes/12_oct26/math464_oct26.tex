@@ -1,0 +1,381 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{bm} % bold in mathmode \bm
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{dsfont} % for indicator function \mathds 1
+\usepackage{tikz,pgf,pgfplots}
+\usepackage{enumerate} 
+\usepackage[multiple]{footmisc} % for an adjascent footnote
+\usepackage{graphicx,float} % figures
+\usepackage{centernot} % for \centernot\implies (wrapped in \nimplies)
+
+%% set noindent by default and define indent to be the standard indent length
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%% some math macros
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % vector norm
+\newcommand*{\vv}[1]{\vec{\mkern0mu#1}} % \vec with arrow on top
+\renewcommand{\Re}{\mathfrak {Re}}
+\renewcommand{\Im}{\mathfrak {Im}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\X}{\mathbb X}
+\newcommand{\powerset}{\mathcal P}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\gm}{\mathrm{gm~}}
+\newcommand{\am}{\mathrm{am~}}
+\newcommand{\cl}{\mathrm{cl~}}
+\newcommand{\trace}{\mathrm{trace~}}
+\newcommand{\Trace}{\mathrm{Trace~}}
+\newcommand{\rank}{\mathrm{rank~}}
+\newcommand{\Rank}{\mathrm{Rank~}}
+\newcommand{\Span}{\mathrm{Span~}}
+\newcommand{\card}{\mathrm{card~}}
+\newcommand{\Card}{\mathrm{Card~}}
+\newcommand{\limplies}{~\Longleftarrow ~} % leftwards implies, for some reason requires spacing to mirror the formatting of \implies (and therefore \rimplies below)
+\newcommand{\rimplies}{\implies} % rightwards implies (for consistency)
+\newcommand{\nimplies}{\centernot\implies} % rightwards implies with line struck through
+\newcommand{\indist}{\,{\buildrel \mathcal D \over \sim}\,}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny 
+	def}}}{=}}} % equal sign with def above
+\renewcommand{\cl}{\mathrm{cl~}} % closure of a set cl(X)
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Real Analysis\\Lecture Notes}
+\author{Metric Spaces}
+\date{October 26 2016 \\ Last update: \today{}}
+\maketitle
+
+\section{Separable Metric Spaces}
+
+\indent Last time we were talking about the Sorgenfry line, denoted by $\mathbb S$. The Sorgenfry line was defined to be a topology on $\R$ such that intervals of the form $[a,b)$ were said to be open. Furthermore, we had shown the result that $\mathbb S$ has a countable discrete subset.\footnote{Did we show this? I only see that we stated $\mathbb S$ has a countable dense subset $\Q$ such that $[a,b) \cap \Q \neq \emptyset$ so $\mathbb S$ must be separable, and that any compact\footnotemark subset of $\mathbb S$ is countable.}
+\footnotetext{Compactness: All open covers have a finite subcover.} \\
+
+\indent Finally, we ended last class with an incomplete proof that any compact subset of the Sorgenfry line $\mathcal S$ is countable. This was not true for $\R$ since, by the Heine-Borel theorem, the interval $[1,2]$ is compact since it is a closed bounded set. We present in this class a more complete proof of this statement. \\
+
+%
+% Claim
+%
+{\bf Claim: {\em Any compact subset of $\bm{\mathbb S}$ is countable}.} Let $\mathcal F$ be the family of intervals of the form
+\begin{equation*}
+	\mathcal F = \bigcup \left(-\infty, x - \frac{1}{n} \right), [x, \infty), \quad n \in \N
+\end{equation*}
+
+\indent We should be able to see that, over all $n \in \N$, the family $\mathcal F$ covers the real line $\R$. Therefore $\mathcal F$ must cover all subsets of $\R$. Now, suppose we take a \underline{compact} subset $C \subset \R$. For this compact set $C$ take some point $x \in C$. \\
+
+\indent Our compact subset $C \subset \R$ must be covered by $\mathcal F$ since this family covers all subsets of $\R$. However, since $C$ is compact, there must be a finite subcover of $\mathcal F$ that covers $C$. What does this finite subset of $\mathcal F$ look like? \\
+
+\indent Suppose our finite subcover contains the interval $[x,\infty)$. Then, in order to remain finite, $\mathcal F$ may only contain finitely many intervals of the form
+\begin{equation*}
+	\left(-\infty, \frac{1}{n_1} \right), \left(-\infty, \frac{1}{n_2} \right),... , \left(-\infty, \frac{1}{n_k} \right)
+\end{equation*}
+
+\indent An immediate consequence is that there must be some largest $n_p = \max \{n_1, n_2, ..., n_k\}$. For this largest $n_p$ we see that
+\begin{align*}
+	\frac{1}{n_p} &\leq \frac{1}{n_i}, \quad i = 1, 2, ..., k \\
+	\implies x - \frac{1}{n_p} &\geq x - \frac{1}{n_i} \\
+	\implies \left(-\infty, x - \frac{1}{n_i} \right) &\subset \left(-\infty, x - \frac{1}{n_p} \right)
+\end{align*}
+
+Thus, $C$ is covered by the union 
+\begin{equation*}
+	C \subset \left(-\infty, x - \frac{1}{n_p} \right) \cup [x, \infty)
+\end{equation*}
+
+Now, pick some number $a_x$ so that
+\begin{equation*}
+	a_x \in \left( x - \frac{1}{n_p}, x \right)
+\end{equation*}
+
+and consider the interval
+\begin{equation*}
+	(a_x, x] \cap C
+\end{equation*}
+
+Clearly, $x \in C$ by assumption, so $x \in (a_x, x] \cap C$, and since $C$ was covered by
+\begin{equation*}
+	C \subset \left(-\infty, x - \frac{1}{n_p} \right) \cup [x,\infty)
+\end{equation*}
+
+Therefore, since $C \cap \left[x - \frac{1}{n_p}, x\right) = \emptyset$,
+\begin{equation*}
+	(a_x, x] \cap C = \{x\}
+\end{equation*}
+
+Suppose we repeat this process and argument for some different $x' \in C$, $x' \neq x$. Then
+\begin{equation*}
+	(a_{x'}, x'] \cap C = \{x'\}
+\end{equation*}
+
+but $x \leq a_{x'}$,\footnote{Where does this inequality come from? Is this an assumption/criteria for selecting $x'$ or is this a consequence of something else?} hence
+\begin{equation*}
+	(a_x, x] \cap (a_{x'}, x'] = \emptyset
+\end{equation*}
+
+Therefore, the intervals $(a_x, x]$ for $x \in C$ are pairwise disjoint. However, $a_x \in \left(x - \frac{1}{n_p}, x\right) \implies a_x < x$, hence
+\begin{equation*}
+	\exists\,q_x \in \Q, ~ a_x < q_x < x
+\end{equation*}
+
+\indent Can two different $x$'s have the same rational $q_x$? No! Since our intervals $(a_x, x]$ are pairwise disjoint we know that each $q_x$ must uniquely identify a single interval. Since the rationals $\Q$ are countable we may conclude that there are only countably many intervals of the form $(a_x, x]$. \\
+
+\indent However, every $x$ generates a unique interval $(a_x, x]$! Therefore, there are only countably many points $x \in C$. That is, our set $C$, a compact subset of $\R$ is countable, and since $C$ was arbitrary we may conclude that any compact subset of $\mathbb S$ is indeed countable, as desired. 
+
+\section{Topological Bases}
+
+%
+% Definition: Base for a topology
+%
+{\bf Definition: {\em (Base for a topology)}} We say that a \underline{base} for a topology $(X, \rho)$ is a family of open sets $B$ such that every open set is the union of open sets in $B$. That is, for any open set $O \subset X$, a base $B$ composed of open sets $B_i$, $B = \{B_i\}_{i\in I}$, satisfies 
+\begin{equation*}
+	O = \bigcup_{i \in I} B_i
+\end{equation*}
+
+%
+% Example
+%
+{\bf Example:} Consider $B$ a base for the topology on the Sorgenfry line $\mathbb S$. Take point $x \in \R$. Then set $[x, x + 1)$ is open in $\mathbb S$ is open by definition. Therefore, under our base $B$ we have
+\begin{equation*}
+	\exists\, B_x \in B \text{ such that } x \in B_x \subset [x, x + 1)
+\end{equation*}
+
+\indent Take $y \neq x$. Without loss of generality let $x < y$. From $[y, y + 1)$ we get an open set $B_y$ such that
+\begin{equation*}
+	y \in B_y \subset [y, y + 1)
+\end{equation*}
+
+\indent  Since $x < y$ we know that $x \notin B_y \subset [y, y + 1)$. So, $x \in B_x, y \in B_y$ and since $x \neq y$ we have $B_x \neq B_y$. This gives us that a mapping from $\R \to B$ is one-to-one. Therefore, the image of $\R$ must have cardinality greater than to $\R$ itself. However, we know that $\R$ is uncountable. Hence,
+\begin{equation*}
+	\card B \geq \card \R
+\end{equation*}
+
+\indent Therefore, $B$ must be uncountable. However, we found last time that if $X$ is a metric space then the following are equivalent:
+\begin{enumerate}
+	\item $X$ is separable.
+	\item $X$ has a countable base.
+\end{enumerate}
+
+but for the Sorgenfry $\mathbb S$ we have that
+\begin{enumerate}
+	\item $\mathbb S$ is separable.
+	\item Any base for $\mathbb S$ is uncountable.
+\end{enumerate}
+
+\indent Therefore, we must conclude that $\mathbb S$ is not {\em metrizable}. That is, there is no metric on $\R$ for which the open sets generated by the metric are exactly the open sets in the Sorgenfry line. \\
+
+%
+% Definition: Equivalent metric spaces
+%
+{\bf Definition: {\em (Equivalent metric spaces)}} Let $X$ be some space with metrics $\rho$ and $\rho'$. We say that metrics $\rho$ and $\rho'$ are \underline{equivalent} if they both give rise to the same open sets. \\
+
+{\bf [BOOK DEFINITION OF EQUIVALENT METRIC SPACES]} \\
+
+
+%
+% Example
+%
+{\bf Example:} Consider $X = \R$ and 
+\begin{align*}
+	\rho(x,y) &= |y - x| \\
+	\rho(x,y) &= \frac{1}{2}|y - x|
+\end{align*}
+
+Clearly any open set defined by the metric spaces $(X, \rho)$ can also be found in $(X, \rho')$. \\
+
+%
+% Definition: Bounded metric spaces
+%
+{\bf Definition: {\em (Bounded metrics)}} A metric $\rho$ is said to be \underline{bounded} in space $X$ if, for $M \in \R$ finite,
+\begin{equation*}
+	\forall\,x,y\in X,~\rho(x,y) \leq M
+\end{equation*}
+
+
+An immediate example is given by the discrete metric
+\begin{equation*}
+	\rho_d(x,y) = 
+	\begin{cases}
+		1 & \text{if } x \neq y \\
+		0 & \text{if } x = y
+	\end{cases}
+\end{equation*}
+
+then, for all $x,y \in X$ we find $\rho_d(x,y) \leq 1$. \\
+
+%
+% Proposition: Ever metric is equivalent to some bounded metric
+%
+{\bf Proposition: {\em Every metric is equivalent to some bounded metric}}. In particular, if $(X, \rho)$ is some metric space then $\rho$ will be equivalent to 
+\begin{equation*}
+	\frac{\rho(x,y)}{1 + \rho(x,y)} = \rho'(x,y)
+\end{equation*}
+
+which will be shown to be bound by $\rho'(x,y) \leq 1$ and give rise to the same open sets generated by $\rho$.
+
+\begin{proof} \hfill\\
+\begin{enumerate}
+	\item Is $\rho'$ bounded? Clearly $\rho' \geq 0$ by definition, and as $\rho \to \infty$ we see that
+	\begin{equation*}
+		\rho' = \frac{\rho}{1 + \rho} \to 1 \implies \rho' \in [0, 1)
+	\end{equation*}
+	
+	Hence, $\rho'(x, y) \leq 1$ for all $x,y \in X$.
+	
+	\item Given that $\rho$ is a metric, is $\rho'$ also a metric?
+	\begin{enumerate}
+		\item Clearly $\rho'(x,y) \geq 0$.
+		
+		\item If $\rho' = \frac{\rho}{1 + \rho} = 0$ then $\rho = 0 \iff x = y$. Thus,
+		$\rho' = 0 \iff x = y$.
+		
+		\item $\rho'(x,y) = \rho'(y,x)$ since $\rho(x,y) = \rho(y, x)$. \\
+
+		\item Does the triangle inequality hold? Working backwards we wish to prove that
+		\begin{equation*}
+			\rho'(x,z) \leq \rho'(x,y) + \rho'(y,z) 
+		\end{equation*}
+		
+		but $\rho' = \frac{\rho}{1 + \rho}$, so
+		\begin{align*}
+			\frac{\rho(x,z)}{1 + \rho(x,z)} &\leq \frac{\rho(x,y)}{1 + \rho(x,y)} + \frac{\rho(y,z)}{1 + \rho(y,z)} \\
+			\frac{\rho(x,z)}{1 + \rho(x,z)} &\leq \frac{ \rho(x,y) + \rho(x,y)\rho(y,z) + \rho(y,z) + \rho(y,z)\rho(x,y) }{ (1 + \rho(x,y))(1 + \rho(y,z)) } \\
+			&\vdots
+		\end{align*}
+		
+		Continuous this tedious algebra we find that the triangle inequality is indeed satisfied.
+	\end{enumerate}
+	
+	\item Are the metrics $\rho$ and $\rho' = \frac{\rho}{1 + \rho}$ equivalent? Recall that open sets under a metric $\rho$ are unions of spheres of the form
+	\begin{equation*}
+		B_{x,\epsilon,\rho} = \{y\in X ~:~ \rho(x,y) < \epsilon\}
+	\end{equation*}
+	
+	\indent Therefore, we will have equivalence between $\rho$ and $\rho'$ if the spheres generated by $\rho$ are also open in the topology generated by $\rho'$, and if the spheres generated by $\rho'$ are open in the topology of $\rho$. \\
+	
+	Before moving on to prove this result we must quickly prove the following lemma:
+	
+	%
+	% Lemma
+	%
+	{\bf Lemma:}
+	\begin{enumerate}
+		\item $B_{x,r,\rho} \subseteq B_{x,r,\rho'}$ ($B$ centered at $x$ with radius $r$ under $\rho$).
+		
+		\begin{proof} Let $y \in B_{x,r,\rho}$. Then
+		\begin{align*}
+			\rho(x,y) &< r \\
+			\implies \frac{\rho(x,y)}{\rho(x,y) + 1} &< r \quad \text{(since $1 \leq 1 + \rho(x,y)$)} \\
+			\iff& \rho'(x,y) < r \\
+			\implies y &\in B_{x,r,\rho'} \\
+			\implies B_{x,r,\rho} &\subseteq B_{x,r,\rho'}
+		\end{align*}
+		\end{proof}
+		
+		\item $B_{x,\frac{r}{r + 1},\rho'} \subseteq B_{x,r,\rho}$.
+		
+		\begin{proof} Take $z \in B_{x, \frac{r}{r + 1},\rho'}$. Then
+		\begin{align*}
+			\rho'(x,z) &< \frac{r}{r + 1} \\
+			\implies \frac{\rho(x,z)}{\rho(x,z) + 1} &< \frac{r}{r + 1} \\
+			\implies \rho(x,z) (r + 1) &< r (\rho(x,z) + 1) \\
+			\implies \rho(x,z) r + \rho(x,z) &< r\rho(x,z) + r \\
+			\implies \rho(x,z) &< r \\
+			\implies z &\in B_{x,r,\rho} \\
+			\implies B_{x,\frac{r}{r + 1},\rho'} &\subseteq B_{x,r,\rho}
+		\end{align*}
+		\end{proof}
+	\end{enumerate}
+	
+	\indent Now, back to our proposition at hand. Are the open sets under $\rho$ open under $\rho'$ and vice-versa? In particular, is $B_{x,r,\rho'}$ open in the $\rho$-topology? Take some point $t \in B_{x,r,\rho'}$. Since $B_{x,r,\rho'}$ is open we can find a smaller sphere lying within it:
+	\begin{equation*}
+		\exists\,d > 0 \text{ such that } B_{t,d,\rho'} \subset B_{x,r,\rho'}
+	\end{equation*}
+	
+	and using our first lemma:
+	\begin{equation*}
+		B_{t,d,\rho} \subset B_{t,d,\rho'}
+	\end{equation*}
+	
+	\indent Therefore, every point $t \in B_{x,r,\rho'}$ lies within some open set in the $\rho$ metric given by $B_{t,d,\rho}$. That is, every point lies within some open subset $B_{t,d,\rho}$ of $B_{x,r,\rho'}$. \\
+	
+	\indent Therefore, taking the union of all $t \in B_{x,r,\rho'}$ we find that the open set $B_{x,r,\rho'}$ is a union of open sets of the form $B_{t,d,\rho}$, which are open in the $\rho$-topology. \\
+	
+	\indent By the same argument we may find that $B_{x,r,\rho}$ will be open in the $\rho'$-topology. Hence, every metric $\rho$ is equivalent to a bounded metric $\rho' = \frac{\rho}{1 + \rho}$.
+\end{enumerate}
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

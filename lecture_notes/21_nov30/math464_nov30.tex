@@ -1,0 +1,517 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{bm} % bold in mathmode \bm
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{dsfont} % for indicator function \mathds 1
+\usepackage{tikz,pgf,pgfplots}
+\usepackage{enumerate} 
+\usepackage[multiple]{footmisc} % for an adjascent footnote
+\usepackage{graphicx,float} % figures
+\usepackage{centernot} % for \centernot\implies (wrapped in \nimplies)
+
+%% set noindent by default and define indent to be the standard indent length
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%% some math macros
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % vector norm
+\newcommand*{\vv}[1]{\vec{\mkern0mu#1}} % \vec with arrow on top
+\renewcommand{\Re}{\mathfrak {Re}}
+\renewcommand{\Im}{\mathfrak {Im}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\X}{\mathbb X}
+\newcommand{\powerset}{\mathcal P}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\gm}{\mathrm{gm~}}
+\newcommand{\am}{\mathrm{am~}}
+\newcommand{\trace}{\mathrm{trace~}}
+\newcommand{\Trace}{\mathrm{Trace~}}
+\newcommand{\rank}{\mathrm{rank~}}
+\newcommand{\Rank}{\mathrm{Rank~}}
+\newcommand{\Span}{\mathrm{Span~}}
+\newcommand{\card}{\mathrm{card}}
+\newcommand{\Card}{\mathrm{Card}}
+\newcommand{\limplies}{~\Longleftarrow ~} % leftwards implies, for some reason requires spacing to mirror the formatting of \implies (and therefore \rimplies below)
+\newcommand{\rimplies}{\implies} % rightwards implies (for consistency)
+\newcommand{\nimplies}{\centernot\implies} % rightwards implies with line struck through
+\newcommand{\indist}{\,{\buildrel \mathcal D \over \sim}\,}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny 
+	def}}}{=}}} % equal sign with def above
+\newcommand{\cl}{\mathrm{cl}} % closure of a set cl(X)
+\newcommand{\Cl}{\mathrm{Cl}} % closure of a set Cl(X)
+\newcommand{\closure}{\mathrm{closure}} % closure of a set closure(X)
+\newcommand{\Closure}{\mathrm{Closure}} % closure of a set Closure(X)
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Real Analysis\\Lecture Notes}
+\author{Metric Spaces}
+\date{November 30 2016 \\ Last update: \today{}}
+\maketitle
+
+\section{Baire Categories}
+
+Recall our notion of {\em nowhere dense sets}: \\
+
+%
+% Definition
+%
+{\bf Definition: {\em (Nowhere dense sets)}.} We say that a subset $E \subset X$ is \underline{nowhere dense in $X$} if the intersection
+\begin{equation*}
+	X\setminus\overline{E}
+\end{equation*}
+
+is dense. \\
+
+%
+% Definition
+%
+{\bf Definition: {\em (First category/meagre)}.} We say that a set is \underline{of the first category/meagre} if it is a countable union of nowhere dense sets
+\begin{equation*}
+	E = \bigcup^\infty_{n} E_n, \quad E_n \text{ nowhere dense in $X$}
+\end{equation*}
+
+\indent Clearly being nowhere dense implies the set is of the first category since we may construct the trivial union $E \cup E \cup E \cup \cdots$. \\
+
+\indent We can show that $\Q$ is of the first category since for $q \in \Q$ the sets $\{q\}$ are dense in $\R$ and $\Q$ is the countable union
+\begin{equation*}
+	\Q = \bigcup_{q\in\Q} \{q\}, \quad \{q\} \text{ nowhere dense in $\R$}
+\end{equation*}
+
+%
+% Definition
+%
+{\bf Definition: {\em (Second category)}.} A set is \underline{of the second category} if it is not of the first category. \\
+
+%
+% Definition
+%
+{\bf Definition: {\em (Residual/comgeare)}.} A set is said to be \underline{residual} if its complement is of the first category/meagre. \\
+
+\indent Note that being {\em residual/comeagre} is not the same as being of the second category since we could, in principle, have some first category set whose complement is also first category. \\
+
+\indent We now take a moment to restate the Baire Category Theorem in terms of the above definitions: \\
+
+%
+% Theorem
+%
+{\bf Baire Category Theorem:} Let $X$ be a complete metric space of real numbers. Then no nonempty open set is of the first category. That is, there is no open subset of $\R$ that is a countable union of nowhere dense sets. \\
+
+\begin{proof} In order to build a contradiction suppose that it is possible for us to represent an open subset $U$ as a countable union of nowhere dense sets (i.e. it is of the first category). Then
+\begin{equation*}
+	U = \bigcup^\infty_{n = 1} E_n, \quad E_n \text{ nowhere dense}
+\end{equation*}
+
+Since $E_n$ is nowhere dense we have that
+\begin{equation*}
+	O_n = X\setminus \overline{E}_n
+\end{equation*}
+
+is dense. Furthermore, $O_n$ is an open set since $\overline{E}_n$ is closed by definition. By the Baire Category Theorem we have that
+\begin{equation*}
+	\bigcap^\infty_{n = 1} O_n
+\end{equation*}
+
+is dense since it is a countable union of dense open sets ({\em in a complete metric space}). Since $\bigcap^\infty_{n = 1} O_n$ is dense we must have
+\begin{equation*}
+	U \cap \left( \bigcap^\infty_{n = 1} O_n \right) \neq \emptyset
+\end{equation*}
+
+since $U$ is a nonempty open set (this is the definition of a dense set). \\
+
+\indent Now, take some $x \in U \cap \left( \bigcap^\infty_{n = 1} O_n \right)$ so that $x \in U$ and $x \in \bigcap^\infty_{n = 1} O_n$. Under this definition of our point $x$ we must have that
+\begin{align*}
+	x \notin X \setminus \left( \bigcap^\infty_{n = 1} O_n \right) &= \bigcup^\infty_{n = 1} \left( X \setminus O_n \right) \\ 
+	&= \bigcup^\infty_{n = 1} \left( X \setminus \left( X \setminus \overline{E}_n \right) \right) \\
+	&= \bigcup^\infty_{n = 1} \left( X \cap \left( X \cap \overline{E}^c_n \right)^c \right) \\
+	&= \bigcup^\infty_{n = 1} \left( X \cap \left( X^c \cup \overline{E}^{c^c}_n \right) \right) \\
+	&= \bigcup^\infty_{n = 1} \left( X \cap \left( X^c \cup \overline{E}_n \right) \right) \\
+	&= \bigcup^\infty_{n = 1} \left(\left( X \cap X^c \right) \cup \left( X \cap \overline{E}_n \right) \right) \\
+	&= \bigcup^\infty_{n = 1} \left(\emptyset \cup \overline{E}_n \right) \\
+	&= \bigcup^\infty_{n = 1} \overline{E}_n 
+\end{align*} 
+
+with $\overline{E}_n$ the closure of our nowhere dense sets $E_n$. Hence,
+\begin{equation*}
+	x \notin \bigcup^\infty_{n = 1} \overline{E}_n
+\end{equation*}
+
+but
+\begin{equation*}
+	U = \bigcup^\infty_{n = 1} E_n
+\end{equation*}
+
+and
+\begin{equation*}
+	x \in U
+\end{equation*}
+
+by assumption. Contradiction! Therefore, we must conclude that it is not possible to represent an open subset $U$ as a countable union of nowhere dense sets. That is, $U$ is not of the first category, and since $U$ was arbitrary we conclude that non nonempty open set is of the first category, as desired.
+\end{proof}
+
+%
+% Proposition
+%
+{\bf Proposition:} If $O \subset X$ is some open set then $\overline{O}\setminus O$ is {\em always} nowhere dense in $X$. That is, the boundary of closure of an open set is nowhere dense.
+
+\begin{proof} To show that $\overline{O}\setminus O$ is nowhere dense in $X$ we must show that $X\setminus \overline{E} = X\setminus \overline{\left( \overline{O}\setminus O \right)}$ is dense. However,
+\begin{align*}
+	\overline{O} \setminus \overline{O} &= O \cap O^c \\
+	&= \overline{O} \cap \left(X\setminus O\right)
+\end{align*}
+
+is a {\em closed} set since $\overline{O}$ is closed by definition and $\left(X\setminus O\right)$ is closed since $O$ is open. Thus,
+\begin{align*}
+	\overline{\overline{O} \setminus O} &= \overline{\overline{O} \cap \left(X\setminus O\right)} \\
+	&= \overline{O} \cap \left(X\setminus O\right) \\
+	&= \overline{O} \setminus O
+\end{align*} 
+
+So
+\begin{align*}
+	X\setminus \overline{\left( \overline{O}\setminus O \right)} &= X \setminus \left( \overline{O} \setminus O \right) \\
+	&= X \cap \left( \overline{O} \setminus O \right)^c \\
+	&= X \cap \left( \overline{O} \cap O^c \right)^c \\
+	&= X \cap \left( \overline{O}^c \cup O \right) \\	
+	&= \left( X \cap \overline{O}^c \right) \cup \left( X \cap O \right) \\
+	&= \left( X \setminus \overline{O} \right) \cup \left( X \setminus O^c \right) \\
+	&= X	
+\end{align*}
+
+and so $X\setminus \overline{\left( \overline{O}\setminus O \right)}$ is dense in $X$ since its closure is $X$. Thus, $\overline{O}\setminus O$ is nowhere dense in $X$. That is, the boundary of closure of an open set is always nowhere dense in $X$, as desired.
+\end{proof}
+
+%
+% Definition
+%
+{\bf Definition: {\em (Interior set)}.} If $E$ is some closed set in $X$, $E \subset X$, then we say that $E^0$ is its \underline{interior} given by
+\begin{equation*}
+	X \setminus \overline{\left(X\setminus E\right)}
+\end{equation*}
+
+\indent That is, the interior $E^0$ are all the ``{\em interior}'' points of $E$ excluding the boundary (if it is closed). \\
+
+%
+% Proposition
+%
+{\bf Proposition:} If $F$ is a closed set in $X$ and $F^0$ its interior then $F\setminus F^0$ is {\em nowhere dense} in $X$.
+
+\begin{proof} Since $F$ is closed and $F^0$ is open (a union of open sets is open) we have that
+\begin{equation*}
+	F \setminus F^0 = F \cap \left(F^0\right)^c
+\end{equation*}
+
+is closed because $\left(F^0\right)^c$ is closed an an intersection of closed sets is closed. Thus,
+\begin{align*}
+	X \setminus \overline{ \left( F \setminus F^0 \right) } &= 	X \setminus \left( F \setminus F^0 \right) \\
+	&= X \cap \left( F \setminus F^0 \right)^c \\
+	&= X \cap \left( F \cap \left(F^0\right)^c \right)^c \\
+	&= X \cap \left( F^c \cup F^0 \right) \\
+	&= \left( X \cap F^c \right) \cup \left( X \cap F^0 \right) \\
+	&= X\setminus F \cup X\setminus \left(F^0\right)^c \\
+	&= X
+\end{align*}
+
+\indent Thus, $X \setminus \overline{ \left( F \setminus F^0 \right) }$ is dense in $X$ and so $\overline{ \left( F \setminus F^0 \right) }$ is {\em nowhere dense} in $X$. Another way to see this is by letting $V$ be some nonempty open set in $X$. To show that $X \setminus \overline{ \left( F \setminus F^0 \right) }$ is dense in $X$ we require
+\begin{equation*}
+	V \cap \left( X \setminus \overline{ \left( F \setminus F^0 \right) } \right) \stackrel{?}{\neq} \emptyset
+\end{equation*}
+
+However, 
+\begin{align*}
+	V \cap \left( X \setminus \overline{ \left( F \setminus F^0 \right) } \right) &= V \cap \left( X \setminus \left( F \setminus F^0 \right) \right) \\
+	&= V \cap X \\
+	&\neq \emptyset
+\end{align*}
+
+\indent Therefore, in both cases we have shown that if $F$ is a closed set in $X$ and $F^0$ its interior, the complement $F\setminus F^0 = F\cap\left(F^0\right)^c$ is {\em nowhere dense} in $X$. That is, the complement of a dense open set (given by the interior of a closed set $F^0$) is always {\em nowhere dense}, as desired.
+\end{proof}
+
+%
+% Example
+%
+{\bf Example:} The interior set $E^0$ is the set difference $X\setminus\overline{\left( X\setminus E\right)}$ is all points inside the boundary of closure around $E$. We can describe this interior set $E^0$ as the union of all open subsets of $X$ that lie within $E$. For example, let
+\begin{equation*}
+	E = [2, 3]
+\end{equation*}
+
+then its interior $E^0$ is given by
+\begin{equation*}
+	E^0 = [2, 3]^0 = (2, 3)
+\end{equation*}
+
+Additionally, if $X = \R$ then
+\begin{align*}
+	(2, 3]^0 &= (2, 3) \\
+	(2, 3)^0 &= (2, 3) \\
+	\R^0 &= \R \\
+	\emptyset^0 &= \emptyset \\
+	\Q^0 &= \emptyset
+\end{align*}
+
+However, if $X = \Q$ then we may note that $\Q^0 = \Q$. \\
+
+%
+% Example
+% 
+{\bf Example:} Consider the subspace of $\R$ given by
+\begin{equation*}
+	X = \left\{2, 1\frac{1}{2}, 1\frac{1}{3}, 1\frac{1}{4}, ... \right\} = \left\{2, \frac{3}{2}, \frac{4}{3}, \frac{5}{4}, ... , 1\right\}
+\end{equation*}
+
+\indent In this definition for our set $X$ we can find an open set $E \subset \R$ whose intersection $X \cap E = \left\{ 1\frac{1}{2} \right\} = \left\{ \frac{3}{2} \right\}$. For some reason that I don't see we find that this point $\left\{ 1\frac{1}{2} \right\}$ is an open set. Clearly it's also a closed set. In particular, letting $E$ be the open interval $\left(1\frac{2}{5},1\frac{3}{5}\right)$
+\begin{equation*}
+	X \cap \left(1\frac{2}{5}, 1\frac{3}{5}\right) = \left\{ 1\frac{1}{2} \right\}
+\end{equation*}
+
+\indent All points in our set are open except the point $x = 1$. To see that $x = 1$ is not an open point we note that if we take an open interval around $1$ given by $S_{x = 1, \epsilon}$ then we capture an infinite number of terms in our sequence (i.e. we capture the whole sequence except only finitely many). Thus, we have the set $X$ which has a {\em countable} number of open points with an additional non-open point added onto it. \\
+
+\indent Clearly $X$ is closed and bounded above by $2$ and below by $1$ and so it is a compact set. This set is the {\em one-point compactification of $\N$} (for some reason I don't understand). \\
+
+%
+% Claim
+%
+{\bf Claim:} If $F$ is some closed set of the first category (i.e. a countable union of {\em nowhere dense sets}) in some complete metric space $X$ (i.e. every Cauchy sequence from $X$ is convergent), then $F$ is nowhere dense. \\
+
+\begin{proof} Let $F$ be some closed set of the first category so that
+\begin{equation*}
+	F = \bigcup^\infty_{n = 1} F_n, \quad F_n \text{ nowhere dense}
+\end{equation*}
+
+To show that $F$ is nowhere dense in $X$ we seek to show that $X\setminus\overline{F}$ is dense. However, $\overline{F} = F$ so
+\begin{align*}
+	X\setminus\overline{F} &= X\setminus F \\
+	&= X \setminus \left( \bigcup^\infty_{n = 1} F_n \right) \\
+	&= X \cap \left( \bigcup^\infty_{n = 1} F_n \right)^c \\ 
+	&= X \cap \left( \bigcap^\infty_{n = 1} F^c_n \right) \\
+	&= \bigcap^\infty_{n = 1} \left(X \cap F^c_n \right) \\
+	&= \bigcap^\infty_{n = 1} \left(X \setminus F_n \right)
+\end{align*}
+
+\indent However, we have that $X$ is {\em complete}, $\left(X \setminus F_n\right)$ is {\em open}, and we have a {\em countable intersection}. Therefore, by the Baire Category Theorem 
+\begin{equation*}
+	X\setminus\overline{F} = \bigcap^\infty_{n = 1} \left(X \setminus F_n \right)
+\end{equation*}
+
+is dense in $X$. Thus, $F$ is {\em nowhere dense} in $X$. That is, a closed set of the first category in a complete metric space is nowhere dense, as desired.
+\end{proof}
+
+Quickly recall the definition of a {\em residual/comeagre set}: \\
+
+%
+% Definition
+%
+{\bf Definition: {\em (Residual/comgeare)}.} A set is said to be \underline{residual} if its complement is of the first category/meagre. \\
+
+%
+% Claim
+%
+{\bf Claim:} A subset $E$ of a complete metric space $X$ is residual {\em if and only if} $E$ contains a dense $G_\delta$. That is, if $E$ is a subset of a complete metric space $X$ then $E^c = X\setminus E$ is of the first category (countable union of nowhere dense sets) {\em if and only if} $E$ contains a dense countable intersection of open sets.
+
+\begin{proof} {\em (Unproven?)}
+\end{proof}
+
+%
+% Proposition
+%
+{\bf Proposition:} Let $\{F_n\}$ be some countable collection of closed sets such that
+\begin{equation*}
+	X = \bigcup^\infty_{n = 1} F_n
+\end{equation*}
+
+Then 
+\begin{equation*}
+	O = \bigcup^\infty_{n = 1} F^0_n
+\end{equation*}
+
+is a residual and open set. That is, $O$ is an open set whose complement is a countable union of nowhere dense sets.
+
+\begin{proof} To prove that $O$ is residual we must show that $X\setminus O$ is of the first category, and so we must prove that $X\setminus O$ is a countable union of nowhere dense sets. Recall that
+\begin{equation*}
+	F^0_n = X \setminus \overline{\left(X\setminus F_n\right)}
+\end{equation*}
+
+Now, let $E_n$ be given by the closed boundary of $F_n$
+\begin{equation*}
+	E_n = F_n \setminus F^0_n = F_n \cap \left(F^0_n\right)^c
+\end{equation*}
+
+\indent We find that $E_n$ is {\em nowhere dense} in $X$ by our earlier proposition. Therefore, the countable union of these nowhere dense $E_n$ is
+\begin{equation*}
+	E = \bigcup^\infty_{n = 1} E_n
+\end{equation*}
+
+is of the first category/meagre. However, with $O = \bigcup^\infty_{n = 1} F^0_n$ we find
+\begin{align*}
+	X\setminus O &= X \setminus \left( \bigcup^\infty_{n = 1} F^0_n \right) \\
+	&= \left( \bigcup^\infty_{n = 1} F_n \right) \setminus \left( \bigcup^\infty_{n = 1} F^0_n \right) \\
+	&\subset \bigcup^\infty_{n = 1} E_n
+\end{align*}
+
+
+Now, if we take $t \in \bigcup E_n = \bigcup \left( F_n \setminus F^0_n \right)$ then
+\begin{align*}
+	t \in F_n
+\end{align*}
+
+for some $n$ but
+\begin{align*}
+	t \notin F^0_n
+\end{align*}
+
+for all $n$. That is,
+\begin{equation*}
+	t \in \left( \bigcup F_n \right) \setminus \left( \bigcup F^0_n \right) = X\setminus O
+\end{equation*}
+
+and so
+\begin{equation*}
+	X\setminus O \supset \bigcup^\infty_{n = 1}
+\end{equation*}
+
+Therefore, with both $X\setminus O \subset \bigcup^\infty_{n = 1}$ and $X\setminus O \supset \bigcup^\infty_{n = 1}$ we find
+\begin{equation*}
+	X\setminus O = \bigcup^\infty_{n = 1}
+\end{equation*}
+
+for $E_n$ {\em nowhere dense}. That is, $X\setminus O$ is a countable union of nowhere dense sets/of the first category. Therefore, the complement $O$ is of the first category and so $O$ is residual by definition. Furthermore, $O$ is {\em dense} in $X$ since
+\begin{align*}
+	\overline{O} &= \overline{\bigcup^\infty_{n = 1} F^0_n} \\
+	&= \bigcup^\infty_{n = 1} \overline{F^0_n} \\
+	&= \bigcup^\infty_{n = 1} F_n \\
+	&= X
+\end{align*}
+
+So, if $X = \bigcup F_n$ for $F_n$ closed and $O = \bigcup F^0_n$ then $O = \bigcup^0_n$ is a residual open set ({\em it's complement is a countable union of nowhere dense sets}). 
+\end{proof}
+
+%
+% Example
+%
+{\bf Example:} Is there a function $f:\R\to\R$ which is unbounded on every nonempty open subset of $\R$? Yes! However, this function cannot be continuous:
+\begin{equation*}
+	f(x - \delta, x + \delta) \nsubseteq \left( f(x) - \epsilon, f(x) + \epsilon \right) 
+\end{equation*}
+
+\indent For example, such a function which is unbounded on every nonempty subset of real numbers is given by
+\begin{equation*}
+	f(x) = 
+	\begin{cases}
+		q & \text{if } x = \frac{p}{q} \in \Q \text{ ($x$ is rational)} \\
+		0 & \text{if $x \in \R\setminus\Q$}
+	\end{cases}
+\end{equation*}
+
+Clearly this function is not continuous. Take $y \in \R$ and let
+\begin{equation*}
+	I = \left(y - \frac{1}{3}, y + \frac{1}{3} \right)
+\end{equation*}
+
+\indent We know that $I$ has infinitely many rationals $\frac{p}{q} \in I$. However, there are also infinitely many $q$ such that $\frac{p}{q} \in I$ for a fixed $p$. Thus, on $I$ we have that
+\begin{equation*}
+	f\left(\frac{p}{q}\right) = q
+\end{equation*}
+
+is indeed unbounded on $I$.
+
+\section{Connected Sets}
+
+%
+% Definition
+%
+{\bf Definition:} A metric space $X$ is called \underline{connected} if there does not exist any nonempty open subsets $A$ and $B$ in $X$ such that
+\begin{align*}
+	A \cap B &= \emptyset \\
+	A \cup B &= X
+\end{align*}
+
+%
+% Example
+%
+{\bf Example:} Is $\R$ connected? The only open $A$ and $B$ for $A \cup B$ to construct $\R$ and satisfy $A \cap B = \emptyset$ is
+\begin{align*}
+	\R \cap \emptyset &= \emptyset \\
+	\R \cup \emptyset &= \R
+\end{align*}
+
+but clearly this involved the empty set. Thus, $\R$ is indeed connected. \\
+
+%
+% Example
+%
+{\bf Example:} Consider the punctured real line $\R\setminus\{2\} = X$. Then
+\begin{equation*}
+	X = \left(-\infty, 2\right) \cup \left(2, \infty\right)
+\end{equation*}
+
+Clearly we can construct $X$ by $A = \left(-\infty, 2\right)$ and $B = \left(2, \infty\right)$ with $A \cap B = \emptyset$. Therefore, $X$ is {\em not} connected. Similarly,
+\begin{equation*}
+	X = [2,3]\cup[4,5]
+\end{equation*}
+
+is not connected since we cannot find open $A$ or $B$ to construct $X$ without either being empty. \\
+
+\indent Interestingly, the puncture plane $\R^2\setminus \left\{(0,0)\right\}$ {\em is connected}. We can think of this geometrically as the whole plane without the origin remains connected. However, by a similar argument, the real plane without the $x$-axis is not connected.
+
+We can show that $\Q$ is not connected by the following argument
+\begin{align*}
+	(-\infty,\pi] &\text{ is closed in $\R$ and $[\pi,\infty)$ is closed in $\R$} \\
+	\text{Let } A = (-\infty,\pi] \cap \Q &\text{ is closed in $\Q$} \\
+	\text{Let } B = [\pi,\infty) \cap \Q &\text{ is closed in $\Q$} \\
+	A \neq \emptyset &\text{ and } B \neq \emptyset \\
+	A &\cup B = \Q \\
+	A &\cap B = \emptyset \\
+	\text{Both $A$ and $B$} &\text{ are {\em clopen} sets} \\
+	\Q &\text{ is {\em not} connected}
+\end{align*}
+
+by a similar argument we can show that the irrationals $\R\setminus\Q$. \\
+
+We say that $f:[0,1]\to[0,1]$ given by
+\begin{equation*}
+	f(x) = 
+	\begin{cases}
+		\sin \frac{1}{x} & x \in (0, 1] \\
+		0 & x = 0
+	\end{cases}
+\end{equation*}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

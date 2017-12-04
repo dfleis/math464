@@ -1,0 +1,273 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{bm} % bold in mathmode \bm
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{dsfont} % for indicator function \mathds 1
+\usepackage{tikz,pgf,pgfplots}
+\usepackage{enumerate} 
+\usepackage[multiple]{footmisc} % for an adjascent footnote
+\usepackage{graphicx,float} % figures
+\usepackage{centernot} % for \centernot\implies (wrapped in \nimplies)
+
+%% set noindent by default and define indent to be the standard indent length
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%% some math macros
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % vector norm
+\newcommand*{\vv}[1]{\vec{\mkern0mu#1}} % \vec with arrow on top
+\renewcommand{\Re}{\mathfrak {Re}}
+\renewcommand{\Im}{\mathfrak {Im}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\X}{\mathbb X}
+\newcommand{\powerset}{\mathcal P}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\gm}{\mathrm{gm~}}
+\newcommand{\am}{\mathrm{am~}}
+\newcommand{\trace}{\mathrm{trace~}}
+\newcommand{\Trace}{\mathrm{Trace~}}
+\newcommand{\rank}{\mathrm{rank~}}
+\newcommand{\Rank}{\mathrm{Rank~}}
+\newcommand{\Span}{\mathrm{Span~}}
+\newcommand{\limplies}{~\Longleftarrow ~} % leftwards implies, for some reason requires spacing to mirror the formatting of \implies (and therefore \rimplies below)
+\newcommand{\rimplies}{\implies} % rightwards implies (for consistency)
+\newcommand{\nimplies}{\centernot\implies} % rightwards implies with line struck through
+\newcommand{\indist}{\,{\buildrel \mathcal D \over \sim}\,}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny 
+	def}}}{=}}} % equal sign with def above
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Real Analysis\\Lecture Notes}
+\author{Set Theory}
+\date{September 7 2016 \\ Last update: \today{}}
+\maketitle
+
+\section{Ordered Sets}
+
+\indent We begin with introducing the notion of a \underline{partially ordered set}. Suppose $S$ is partially ordered. Given some binary relation $R$ defined over elements $a, b \in S$, the set $S$ must have a partial order that satisfies the following
+\begin{enumerate}[(i)]
+	\item $aRa \quad \forall\,a\in S$ (reflexivity)
+	\item $aRb \land bRa \implies a = b$ (symmetry)
+	\item $aRb \land bRc \implies aRb$ (transitivity)
+\end{enumerate}
+
+\underline{Example}: Consider the finite set $X = \{1,2,3,4\}$, and consider its power set $\powerset(X) = S = \{ \text{all subsets of $X$} \}$. Then, for elements $A, B \in S$, does the relation `$\subseteq$' (where $\subseteq$ is defined in the typical way) satisfy a partial order over $S$? \\
+
+\indent To verify that $\subseteq$ is indeed a partial order we simply go through our three criteria defined above. For this particular example we can confirm our criteria via explicitly outlining the elements of our set $S$ (this may not be feasible in sufficiently large sets, or possible in infinite sets). So, we find that\footnote{Note that if a finite set $X$ has $n$ elements then $\powerset(X)$ will contain $2^n$ elements.}
+\begin{align*}
+	S &= \powerset(X) \\
+	&= \Big\{ \emptyset, \{1\}, \{2\}, \{3\}, \{4\}, \\
+	&\hphantom{{}={--}} \{1,2\}, \{1,3\}, \{1,4\}, \{2,3\}, \{2,4\}, \{3,4\}, \\
+	&\hphantom{{}={--}} \{1,2,3\}, \{1,2,4\}, \{1,3,4\}, \{2,3,4\}, \{1,2,3,4\} \Big\}
+\end{align*}
+
+Now, going through our criteria:
+\begin{enumerate}[(i)]
+	\item $A \stackrel{?}{\subseteq} A \quad \forall A \in S$. Using the definition of $\subseteq$, we should find that the reflexivity criteria is easily satisfied. 
+	\item $A \subseteq B \land B \subseteq A \stackrel{?}{\implies} A = B$. Once again, our finite set permits us to manually verify this condition. We see that the only two elements $A, B$ which satisfy the symmetry condition are when $A$ and $B$ are chosen such that $A = B$.
+	\item $A \subseteq B \land B \subseteq C \stackrel{?}{\implies} A \subseteq C$. Perhaps this is a bit less trivial to verify, but once again we should quickly see that this is indeed the case for all elements $A, B, C \in S$, and so the transitivity of our relation $\subseteq$ holds.
+\end{enumerate}
+
+\indent 	Thus, $\subseteq$ is indeed a partial order, and so the set $S = \mathcal P(A)$ under $\subseteq$ forms a partially ordered set. It turns out that we call this relation $\subseteq$ the {\em containment relation}. \\
+
+\indent However, using the above example, despite being a partially ordered set we have elements who cannot be so easily compared/ordered under $\subseteq$. Namely,
+\begin{align*}
+	\{1, 2\} &\nsubseteq \{1, 3\} \\
+	\{2, 3\} &\nsubseteq \{1, 3, 4\}
+\end{align*}
+
+\indent It is not immediately clear how we should deal with these cases under a partial order. For this reason we choose to introduce the notion of a \underline{total order} and \underline{totally ordered sets}. \\
+
+\indent Consider the closed interval $S = [0, 1]$ and the relation $a \leq b$ (as typically defined). If we were willing to do so, we could verify that $\leq$ is indeed a partial order on $S$. However, it is also true that {\em all} $a, b \in S$ satisfies either
+\begin{equation*}
+	a \leq b \quad \text{or} \quad b \leq a \quad \forall\,a,b\in S
+\end{equation*}
+
+\indent Hence, if $S$ is a \underline{totally ordered set}, then for some binary relation $R$ over a set $S$, we require the following four criteria:
+\begin{enumerate}[(i)]
+	\item $\forall\,a\in S, ~ aRa$ (reflexivity)
+	\item $aRb \land bRa \implies a = b$ (symmetry)
+	\item $aRb \land bRc \implies aRb$ (transitivity)
+	\item $ \forall\,a,b\in S, ~ aRb \text{ or } bRa$ (comparability)
+\end{enumerate}
+
+\indent Consider the finite set of integers $\{1,2,3,4\}$ and the set of nonnegative real numbers $[0, \infty)$ under the usual order.\footnote{Typically, the ``usual order'' will mean $\leq$ if the elements are numbers or $\subseteq$ if the elements are sets.} We may verify that both these sets are indeed totally ordered, and yet there turns out to be (at least one) material distinction between the two. \\
+
+\indent We pose the question: Does any nonempty subset of $S$ have a ``smallest''\footnote{This means what you think it means: For some total order $\leq$, we find $\forall\,s \in S,~\exists\,t\in S,~ t\leq s$} element? (ed. For some reason I prefer calling it a {\em least element}) Clearly this is trivially true for $S = \{1,2,3,4\}$: If $1 \in S' \subset S$ then 1 is our least element. If $1 \notin S'$ then, if $2 \in S'$ then 2 is our least element, and so on... Consider now our second set $S = [0, \infty)$. If we select the subset $(0, 1) \subseteq [0, \infty)$ we may note that there is no $x \in (0, 1)$ such that for all $y \in (0, 1)$ we find $x \leq y$ since, as an open interval, we may descend arbitrarily close to the left endpoint. \\
+
+\indent For the above reason we introduce the notion of a \underline{well ordered set}. We say that a \underline{well ordered set} is a totally ordered set such that all nonempty subsets has a least element. From this definition it should be clear that the set of naturals $\N$ is well ordered but the set of real numbers $\R$ is not, since we may construct open subsets without a least element (as illustrated above). \\
+
+\indent Under this definition we note that the set $S = \{..., -3, -2, -1, 0, 1\}$ is not well ordered since, although we may find a greatest element, if we select the subset $\{..., -3, -2\}$ we see that there is no least element. \\
+
+\indent Now, suppose $T$ is totally ordered by the total order $\leq$. Let $T_1 \subseteq T$, $T_1 \neq \emptyset$. If $T_1$ inherits a total order from its totally ordered parent $T$ then it's easy to see that it remains totally ordered itself:
+\begin{proof} For $a,b,c \in T_1$ we have that since $T_1 \subseteq T$, $a,b,c \in T$. Since $T$ is totally ordered we have that $\leq$ satisfies the four criteria of total ordered above with respect to $a,b,c$. However, since $a,b,c$ were chosen to be arbitrary elements of $T_1$, we may conclude that $T_1$ is indeed totally ordered, as desired.
+\end{proof}
+
+\indent Suppose $T$ is now a well ordered set. It is perhaps less clear whether $T_1 \subseteq T$ is well ordered. However, it turns out that the subset $T_1$ does indeed remain well ordered:
+\begin{proof} Suppose $T$ is well ordered and let $T_1 \subseteq T$. If $T$ is well ordered then $T$ is totally ordered and all nonempty subsets of $T$ contain a least element. Since we have shown that $T_1 \subseteq T$ must be totally ordered, it is sufficient to show that all nonempty subsets of $T_1$ contain a least element. However, all subsets of $T_1$ must be subsets of $T$ since the elements of $T_1$ are wholly contained by $T$. Since the nonempty subsets of $T$ have a least element, we may conclude that the nonempty subsets of $T_1$ must have a least element, as desired.
+\end{proof}
+
+\indent It turns out that being well ordered on $\N$ is identical to the principle of mathematical induction.\footnote{This was given as an assignment problem in class.} That is, if a given set is well ordered then we may use mathematical induction to prove some statement is true for all elements of our set. We quickly summarize mathematical induction: If we have given statements indexed by $n \in \N$, say $P(1), P(2), ..., P(n),...$ we know that all statements $P(n), n \in \N$ hold if
+\begin{enumerate}
+	\item $P(1)$ is true.
+	\item $P(k) \implies P(k + 1)$.
+\end{enumerate}
+
+
+\section{Sequences}
+
+\indent A \underline{finite sequence} from $X$ is a function from a set of positive integers $\{1,2,...,n\}$ into $X$. We may denote this by
+\begin{align*}
+	f\{1,2,..., n\} \longrightarrow X \quad \text{or} \\
+	\{x_1, x_2, ..., x_n\} \quad n \in \N
+\end{align*}
+
+\indent A \underline{countably infinite sequence} from $X$ is a function $f:\N\to X$ where $\N$ has the natural order. A \underline{countably infinite set} is a set which is in the range of a countably infinite sequence. \\
+
+\underline{Example}: Is the set $S = \{-1, -2, -3, ... \}$ countably infinite? Yes! Define $f:\N \to S$ such that
+\begin{align*}
+	f(1) &= -1 \\
+	f(2) &= -2 \\
+	f(3) &= -3  \\
+	&\vdots \\
+	f(n) &= -n \\
+	&\vdots
+\end{align*}
+
+\indent We should note that this function $f$ is surjective (onto) since all elements of $S$ are mapped to by $f$ from some element of $\N$, and so we have found a function $f:\N \to S$ to satisfy the definition of a countably infinite set. \\
+
+\underline{Example:} Consider the set $S = \{0,2,4,8,...\}$. We may define $f:\N\to S$ by $f(n) = 2n - 2$ to show that $S$ is indeed countably infinite. \\
+
+\indent So, we have defined a countably infinite set $S$ to be a set that may be mapped from by $\N$ by $f:\N\to S$. However, it is sometimes inconvenient to construct a mapping from $\N$ to $S$. For this reason we introduce the following result: If we map a set $S$ to a second set $T$ by $g:S\to T$ we immediately see that the composition $(g\circ f)(n) = g(f(n))$, $g\circ f:\N \to T$, will map $\N$ onto $T$. Therefore, if $S$ is countable and if there exists some map from $S$ onto $T$, then $T$ must also be countable. Hence, we may prove that some set $T$ is countable by showing that there exists some surjective mapping from $S$ onto $T$.
+
+\subsection{Subsequences}
+
+\indent For some sequence from the set $X$, say $\{x_1, x_2, x_3 ...\}$, we define a \underline{subsequence of a sequence} to be the the sequence $\{x_{n_1}, x_{n_2}, x_{n_3},...\}$ with indices $n_1, n_2, n_3, ... \in \N$. Alternatively, if 
+\begin{equation*}
+	f\{1,2,...,\}
+\end{equation*}
+
+is some sequence, then the set
+\begin{equation*}
+	h\{1,2,...\}
+\end{equation*}
+
+is a subsequence of $f\{1,2,...\}$ if there exists a monotone function $g:\N\to\N$ such that
+\begin{equation*}
+	h = g \circ f
+\end{equation*}
+
+That is, our subsequence $\{x_{n_1}, x_{n_2},...\}$ can be given by
+\begin{align*}
+	x_{n_1} = f(n_1) &= g(f(n_1)) = h(1)  \\
+	x_{n_2} = f(n_2) &= g(f(n_2)) = h(2) \\
+	&\vdots
+\end{align*}
+
+\section{Unions, Intersection, and Complementation}
+
+It will be useful to recall DeMorgan's Laws:
+\begin{enumerate}[(1)]
+	\item $(A \cap B)^c = A^c \cup B^c$
+	\item $(A \cup B)^c = A^c \cap B^c$
+\end{enumerate}
+
+(ed. Essentially everything else was omitted from this section of the text?)
+
+\section{Algebras of Sets}
+
+Let $X$ be a set. An \underline{algebra} $\mathcal A$ of subsets of $X$ is a collection of sets closed under intersection, union, set difference,\footnote{For sets $X$ and $Y$ we say that ``set subtraction is given by $X \setminus Y = X \cap Y^c$.} and complementation as follows: For $A, B \in \mathcal A$, then
+\begin{enumerate}[(a)]
+	\item $A \cap B \in \mathcal A$
+	\item $A \cup B \in \mathcal A$
+	\item $B \setminus A \in \mathcal A$
+	\item $A^c \in \mathcal A$
+\end{enumerate}
+
+\indent Strictly speaking, we only need $A \cup B \in \mathcal A$ and $A^c \in \mathcal A$ in order to derive the remaining two properties. For example, $A \cap B = (A^c \cup B^c)^c$ and so since $A, B \in \mathcal A$, and since $\mathcal A$ is closed under complementation, we find $A^c, B^c \in \mathcal A$. Since $\mathcal A$ is closed under unions we find $A^c \cup B^c \in \mathcal A$. Finally once again realizing $\mathcal A$ is closed under complementation we find $(A^c \cup B^c)^c \in \mathcal A$. We can perform similar manipulations to show that the explicit statement of $B \setminus A = B \cap A^c \in \mathcal A$ is not necessary. \\
+
+\underline{Example}: Let $X = \N$ and consider the collection $\mathcal A = \{\emptyset, \N\}$. We can verify that our closure criteria over our two elements to conclude that $\mathcal A$ is indeed an algebra. \\
+
+\underline{Example}: Let $X = \N$ and $\mathcal B = \{ \text{all subsets of $\N$} \}$. This collection can too be shown as a valid algebra. \\
+
+\underline{Example}: {\em (Boolean algebra on $\N$)} Take $X = \N$ and \newline $\mathcal C = \{ \text{all subsets of $X$ which are either finite or have finite complements (cofinite)} \}$.\footnote{An example of a set which is neither finite nor cofinite is the set of even naturals over the set of naturals. Its complement is the set of odd naturals which is clearly infinite.} We start with determining what type of elements belong to $\mathcal C$. Listing some examples we find:
+\begin{align*}
+	\{2,3\} &\in \mathcal C \quad \text{(finite)} \\
+	\N \setminus \{5\} &\in \mathcal C \quad \text{(cofinite)} \\
+	\N &\in \mathcal C \quad \text{(cofinite)} \\
+	\emptyset &\in \mathcal C \quad \text{(finite)}
+\end{align*}
+
+\indent From these examples it should be immediately obvious that $\mathcal C$ is indeed closed under complementation.\footnote{I would like to more rigorously prove this, but this is essentially as was stated in class.} \\
+
+\indent What about intersection? If sets $A$ and $B$ are finite then, by definition, $A, B \in \mathcal C$ and clearly $A\cap B$ must be finite, so $A \cap B \in \mathcal C$. Similarly, for cofinite $B$, if $A$ is finite then $A\cap B$ must be finite, and so $A \cap B \in \mathcal C$. Finally, if both $A$ and $B$ are cofinite we must consider $A\cap B$. Note
+\begin{align*}
+	A\cap B &= \left[ \left( A \cap B \right)^c \right]^c \\
+		&= \left[ A^c \cup B^c \right]^c
+\end{align*}
+
+but since $A$ and $B$ are cofinite, $A^c$ and $B^c$ must be finite, so $A^c \cup B^c$ must be finite, and because
+\begin{equation*}
+	\left( A \cap B \right)^c = \left( \left[ A^c \cup B^c \right]^c \right)^c = A^c \cup B^c
+\end{equation*}
+
+is finite, we may conclude that, by definition, $A \cap B$ is cofinite. \\
+
+\indent What about unions? If $A, B \in \mathcal C$ are both finite, then clearly $A \cup B$ is finite and so the union must be finite: $A \cup B \in \mathcal C$. If $A$ is finite and $B$ is cofinite, then 
+\begin{align*}
+	B \subseteq& A \cup B \\
+	\implies B^c \supseteq&  (A \cup B)^c \quad \text{(complementation reverses containment\footnotemark)}
+\end{align*}
+\footnotetext{Draw a diagram if you don't see this.}
+
+\indent  Since $B$ is cofinite, $B^c$ must be finite. Thus, from $(A\cup B)^c \subseteq B^c$ we have that the complement of $A\cup B$ is finite, and so $A\cup B$ is cofinite. Hence, $A\cup B \in \mathcal C$. Finally, if both $A$ and $B$ are both cofinite then we should note that
+\begin{align*}
+	A\cup B &= \left[ \left( A \cup B \right)^c \right]^c \\
+		&= \left[ A^c \cap B^c \right]^c \\
+		\implies (A \cup B)^c &= A^c \cap B^c
+\end{align*}
+
+Since $A$ and $B$ are cofinite, $A^c$ and $B^c$ must be finite, and clearly the intersection $A^c \cap B^c$ must also be finite. Therefore, by definition, the union $A \cup B \in \mathcal C$, as desired. \\
+s
+\indent Are all subsets of $\N$ finite or cofinite? No! As a counterexample, consider $A = \{\text{all primes}\}$. We know that this is an infinite set with complement $A^c = \{\text{all commposites}\}$, which is itself infinite set.
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,365 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{bm} % bold in mathmode \bm
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{dsfont} % for indicator function \mathds 1
+\usepackage{tikz,pgf,pgfplots}
+\usepackage{enumerate} 
+\usepackage[multiple]{footmisc} % for an adjascent footnote
+\usepackage{graphicx,float} % figures
+\usepackage{centernot} % for \centernot\implies (wrapped in \nimplies)
+
+%% set noindent by default and define indent to be the standard indent length
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%% some math macros
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % vector norm
+\newcommand*{\vv}[1]{\vec{\mkern0mu#1}} % \vec with arrow on top
+\renewcommand{\Re}{\mathfrak {Re}}
+\renewcommand{\Im}{\mathfrak {Im}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\X}{\mathbb X}
+\newcommand{\powerset}{\mathcal P}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\gm}{\mathrm{gm~}}
+\newcommand{\am}{\mathrm{am~}}
+\newcommand{\trace}{\mathrm{trace~}}
+\newcommand{\Trace}{\mathrm{Trace~}}
+\newcommand{\rank}{\mathrm{rank~}}
+\newcommand{\Rank}{\mathrm{Rank~}}
+\newcommand{\Span}{\mathrm{Span~}}
+\newcommand{\card}{\mathrm{card}}
+\newcommand{\Card}{\mathrm{Card}}
+\newcommand{\limplies}{~\Longleftarrow ~} % leftwards implies, for some reason requires spacing to mirror the formatting of \implies (and therefore \rimplies below)
+\newcommand{\rimplies}{\implies} % rightwards implies (for consistency)
+\newcommand{\nimplies}{\centernot\implies} % rightwards implies with line struck through
+\newcommand{\indist}{\,{\buildrel \mathcal D \over \sim}\,}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny 
+	def}}}{=}}} % equal sign with def above
+\newcommand{\cl}{\mathrm{cl}} % closure of a set cl(X)
+\newcommand{\Cl}{\mathrm{Cl}} % closure of a set Cl(X)
+\newcommand{\closure}{\mathrm{closure}} % closure of a set closure(X)
+\newcommand{\Closure}{\mathrm{Closure}} % closure of a set Closure(X)
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Real Analysis\\Lecture Notes}
+\author{Metric Spaces}
+\date{December 5 2016 \\ Last update: \today{}}
+\maketitle
+
+\section{Connected Sets}
+
+\indent We begin by restating the last few definitions and examples relating to connected sets that we introduced in the previous notes: \\
+
+%
+% Definition
+%
+{\bf Definition:} A metric space $X$ is called \underline{connected} if there does not exist any nonempty open subsets $A$ and $B$ in $X$ such that
+\begin{align*}
+	A \cap B &= \emptyset \\
+	A \cup B &= X
+\end{align*}
+
+%
+% Example
+%
+{\bf Example:} Is $\R$ connected? The only open $A$ and $B$ for $A \cup B$ to construct $\R$ and satisfy $A \cap B = \emptyset$ is
+\begin{align*}
+	\R \cap \emptyset &= \emptyset \\
+	\R \cup \emptyset &= \R
+\end{align*}
+
+but clearly this involved the empty set. Thus, $\R$ is indeed connected. \\
+
+%
+% Example
+%
+{\bf Example:} Consider the punctured real line $\R\setminus\{2\} = X$. Then
+\begin{equation*}
+	X = \left(-\infty, 2\right) \cup \left(2, \infty\right)
+\end{equation*}
+
+Clearly we can construct $X$ by $A = \left(-\infty, 2\right)$ and $B = \left(2, \infty\right)$ with $A \cap B = \emptyset$. Therefore, $X$ is {\em not} connected. Similarly,
+\begin{equation*}
+	X = [2,3]\cup[4,5]
+\end{equation*}
+
+is not connected since we cannot find open $A$ or $B$ to construct $X$ without either being empty. \\
+
+\indent Interestingly, the puncture plane $\R^2\setminus \left\{(0,0)\right\}$ {\em is connected}. We can think of this geometrically as the whole plane without the origin remains connected. However, by a similar argument, the real plane without the $x$-axis is not connected.
+
+We can show that $\Q$ is not connected by the following argument
+\begin{align*}
+	(-\infty,\pi] &\text{ is closed in $\R$ and $[\pi,\infty)$ is closed in $\R$} \\
+	\text{Let } A = (-\infty,\pi] \cap \Q &\text{ is closed in $\Q$} \\
+	\text{Let } B = [\pi,\infty) \cap \Q &\text{ is closed in $\Q$} \\
+	A \neq \emptyset &\text{ and } B \neq \emptyset \\
+	A &\cup B = \Q \\
+	A &\cap B = \emptyset \\
+	\text{Both $A$ and $B$} &\text{ are {\em clopen} sets} \\
+	\Q &\text{ is {\em not} connected}
+\end{align*}
+
+by a similar argument we can show that the irrationals $\R\setminus\Q$. \\
+
+%
+%
+%
+{\bf Example:} We say that $f:[0,1]\to[0,1]$ given by
+\begin{equation*}
+	f(x) = 
+	\begin{cases}
+		\sin \frac{1}{x} & x \in (0, 1] \\
+		0 & x = 0
+	\end{cases}
+\end{equation*}
+
+is the {\em topologists sine curve}. It turns out that the topologists sine curve defined by $f$ is connected. We can show this by letting $T$ denote the set of points defined by $f$ and considering the set
+\begin{equation*}
+	A = \left\{ \left(x, \sin \frac{1}{x} \right) \in \R^2 ~:~ x \in \R^+ \right\}
+\end{equation*}
+
+and 
+\begin{equation*}
+	B = \left\{ \left(x, \sin \frac{1}{x} \right) \in \R^2 ~:~ x \in \R^- \right\}
+\end{equation*}
+
+Then
+\begin{equation*}
+	T = \overline{A \cup B} = \overline{A} \cup \overline{B}
+\end{equation*}
+
+{\em (It isn't difficult to show that both $A$ and $B$ are connected and so we just need that a) if $A$ is connected and $A \subset C \subset \overline{A}$ then $C$ is connected, and b) if $A$ and $B$ are connected and $A \cap B \neq \emptyset$ then $A \cup B$ is connected).} \\
+
+%
+% Proposition
+%
+{\bf Proposition:} Suppose $f:X\stackrel{\text{onto}}{\to}Y$ is onto and continuous. If $X$ is connected then $Y$ is connected.
+
+\begin{proof} Suppose $Y$ is {\em not} connected. Then there exists open sets $A$ and $B$ such that
+\begin{align*}
+	A \cup B &= Y \\
+	A \cap B &= \emptyset
+\end{align*}
+
+Since $f$ is onto and continuous we have that, because $A$ and $B$ are open
+\begin{align*}
+	f^{-1}(A) &\text{ is open} \\
+	f^{-1}(B) &\text{ is open}	
+\end{align*}
+
+Is $f^{-1}(A) \cup f^{-1}(B) = X$? Take $x \in X$ so that $f(x) \in Y$. Without loss of generality assume $f(x) \in A \subset Y$. Then, for all $x$,
+\begin{equation*}
+	x \in f^{-1}(A)
+\end{equation*}
+
+and so, together with the case for $f(x) \in B \subset Y$,
+\begin{equation*}
+	f^{-1}(A) \cup f^{-1}(B) = X
+\end{equation*}
+
+Is $f^{-1}(A) \cap f^{-1}(B) = \emptyset$? Assume not so that there is at least one point $x$ such that
+\begin{equation*}
+	x \in f^{-1}(A) \cap f^{-1}(B)
+\end{equation*}
+
+\indent Then $f(x) \in A$ and $f(x) \in B$. However, $A \cap B = \emptyset$ by assumption that $Y$ is not connected. Contradiction! Therefore
+\begin{equation*}
+	f^{-1}(A) \cap f^{-1}(B) = \emptyset
+\end{equation*}
+
+\indent Without loss of generality, is $f^{-1}(A) \neq \emptyset$? Take some $a \in A$. Since $f$ is onto we do indeed have some $x$ such that $x = f^{-1}(a)$ with $f(x) = a \in A$ \\
+
+
+However, $X$ is connected so it is a {\em contradiction} to state that
+\begin{equation*}
+	f^{-1}(A) \neq \emptyset \quad \text{and} \quad f^{-1}(B) \neq \emptyset
+\end{equation*}
+
+and
+\begin{equation*}
+	f^{-1}(A) \cap f^{-1}(B) = \emptyset
+\end{equation*}
+
+and
+\begin{equation*}
+	f^{-1}(A) \cup f^{-1}(B) = X
+\end{equation*}
+
+\indent Thus, we have both $X$ is connected and $X$ is not connected. Contradiction! Therefore, we must conclude that $Y$ is connected. That is, if $f:X\to Y$ is a continuous onto function and $X$ is some connected set, then $Y$ must also be connected, as desired.
+\end{proof}
+
+Recall the Intermediate Value Theorem: \\
+
+%
+% Theorem
+%
+{\bf Theorem: Intermediate Value Theorem.} Let $f:[a,b]\to\R$ be a continuous function with $f(a) < f(b)$. Then there exists some $c \in [a,b]$ such that $f(a) \leq z \leq f(b)$ with $f(c) = z$. \\
+
+Now, the Intermediate Value Theorem for connected spaces: \\
+
+%
+% Theorem
+%
+{\bf Theorem: Intermediate Value Theorem for Connected Spaces.} Let $X$ be connected and consider a continuous function $f:X\to\R$. Take $x,y \in X$ and $c \in \R$ such that $f(x) < c < f(y)$. Then $\exists\,z \in X$ such that $f(z) = c$.
+
+\begin{proof} Suppose the result is false. That is, $c$ is not in the image of $f$ for some $z \in X$. Consider the open sets
+\begin{equation*}
+	(-\infty, c) \text{ and } (c, \infty)
+\end{equation*}
+
+Let
+\begin{align*}
+	A &= f^{-1}(-\infty, c) \quad \text{(open in $X$)} \\
+	B &= f^{-1}(c,\infty) \quad \text{(open in $X$)}
+\end{align*}
+
+Therefore
+\begin{equation*}
+	A \cap B \neq \emptyset
+\end{equation*}
+
+We have that $A \neq \emptyset$ since $x \in A$ and $B \neq \emptyset$ since $y \in B$ by assumption. Furthermore
+\begin{equation*}
+	A \cup B = X
+\end{equation*}
+
+since $c$ is {\em not in the range of $f$ by assumption}. Thus, $X$ is not connected. Contradiction! Therefore, $c$ is in the range of $f$ for some $z \in X$, as desired.
+\end{proof}
+
+%
+% Lemma
+%
+{\bf Lemma:} If a set of real numbers is bounded above by a positive real then it is bounded above by a positive integer.
+
+\begin{proof} This is an obvious application of the Archimedean principle.
+\end{proof}
+
+%
+% Lemma
+%
+{\bf Lemma:} Let $f:X\to\R$ be continuous. Then $|f|:X\to\R$ is also continuous. 
+
+\begin{proof} We have done this proof before when discussing continuity.
+\end{proof}
+
+\indent Note that for $[0,t]$, $t > 0$ a closed set we have that $|f|^{-1}[0,t]$ must be closed in $X$ since it is continuous. Therefore
+\begin{equation*}
+	\left\{ x \in X ~:~ |f(x)| \leq t\right\} 
+\end{equation*}
+
+is closed in $X$. \\
+
+%
+% Uniform Boundedness Principle
+%
+{\bf Theorem: Uniform Boundedness Principle.} Let $\mathcal F$ be a family of real-valued continuous functions on a complete metric space $X$. Suppose that for each $x\ in X$ there is some number $M_x$ such that $|f(x)| \leq M_x$ for all $f \in \mathcal F$. Then, there is a nonempty open set $O \subset X$ and a constant $M$ such that $|f(x)| \leq M$ for all $f \in \mathcal F$ and all $x \in O$. \\
+
+\begin{proof} For each integer $m$, let $E_{m,f} = \{x \in X ~:~ |f(x)| \leq m\}$, and 
+\begin{equation*}
+	E_m = \bigcap_{f\in\mathcal F} E_{m,f}
+\end{equation*}
+
+Since each $f$ is continuous, $E_{m,f}$ is closed, and so $E_m$ must also be closed. \\
+
+\indent Now, for each $x \in X$ there is an integer $m$ such that $|f(x)| \leq m$ for all $f \in \mathcal F$. That is, there is an integer $m$ such that $x \in E_m$. Therefore
+\begin{equation*}
+	X = \bigcup^\infty_{m = 1} E_m
+\end{equation*}
+
+\indent If all $E_m$ were nowhere dense then $X$ is of the first category. However, $X$ is an open set and so some $E_m$ is {\em not} nowhere dense. Since this non-nowhere dense $E_m$ is closed, it must have an open set within it, say 
+\begin{equation*}
+	O \subset E_m
+\end{equation*}
+
+However, for every $x \in O$ we have defined 
+\begin{equation*}
+	O \subset \bigcap_{f\in\mathcal F} E_{m,f} = \bigcap_{f\in\mathcal F} \{x \in X ~:~ |f(x)| \leq m\}
+\end{equation*}
+
+\indent That is, for every $x \in O$ we have $|f(x)| \leq m$ for all $f \in \mathcal F$. Thus, there is a nonempty open set $O \subset X$ and a constant $M$ such that
+\begin{equation*}
+	\forall\,f\in\mathcal F,~\forall\,x\in O,~|f(x)| \leq M
+\end{equation*}
+
+as desired.
+
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+

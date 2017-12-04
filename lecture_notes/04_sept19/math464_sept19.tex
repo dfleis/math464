@@ -1,0 +1,519 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{bm} % bold in mathmode \bm
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{dsfont} % for indicator function \mathds 1
+\usepackage{tikz,pgf,pgfplots}
+\usepackage{enumerate} 
+\usepackage[multiple]{footmisc} % for an adjascent footnote
+\usepackage{graphicx,float} % figures
+\usepackage{centernot} % for \centernot\implies (wrapped in \nimplies)
+
+%% set noindent by default and define indent to be the standard indent length
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%% some math macros
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % vector norm
+\newcommand*{\vv}[1]{\vec{\mkern0mu#1}} % \vec with arrow on top
+\renewcommand{\Re}{\mathfrak {Re}}
+\renewcommand{\Im}{\mathfrak {Im}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\X}{\mathbb X}
+\newcommand{\powerset}{\mathcal P}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\gm}{\mathrm{gm~}}
+\newcommand{\am}{\mathrm{am~}}
+\newcommand{\trace}{\mathrm{trace~}}
+\newcommand{\Trace}{\mathrm{Trace~}}
+\newcommand{\rank}{\mathrm{rank~}}
+\newcommand{\Rank}{\mathrm{Rank~}}
+\newcommand{\Span}{\mathrm{Span~}}
+\newcommand{\card}{\mathrm{card~}}
+\newcommand{\Card}{\mathrm{Card~}}
+\newcommand{\limplies}{~\Longleftarrow ~} % leftwards implies, for some reason requires spacing to mirror the formatting of \implies (and therefore \rimplies below)
+\newcommand{\rimplies}{\implies} % rightwards implies (for consistency)
+\newcommand{\nimplies}{\centernot\implies} % rightwards implies with line struck through
+\newcommand{\indist}{\,{\buildrel \mathcal D \over \sim}\,}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny 
+	def}}}{=}}} % equal sign with def above
+
+%%%%% Big annoying garbage for putting braces around items in enumerate environent
+\usetikzlibrary{decorations.pathreplacing,calc}
+
+\newcounter{itemnum}
+
+\newcommand{\nt}[2][0pt]{%
+    \stepcounter{itemnum}%
+    \if###2##%
+    \else
+        #2%
+        \thinspace
+    \fi
+    \tikz[overlay,remember picture,baseline=(\theitemnum.base),xshift=#1]\node (\theitemnum){};%
+}
+\newcommand{\makebrace}[4][0pt]{%
+    \begin{tikzpicture}[overlay, remember picture]
+        \draw [decoration={brace,amplitude=0.5em},decorate]
+        let \p1=(#2), \p2=(#3) in
+        ({max(\x1+#1,\x2+#1)}, {\y1+1.75ex}) -- 
+            node[right=0.6em] {#4} ({max(\x1+#1,\x2+#1)}, {\y2-0.5ex});
+    \end{tikzpicture}%
+}
+\newenvironment{braceitems}{%
+    \begin{enumerate}
+}{%
+    \end{enumerate}
+    \setcounter{itemnum}{0}%
+}
+%%%%%
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Real Analysis\\Lecture Notes}
+\author{The Real Number System}
+\date{September 19 2016 \\ Last update: \today{}}
+\maketitle
+
+\section{The Real Number System (con't)}
+
+\indent Last class we defined groups, rings, and fields. We said that a set $G$ with binary operation $\oplus$ defined for elements $g \in G$ is a group if it satisfies
+
+\begin{braceitems}[(1)]
+    \item \nt{$g_1 \oplus g_2 \in G$ ($\oplus$-closure).}
+    \item \nt{$(g_1 \oplus g_2) \oplus g_3 = g_1 \oplus (g_2 \oplus g_3)$ (associativity under $\oplus$).}
+    \item \nt{$\exists\, z \in G$ such that $z$ is unique and $g_1 \oplus z = z \oplus g_1 = g_1$ (identity under $\oplus$).}
+    \item \nt{$\forall\,g\in G,~\exists\,h\in G$ such that $h_1$ is unique and $g_1 \oplus h_1 = h_1 \oplus g_1 = z$ (inverse under $\oplus$).}
+\end{braceitems}
+\makebrace{1}{2}{Semigroup}
+\makebrace{1}{3}{Monoid}
+
+If our group $(G, \oplus)$ also satisfies
+\begin{braceitems}[(1)]\addtocounter{enumi}{4}
+    \item \nt{$g_1 \oplus g_2 = g_2 \oplus g_1$ (commutativity under $\oplus$).}
+\end{braceitems} \hfill
+
+then we say that our group is an {\em Abelian group}. We said that a ring $R$ is an Abelian group with respect to $\oplus$ (i.e. it satisfies points (1)-(5))\footnote{The Abelian group $R$ has $\oplus$-identity $0$, and $\oplus$-inverse $-r$.} if it is has a second binary operation $\odot$, defined for elements $r \in R$, satisfying
+
+\begin{braceitems}[(1)]\addtocounter{enumi}{5}
+    \item \nt{$r_1 \odot r_2 \in R$ ($\odot$-closure).}
+    \item \nt{$\exists\,e\in R$ such that $r_1 \odot e = e \odot r_1 = r_1$ ($\odot$-identity).}
+    \item \nt{$(r_1 \odot r_2) \odot r_3 = r_1 \odot (r_2 \odot r_3)$ (associativity under $\odot$).}
+\end{braceitems}
+\makebrace{1}{3}{Monoid under $\odot$}
+\vspace{-2.25em}
+\begin{braceitems}[(1)]\addtocounter{enumi}{8}
+    \item \nt{ $r_1 \odot (r_2 \oplus r_3) = r_1 \odot r_2 \oplus r_1 \odot r_3$ (left distributivity). }
+	\item \nt{ $(r_1 \oplus r_2) \odot r_3 = r_1 \odot r_3 \oplus r_2 \odot r_3$ (right distributivity). }
+\end{braceitems}
+
+\indent Within the algebraic structure of a ring with may distinguish between {\em non-commutative} and {\em commutative} rings which satisfy
+\begin{braceitems}[(1)]\addtocounter{enumi}{10}
+    \item \nt{$r_1 \oplus r_2 = r_2 \odot r_1$ (commutativity under $\odot$).}
+\end{braceitems} \hfill
+
+\indent Finally, we said that a field $(\F,\oplus,\odot)$ is a commutative ring with $\odot$-identity $e$ in which all nonzero elements have a multiplicative inverse.\footnote{That is, all elements which are not the $\oplus$-identity 0.} That is, if $x$ is a nonzero element of $F$, then
+\begin{braceitems}[(1)]\addtocounter{enumi}{11}
+    \item \nt{$\forall\,x \in F,~\exists\,x^{-1}$ such that $x\odot x^{-1} = e$ ($\odot$-inverse).}
+\end{braceitems} \hfill
+
+\section{Axioms of $\bm{\R}$}
+
+\subsection{Axioms of Order}
+
+\indent On-top of a field we can consider the notion of an {\em ordered field}. We said that a set $\F$ is an ordered field if, noting that we can ``break up'' $\F$ into 3 parts (positives, zero, and negatives), there exists a subset $P \subset \F$ such that
+\begin{enumerate}[(1)]
+	\item $x, y \in P \implies x \oplus y \in P$ (additive closure).
+	\item $x, y \in P \implies x \odot y \in P$ (multiplicative closure).
+	\item $x \in P \implies -x \notin P$.
+	\item If $x \in \F$ then exactly one of the following hold:
+	\begin{enumerate}[(i)]
+		\item $x = 0$.
+		\item $x \in P$.
+		\item $x \notin P$.
+	\end{enumerate}
+\end{enumerate}
+
+and if $(\F, \odot, \oplus)$ also satisfies the field axioms (not introduced), then we say that $\F$ is an ordered field. From this we may work out that the real numbers $\R$ equipped with standard addition $+$ and multiplication $\cdot$ is indeed an ordered field.
+
+\subsection{Axiom of Completeness}
+
+\indent To construct the real numbers from the bottom-up we will require the notion of \underline{completeness} in addition to the Axioms of Order listed above. \\
+
+%
+% Completeness axiom
+%
+{\bf Completeness Axiom}: Any nonempty set of real numbers with an upper bound has a least upper bound (supremum) in the set. \\
+
+%
+% Example
+%
+{\bf Example}: {\em (Example of an incomplete ordered field)} Is the set of rationals $\Q$ an ordered field? We see that this set is clearly an ordered set since it may inherit its order from $\R$, and we can show that $\Q$ is a field satisfying the necessary requirements. \\
+
+\indent To test for completeness of $\Q$ consider the subset $\{q \in \Q~:~q^2 < 2\}$. Clearly this set is bound above by some number finite number, and so we may conclude that it has some upper bound. Is there a least upper bound? In $\R$ we would get that this least upper bound is $r = \sqrt{2}$. However, any $q < \sqrt{2}$ won't be an upper bound since
+\begin{equation*}
+	\exists\,q' \in \Q \text{ such that } q < q' < \sqrt{2}
+\end{equation*}
+
+Similarly, any $q > \sqrt{2}$ won't be a {\em least} upper bound since
+\begin{equation*}
+	\exists\,q'' \in \Q \text{ some other upper bound such that } q'' < q
+\end{equation*}
+
+and since $r = \sqrt{2}$ is provably irrational, we conclude that the rationals are not complete! That is, the rationals are {\em incomplete} since there is no rational number which acts as the supremum for $\{q \in \Q ~:~ q^2 < 2\}$ For this reason we are forced to expand our set to include the cases which cannot be ``reached'' by rational elements $q \in \Q$. \\
+
+\indent For this reason we introduce the set of real numbers $\R$ which satisfy essentially three conditions
+\begin{enumerate}[(1)]
+	\item $\R$ is a field.
+	\item $\R$ is ordered.
+	\item $\R$ is complete.
+\end{enumerate}
+
+
+\section{The Naturals and Rationals as a Subset of $\bm{\R}$}
+\subsection{Archimedean Property of $\bm{\N}$}
+
+%
+% Example
+%
+{\bf Example}: {\em (A consequence of completeness)} The reals have what we call the ``Archimedean property''. Given a real number $x$ there is an integer $n$ larger than $x$.
+
+\begin{proof} If $x \leq 0$ then let $n = 1$ and we're done. So, without loss of generality, suppose $x > 0$. Let $S$ be the set of integers $k$ such that $k \leq x$. \\
+
+\indent Is this set $S$ empty? No! Since $x > 0$ we have that $S$ contains at least elements of $\{0, -1, -2, ...\}$. By construction of $S$, we have that $S$ is bound above by $x$. Therefore, by completeness of $\R$ there is a least upper bound for $S \in \R$. Call this least upper bound $y \in \R$. \\
+
+\indent Consider now $y - \frac{1}{2} < y$ so that $y - \frac{1}{2}$ is not a least upper bound. The only way $y - \frac{1}{2}$ may fail to satisfy the definition of a least upper bound for $S$ is if some $k \in S$ is greater than $y - \frac{1}{2}$. That is, since $y - \frac{1}{2}$ is not a least upper bound then there is some $k \in S$ such that $k > y - \frac{1}{2}$. So,
+\begin{align*}
+	y - \frac{1}{2} &< k \\
+	\implies y + \frac{1}{2} &< k + 1 \\
+	\implies y < y + \frac{1}{2} &< k + 1 \\
+	\implies k + 1 &\notin S \\
+	\implies k + 1 &\nleq x \quad \text{(by definition of $S$)} \\
+	\implies k + 1 &> x
+\end{align*}
+
+as desired.
+\end{proof}
+
+\indent It is noteworthy that there exists ordered fields containing $\R$ (properly containing) that are {\em not} Archimedean (nonstandard models of $\R$). It is not hard to construct nonstandard models that fail to be Archimedean. In such sets we require elements that are so large that they cannot be reached by ``adding 1''. Similarly, if we take the reciprocal of these elements we get infinitesimally small quantities that remain $> 0$. \\
+
+Using the Archimedean property proven above we wish to prove the following corollary: \\
+
+%
+% Corollary
+%
+{\bf Corollary}: Between any two reals there is a rational. That is, if $x < y$ are real numbers then there is a rational $q$ with $x < q < y$.
+
+\begin{proof} If $y > x$ then $y - x > 0$ and by the field axioms
+\begin{align*}
+	(y - x)^{-1} &\in \R \quad \text{and} \\
+	(y - x)^{-1} &> 0
+\end{align*}
+
+By the Archimedean property, there exists an natural number $q \in \N$ such that 
+\begin{align*}
+	q &> (y - x)^{-1}, \quad q > 0 \\
+	\implies \frac{1}{q} &< y - x
+\end{align*}
+
+Now, consider \underline{\bf Case 1}: $0 \leq x$. Then
+\begin{equation*}
+	0 \leq x < y
+\end{equation*}
+
+and since $y$ is positive, then we get
+\begin{equation*}
+	y \cdot q > 0
+\end{equation*}
+
+We ask now whether there exists natural numbers $n \in \N$ such that
+\begin{align*}
+	y &\stackrel{?}{\leq} \frac{n}{q} \\
+	y\cdot q &\stackrel{?}{\leq} n
+\end{align*}
+
+\indent However, we are guaranteed such an $n \in \N$ exists by the Archimedean property for $y\cdot q \in \R$! That is, we are guaranteed that there exists an integer $n$ larger than $y\cdot q$, and since $y \cdot q$ is positive we are guaranteed that this $n$ is a natural number. \\
+
+\indent By induction/well ordering of $\N$ there exists a smallest such $n$ satisfying our inequality $y \leq \frac{n}{q}$. Call this least natural number by $p$ so that
+\begin{align*}
+	y\cdot q &\leq p \quad \text{but} \\
+	y\cdot q &\nleq p - 1 \quad \text{by construction of $p - 1$, so} \\
+	y &\leq \frac{p}{q} \quad \text{since $p, q > 0$, and} \\
+	y &\nleq \frac{p - 1}{q}
+\end{align*}
+
+Therefore,
+\begin{equation*}
+	\frac{p - 1}{q} < y \leq \frac{p}{q}
+\end{equation*}
+
+\indent We would like to show that that this rational number $\frac{p - 1}{q}$ is greater than $x$. To so write the following
+\begin{align*}
+	x &= y - (y - x) \\
+	\implies x &\leq \frac{p}{q} - (y - x)
+\end{align*}
+
+but we had that $\frac{1}{q} < y - x$, so
+\begin{align*}
+	x &\leq \frac{p}{q} - (y - x) < \frac{p}{q} - \frac{1}{q} \\
+	\implies x &< \frac{p - 1}{q} \\
+	\implies x &< \frac{p - 1}{q} < y
+\end{align*}
+
+as desired. We now consider {\bf \underline{Case 2}}: $0 > x \implies -x > 0$. By the Archimedean principle we are guaranteed that there exists some $n \in \N$ such that 
+\begin{align*}
+	-x &< n \\
+	\implies n + x &> 0 
+\end{align*}
+
+and since $x < y$ we have that
+\begin{equation*}
+	0 < n + x < n + y
+\end{equation*}
+
+Therefore, by Case 1 we have that there exists some $r \in \Q$ such that
+\begin{align*}
+	x + n &< r < n + y \\
+	\implies x &< r - n < y
+\end{align*}
+
+\indent Since $r \in \Q$ and $n \in \N$ we find that $r - n \in \Q$, and so we have successfully found some rational number $r - n$ satisfying
+\begin{equation*}
+	x < r - n < y
+\end{equation*}
+
+as desired.
+\end{proof} \hfill\\
+
+{\bf \em \indent We skipped two sections on ``The Extended Real Numbers'' and ``Sequences of Real Numbers''.}
+
+\section{Open and Closed Sets of $\bm{\R}$}
+
+\subsection{Open Sets}
+
+%
+% Definition, open sets
+%
+{\bf Definition} {(\em Open sets)}: We will define what it means to be an \underline{open set} on $\R$. A subset $O$ of $\R$ is called \underline{open} if 
+\begin{align*}
+	\forall\,x\in O,~\exists\,(a_x, b_x) &\text{ such that } (a_x, b_x) \subset O, \text{ and } \\
+	(a_x, b_x) &= \{r \in \R ~:~ a_x < r < b_x \}
+\end{align*}
+
+\indent That is, we say that $O$ is an {\em open} set if for every element $x \in O$ there is an open interval (depending on $x$) $I_x = (a_x, b_x)$ such that this interval is a subset of $O$, $x \in I_x \subset O$. Note that our typical notion of a ``closed'' interval, say $[0, 1]$ fails this definition since we may find some $x \in [0,1]$, namely $x = 0$ and $x = 1$, where we are {\em unable} to form an open interval $(a_x, b_x)$ containing $x$ that is also in $[0, 1]$. For example, if we take the left endpoint $x = 0$ then we are forced to create some open interval containing $0$. That is, our open interval will look something like
+\begin{equation*}
+	\{r~:~a < 0 < b\}
+\end{equation*}
+
+\indent However, any $a < 0$ we choose will not be in $[0, 1]$! So we see that such an interval cannot be open. \\
+
+\indent An alternate definition of openness is given in the book: A set $O$ of real numbers is called \underline{open} if for each $x \in O$, there is some $\delta > 0$ such that each $y$ satisfying $|x - y| < \delta$ must be an element of $O$, $y \in O$. That is,
+\begin{equation*}
+	\forall\,x\in O,~\exists\,\delta > 0 \quad |x - y| < \delta \implies y \in O
+\end{equation*}
+
+\indent We check again that our set $[0, 1]$ {\em fails} this criteria. Taking $\delta > 0$, we see that at the left endpoint $x = 0$, if we consider all the $y$ satisfying the inequality
+\begin{align*}
+	|x - y| &< \delta \\
+	|0 - y| &< \delta \\
+	|y| &< \delta \\
+	\implies -\delta < y &< \delta
+\end{align*}
+
+\indent However, for {\bf all} $\delta > 0$, we see that there are some $y$ satisfying $y < \delta$ which cannot be in our set $y \notin [0, 1]$, namely we have some negative $y < 0$. That is, we cannot find some $\delta > 0$ which permits all $y$ satisfying the inequality above to be wholly included in our set $[0, 1]$. \\
+
+\indent Now, consider the analogous {\em open} set $(0, 1)$. Note that we cannot take the left endpoint of our close set $x = 0$, and so we choose some sufficiently small $x = \epsilon > 0$. Consider all $y$ satisfying
+\begin{align*}
+	|x - y| &< \delta \\
+	|\epsilon - y| &< \delta \\
+	\implies -\delta < \epsilon - y &< \delta \\
+	\epsilon - \delta < y &< \delta + \epsilon
+\end{align*}
+
+\indent Since our definition only requires some $\delta > 0$ to exist, we see that a sufficiently small $\delta > 0$ will permit $y$ to be sufficiently close to $x$ so that $y$ may be an element of $(0, 1)$, $y \in (0, 1)$. \\
+
+%
+% Example
+% 
+{\bf Example}: {\em (Is all of $\R$ an open set?)} Take $x \in \R$. Can we find an interval (a connected interval),\footnote{I don't think we've officially defined connectedness. As far as I understand, a set $X$ is \underline{connected} if $X$ {\em cannot} be represented as the union of two or more nonempty open subsets. For example, $(0,1)$ is a (open) connected set since any union of {\em open} subsets, say $(0, 0.5) \cup (0.5, 1)$, will leave out at least one element in our original interval $(0, 1)$.}
+\begin{equation*}
+	(a_x, b_x) \quad \text{ such that } \quad (a_x, b_x) \in \R
+\end{equation*}
+
+\indent Clearly at any point $x \in \R$, we can find {\em at least one} subset $(a_x, b_x)$ where $(a_x, b_x)$ is a subset of our original set, which happens to be $\R$. This is pretty trivial since we can take any arbitrary interval, say
+\begin{equation*}
+	(x - 5, x + 12)
+\end{equation*}
+
+and find that this interval is obviously a subset of $\R$. \\
+
+%
+% Example
+%
+{\bf Example}: {\em (Is the empty set $\emptyset$ open?)} Take any $x \in \emptyset$ (there are no $x \in \emptyset$!). For any such $x$, we satisfy our definition of openness. This statement is said to be {\em vacuously} true since all $x \in \emptyset$ satisfy because there are no $x \in \emptyset$. \\
+
+%
+% Example
+%
+{\bf Example} {\em (Non-connected intervals)} Consider a non-connected interval, for example
+\begin{equation*}
+	O = (1, 2) \cup (4, 5)
+\end{equation*}
+
+\indent First, take any $x \in (1,2) \subset O$. Note that $x$ is in a connected open ``sub-interval'' in $O$. Likewise, if we take $x \in (4,5) \subset O$ then we see that this $x$ is also in a connected open ``sub-interval'' in $O$. From this we can see that any $x \in O$ must be in either the open set $(1, 2)$ or $(4, 5)$. That is, any $x \in O$ satisfies the definition of openness, and so $O$ is indeed open. \\
+
+%
+% Claim
+%
+{\bf Claim}: The intersection of two open sets $O_1, O_2$ is an open set $O_1 \cap O_2$.
+
+\begin{proof} If $O_1 \cap O_2 = \emptyset$ then $O_1 \cap O_2$ is open by vacuity. So, without loss of generality assume $O_1 \cap O_2 \neq \emptyset$. Take any $x \in O_1 \cap O_2$. We are required that for all such $x$ we must have an interval around $x$ given by
+\begin{equation*}
+	(x - \delta, x + \delta)
+\end{equation*}
+
+which remains in the intersection $O_1 \cap O_2$. Note that $O_1$ is open by assumption and $x \in O_1 \cap O_2 \implies x \in O_1$. So
+\begin{equation*}
+	\forall\,x \in O_1,~\exists\,\delta_1 > 0,~ \text{such that } (x - \delta_1, x + \delta_1) \subset O_1
+\end{equation*}
+
+is satisfied by assumption because $O_1$ is open. Similarly, since $O_2$ is open by assumption, and $x \in O_1 \cap O_2 \implies x \in O_2$. So,
+\begin{equation*}
+	\forall\,x \in O_2,~\exists\,\delta_2 > 0,~ \text{such that } (x - \delta_2, x + \delta_2) \subset O_2
+\end{equation*}
+
+\indent That is, for a small movement from $x$ given by $\delta_1 > 0$ and $\delta_2 > 0$ we remain inside our original set. If we are inside our set for both $\delta_1$ and $\delta_2$ then clearly we are inside the set for the {\em minimum} of $\delta_1$ and $\delta_2$. That is, if we set
+\begin{equation*}
+	\delta = \min\{\delta_1,\delta_2\}
+\end{equation*}
+
+then any $x \in O_1 \cap O_2$ will have some small open interval surrounding it given by this small movement $\delta$, and so
+\begin{equation*}
+	\forall\,x \in O_2 \cap O_2 ,~\exists\,\delta = \min \{\delta_1, \delta_2\} > 0,~ \text{such that } (x - \delta, x + \delta) \subset O_1 \cap O_2
+\end{equation*}
+
+is satisfied. Since $O_1$ and $O_2$ were arbitrary open sets we conclude that the intersection of two open sets is open, as desired. \\
+\end{proof}
+
+%
+% Corollary
+%
+{\bf Corollary}: Any intersection of a finite number of open intervals is open.
+
+\begin{proof} I think we didn't do an official proof in class. However, I think that a way that we can see this is that for any finite number of open intervals, say $n$ open intervals, we may proceed inductively on $n$ using the above result. That is, for a collection $\{O_1, O_2, ..., O_n\}$ of open sets, we may use the above result to conclude that
+\begin{align*}
+	O_1 &\cap O_2 \text{ is open.} \\
+	(O_1 &\cap O_2) \cap O_3 \equiv O_1 \cap O_2 \cap O_3 \text{ is open.} \\
+	((O_1 &\cap O_2) \cap O_3) \cap O_4 \equiv O_1 \cap O_2 \cap O_3 \cap O_4 \text{ is open.} \\
+	&\vdots \\
+	(...(O_1 &\cap O_2) \cap ... ) \cap O_n \equiv O_1 \cap O_2 \cap \cdots \cap O_n \text{ is open.}
+\end{align*}
+\end{proof}
+
+{\bf Example} {\em (Intersections of countably infinite open sets)}: What is the intersection of the following open sets?
+\begin{equation*}
+	(-1, 1) \cap \left(-\frac{1}{2}, \frac{1}{2}\right) \cap \left(-\frac{1}{3}, \frac{1}{3}\right) \cap \cdots \cap \left(-\frac{1}{k}, \frac{1}{k}\right) \cap \cdots
+\end{equation*}
+
+Repeating this process as $k \to \infty$ we find that what we are left with at the end of this process is the set
+\begin{equation*}
+	\{0\} = [0]
+\end{equation*}
+
+\indent Is this set open? No! For all $x \in \{0\}$, namely $x = 0$, we want to be able to find at least one $\delta > 0$ such that $(x - \delta, x + \delta) \in \{0\}$. However, clearly no such nonzero $\delta$ exists since any movement will take us out of the singleton set $\{0\} = [0]$. So, we have just demonstrated that although a finite number of intersections of open sets is open, a countably infinite number of intersections of open sets may not be open. \\
+
+%
+% Proposition
+%
+{\bf Proposition}: Let $O_i$ be open sets in $\R$, where $i \in I$ is some indexing, and let
+\begin{equation*}
+	S = \bigcup_{i \in I} O_i
+\end{equation*}
+
+\indent Then we claim that $S$ is an open set. That is, the union of any collection of open sets $\{O_i\}$ is open.
+
+\begin{proof} Take $x \in S$. For some index $i \in I$, we have that our $x$ is an element of at least one $O_i$. Since all the $O_i$ are open then for this $x$
+\begin{equation*}
+	\exists\,\delta > 0, \text{ such that } (x - \delta, x + \delta) > 0
+\end{equation*}
+
+\indent Since we let $x \in S$ be arbitrary we may conclude that $S$ is indeed an open set, as desired. Note that we set no limitations on the indexing set $I$. Thus, we have not only proven that the union of a finite number of open sets is open, but also a union of infinite open sets is open.
+\end{proof}
+
+%
+% Aside
+% 
+{\bf \em Aside}: A collection of subsets of a set $X$ are called a \underline{topology} on $X$ if
+\begin{enumerate}
+	\item $\emptyset$ and $X$ are open.
+	\item Finite intersections of the collection are in the collection.
+	\item Arbitrary unions from the collection are in the collection.
+\end{enumerate}
+
+\indent We find that the ``smallest'' topology for a set $X$ is the collection $\{\emptyset,X\}$ and the ``biggest'' is the power set $\mathcal P(X)$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

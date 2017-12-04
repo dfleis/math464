@@ -1,0 +1,367 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{bm} % bold in mathmode \bm
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{dsfont} % for indicator function \mathds 1
+\usepackage{tikz,pgf,pgfplots}
+\usepackage{enumerate} 
+\usepackage[multiple]{footmisc} % for an adjascent footnote
+\usepackage{graphicx,float} % figures
+\usepackage{centernot} % for \centernot\implies (wrapped in \nimplies)
+
+%% set noindent by default and define indent to be the standard indent length
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%% some math macros
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % vector norm
+\newcommand*{\vv}[1]{\vec{\mkern0mu#1}} % \vec with arrow on top
+\renewcommand{\Re}{\mathfrak {Re}}
+\renewcommand{\Im}{\mathfrak {Im}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\X}{\mathbb X}
+\newcommand{\powerset}{\mathcal P}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\gm}{\mathrm{gm~}}
+\newcommand{\am}{\mathrm{am~}}
+\newcommand{\trace}{\mathrm{trace~}}
+\newcommand{\Trace}{\mathrm{Trace~}}
+\newcommand{\rank}{\mathrm{rank~}}
+\newcommand{\Rank}{\mathrm{Rank~}}
+\newcommand{\Span}{\mathrm{Span~}}
+\newcommand{\card}{\mathrm{card~}}
+\newcommand{\Card}{\mathrm{Card~}}
+\newcommand{\limplies}{~\Longleftarrow ~} % leftwards implies, for some reason requires spacing to mirror the formatting of \implies (and therefore \rimplies below)
+\newcommand{\rimplies}{\implies} % rightwards implies (for consistency)
+\newcommand{\nimplies}{\centernot\implies} % rightwards implies with line struck through
+\newcommand{\indist}{\,{\buildrel \mathcal D \over \sim}\,}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny 
+	def}}}{=}}} % equal sign with def above
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Real Analysis\\Lecture Notes}
+\author{The Real Number System}
+\date{September 21 2016 \\ Last update: \today{}}
+\maketitle
+
+\section{Open and Closed Sets of $\bm{\R}$ (con't)}
+
+\subsection{Open Sets}
+
+Last class we introduced the notion of an open set: \\
+
+%
+% Definition, open sets
+%
+{\bf Definition} {(\em Open sets)}: A set $O \subset \R$ said to be an \underline{open set} if 
+\begin{equation*}
+	\forall\,x\in O,~\exists\,\delta > 0 \quad |x - y| < \delta \implies y \in O
+\end{equation*}
+
+\indent That is, $O$ is an \underline{open set} if, for all points $x \in O$, we remain in $O$ if we get sufficiently close to $x$, i.e. an \underline{open set} is a set for which all points have a small ball surrounding them that remains enclosed in $O$. An alternate, but equivalent, definition an \underline{open set} is given as follows: A set $O \subset \R$ is said to be an \underline{open set} if 
+\begin{equation*}
+	\forall\,x\in O,~\exists\,(a_x, b_x) \text{ with } x \in (a_x, b_x), \text{ such that } (a_x, b_x) \subset O
+\end{equation*}
+
+for the interval $(a_x, b_x)$ (depending on a given $x$) defined as $\{r \in \R ~:~ a_x < r < b_x \}$. That is, we say that $O$ is an {\em open} set if for every point $x \in O$ there is a small ball around $x$ that remains fully enclosed by $O$. \\
+
+With this definition of an open set we consider the (fairly long and intensive) following result: \\
+
+{\bf Proposition}: Every open set in $\R$ is a countable union of disjoint open intervals of the form $(a, b)$ (i.e. open and connected),\footnote{The intervals $(-\infty, b)$, $(a,\infty)$, and $(-\infty,\infty)$ count as open intervals.} where $(a, b)$ is defined by
+\begin{equation*}
+	(a, b) = \{x \in \R ~:~ a < x < b\}
+\end{equation*}
+
+That is any open set $O$ of $\R$ can be expressed as
+\begin{equation*}
+	O = \bigcup^\infty_{n = 1} (a_n, b_n), \quad a_n < b_n
+\end{equation*}
+
+where all open intervals $(a_k, b_k)$ are disjoint, meaning
+\begin{equation*}
+	(a_n, b_n) \cap (a_m, b_m) = \emptyset, \quad \text{if } m \neq n
+\end{equation*}
+
+\begin{proof} Our proof will make use of the properties of $\R$ that we have introduced in previous lectures. In particular, we will rely on the completeness of the reals. Now, take $O$ an open set in $\R$, $O \neq \emptyset$. Let $x \in O$ be arbitrary and fixed. Since $O$ is an open set then our $x$ satisfies
+\begin{equation*}
+	\exists\,\delta > 0,~\text{such that } (x - \delta, x + \delta) \subset O
+\end{equation*}
+
+therefore
+\begin{align*}
+	\exists\,y &> x,~\text{such that } (x, y) \subset O \\
+	\exists\,z &< x,~\text{such that } (z, x) \subset O
+\end{align*}
+
+where the candidate for $y$ is $y = x + \delta$ so that $(x, y) = (x, x + \delta) \subset O$ and the candidate for $z$ is $z = x - \delta$ so that $(z, x) = (x - \delta, x) \subset O$. Therefore, the sets given by
+\begin{align*}
+	\{y \in \R ~:~ x < y \text{ and } (x, y) \subset O\} \\
+	\{z \in \R ~:~ z < x \text{ and } (z, x) \subset O\}
+\end{align*}
+
+are {\em not} empty since they at least contains $x + \delta$ and $x - \delta$, respectively. Lets assume that the set $\{y \in \R ~:~ x < y \text{ and } (x, y) \subset O\}$ has some upper bound and if it has an upper bound, then by the completeness of $\R$, the set must have a supremum. Call this supremum $b$. So,
+\begin{equation*}
+	b = \sup \{y\in\R ~:~ x < y, (x,y) \subset O\}
+\end{equation*}
+
+Similarly, by the same logic let $a$ be the infinitum of the set $\{z \in \R ~:~ z < x \text{ and } (z, x) \subset O\}$ so that
+\begin{equation*}
+	a = \inf \{z\in \R~:~ (z, x) \subset O\}
+\end{equation*}
+
+with this pair of $a$ and $b$ let us construct the open interval $I_x = (a,b)$ which we can see contain $(x - \delta, x + \delta)$ by construction. Lets establish some properties of the interval $I_x$ for $x \in O$ and $O$ is an open set. \\
+
+{\bf We first claim that $\bm{I_x \subset O}$}: Take $w \in I_x = (a,b)$ and assume $x < w$. Note that since $w \in (a,b)$ we have $w < b$ and so $w$ cannot be an upper bound for
+\begin{equation*}
+	\{y \in \R ~:~ x < y \text{ and } (x, y) \subset O\} \\
+\end{equation*}
+
+because it is {\em false}\footnote{I need to think about this one a bit more...} that $y \leq w$ for all such $y$ by the definition of $b$ the supremum. Therefore,
+\begin{equation*}
+	\exists\,y\in\R, \text{ such that } (x,y) \subset O \text{ and } w < y
+\end{equation*}
+
+\indent Now, since $w < y$, and since have assumed $x < w$, we have that $w \in (x, y)$. But the interval $(x, y) \subset O$. Therefore, we conclude that
+\begin{equation*}
+	w \in O
+\end{equation*}
+
+and
+\begin{equation*}
+	w \in I_x \subset O
+\end{equation*}
+
+\indent Similarly, if we had chosen $w \in I_x$ such that $a < w < x$, then for our $z$ defined above we have some $z$ such that $z < w < x$ by the definition of the infimum. So $(z, x) \subset O$, and
+\begin{equation*}
+	w \in I_x = (a,b) \subset O
+\end{equation*}
+
+{\bf Next, we claim that $\bm{b, a \notin O}$}: Starting with $b$, suppose $b \in O$. By the definition of the open set $O$
+\begin{equation*}
+	\exists\,\delta > 0, \text{ such that } (b - \delta, b + \delta) \subset O
+\end{equation*}
+
+\indent So $b - \delta < b \implies b - \delta$ cannot be an upper bound for the set $\{y\in\R~:~(x,y)\subset O\}$ since there is some $y > b - \delta$ for which $(x, y)$ is still in $O$. If $(x, y) \subset O$ and $(b - \delta, b + \delta) \subset O$ then the union of these sets is open and
+\begin{equation*}
+	(x, y) \cup (b - \delta, b + \delta) \subset O
+\end{equation*}
+
+So, $(x, b + \delta) \subset O$. But $b$ was the supremum of the right endpoints, $b = \sup\{y~:~(x,y) \subset O\}$, hence
+\begin{equation*}
+	b + \delta \leq b \quad \text{Contradiction!}
+\end{equation*}
+
+\indent Therefore, we conclude that $b \notin O$. Similarly, by a symmetric argument we may conclude that $a\notin O$. \\
+
+{\bf Recap}:\footnote{I'm having trouble with this part...} We've been trying to show that all open intervals in $\R$ can be expressed as a countable union of disjoint open sets. As $x$ ranges over our open set $O$, the intervals $I_x$ are in $O$ (from our work above), and so $O$ is the union of all these intervals $I_x$ as we go through all $x \in O$. That is,
+\begin{equation*}
+	\bigcup_{x \in O} I_x = O
+\end{equation*}
+
+\indent Now, consider two such sets in $O$, say $(a,b)$, $a < b$, and $(c,d)$, $c < d$. We want to show that if these intervals are {\em not} disjoint then they {\em must} be identical: \\
+
+{\bf We now claim that if $\bm{(a,b)\cap(c,d)\neq\emptyset}$ then $\bm{(a,b)=(c,d)}$}: Suppose $(a,b)\cap(c,d)\neq\emptyset$. What would happen if $c \geq b$? If $b \leq c$ then these intervals would be disjoint since we would have at least the point $b = c$ which would ``divide'' the two intervals into disjoint sets since $b = c \notin (a,b)$ and $b = c \notin (c,d)$. Therefore our intersection would be $\emptyset$, contradicting our assumption, and so $c < b$. \\
+
+\indent What if we have $a \geq d$? If $a \geq d$ then once again our intervals would be disjointly divided by at least one point $a = d$ since $a = d \notin (c,d)$ and $a = d \notin (a,b)$. So the intersection is once again empty, contradicting our assumption, and so $a < d$. \\
+
+That is, we have found so far that $a < d$ and $c < b$. \\
+
+\indent We know that $a,b,c,d \notin O$. Since $c \notin O$ then $c \notin (a,b)$. Since $c < b$, together with $c \notin (a,b)$ then we must have $c \leq a$. Similarly, since $a \notin O$ we get $a \notin (c,d)$ and since $a < d$, then we must have $a \leq c$. Taking these two inequalities together yields
+\begin{align*}
+	c \leq a &\leq c \\
+	\implies c &= 0
+\end{align*}
+
+\indent A symmetric argument yields $b = d$, and so we conclude that $I_x$ are indeed either disjoint or identical. Note that for each disjoint $I_x$ we have a unique rational $q \in \Q$ such that $q \in I_x$ that may uniquely identity an open interval (by the density of $\Q$ in $\R$). Therefore, we get a 1-1 map from $I_x$ onto a countable subset of $q \in \Q$. So, we are finally able to conclude that every open set $O$ in $\R$ is composed of a countable union of disjoint open intervals, as desired.
+\end{proof}
+
+{\bf Example}: Consider the union
+\begin{equation*}
+	(0, 1) \cup (1, 2) \cup (2, 3) \cup \cdots \cup (k - 1, k) \cup (k, k + 1) \cup \cdots
+\end{equation*}
+
+\indent Clearly this is a countable union of disjoint open sets. Therefore, by our above theorem we may conclude that sets of this form are open sets. 
+
+\subsection{Compact Sets}
+
+{\em ``What does finiteness mean in topology?''} We know that {\em finite} sets are ``nice''. That is, (1) finite sets are {\em bounded}; (2) In $\R$, finite sets contain their $\sup$ and $\inf$ and so it makes sense to consider a $\max$ and $\min$; (3) When performing some process on finite sets we are guaranteed that this process will end. So, it makes sense to introduce some definition of ``small'' sets.\footnote{I think this is where the term ``compact'' comes from -- Using the real-world definition of ``compact'' we can imagine that if something is ``compact'' then it is containable, in some sense.} That is, since finite sets are so nice to work with it makes sense to define precisely what we mean so that we can work with these objects in a rigorous framework. To do this we will need to begin with the following definitions: \\
+
+{\bf Definition} {\em (Open cover of a set)}: An \underline{open cover} of a subset $E$ in some space $X$ is a collection of {\em open sets} $\{O_i\}$ whose {\em union} ``covers'' (i.e. wholly contains) $E$, where $i \in I$ is some (potentially uncountable!) indexing. That is, $\{O_i\}$ is an open cover of $E \subset X$ if
+\begin{equation*}
+	E \subset \bigcup_{i \in I} O_i
+\end{equation*}
+
+{\bf Definition} {\em (Subcover of a cover)}: A \underline{subcover} is a subcollection of $\{O_i\}_{i \in I}$. That is, $\{O_{i_n}\}_{i_n \in I}$ is a subcover of $\{O_i\}_{i\in I}$ if each $i_n$ are specific indices found in $I$. In the future we will usually want to consider finite subcovers, but this definition doesn't necessarily require this (i.e. the subcover may still be uncountable). \\
+
+{\bf Example}: The interval $\left[ \frac{1}{2}, 1\right)$ has a cover $\{O_n\}^\infty_{n=3}$ where each $O_n = \left(\frac{1}{n}, 1 - \frac{1}{n}\right)$.\footnote{We start at $n = 3$ because if we started at $n = 1$ we'd get the interval $(1, 0)$ which either doesn't make sense, or is $(0, 1)$ which makes our example trivial. If we started at $n = 2$ then we'd get the interval $\left(\frac{1}{2},\frac{1}{2}\right)$ which isn't particularly interesting.} Note that our intervals $O_n$ look like
+\begin{align*}
+	n = 3 &\mapsto \left(\frac{1}{3}, \frac{2}{3}\right) \\
+	n = 4 &\mapsto \left(\frac{1}{4}, \frac{3}{4}\right) \\
+	n = 5 &\mapsto \left(\frac{1}{5}, \frac{4}{5}\right) \\
+	&\vdots \\
+	n = m &\mapsto \left(\frac{1}{m}, 1 - \frac{1}{m}\right), \quad m = 3, 4, ... \\
+	&\vdots
+\end{align*}
+
+\indent By construction we see that all $O_n$ are open sets, satisfying our openness criteria. Clearly $\frac{1}{2}$ is covered by all our sets $O_n$. Also, $\frac{3}{4}$ is covered, not by $O_4$, but instead by $O_5$ since $O_4 = \left(\frac{1}{4}, \frac{3}{4}\right)$ is open and does not contain $\frac{3}{4}$. In fact, any point $x \in\left[\frac{1}{2}, 1\right)$ will {\em eventually} be covered by some set $O_i \in \{O_n\}^\infty_{n = 3}$. That is, any point $x \in \left[\frac{1}{2},1\right)$ will be covered by the some interval $O_{k} = \left(\frac{1}{k}, 1 - \frac{1}{k}\right)$ for sufficiently large $k$.\footnote{I think this relies on the Archimedean property.} \\
+
+\indent However, we could have considered lots of covers! For example, is the collection of intervals $\{(0,2)\}$ an open cover? Well our collection of ``intervals'' is actually just the single interval $(0, 2)$ which is open by construction. Furthermore, any $x \in \left[\frac{1}{2}, 1\right)$ will be contained by some open interval in the collection $\{(0, 2)\}$, namely the interval $(0, 2)$. \\
+
+\indent We could also consider an {\em uncountably large} cover. We could construct the cover $\{O_x\}_{x \in \left[ \frac{1}{2}, 1 \right)}$ such that
+\begin{equation*}
+	O_x = (x - \delta, x + \delta), \quad \delta > 0
+\end{equation*}
+
+\indent Thus, our cover becomes $\{ (x - \delta, x + \delta) \}_{x \in \left[ \frac{1}{2}, 1 \right)}$, which consists of open sets by construction. Hopefully it is clear why this cover is indeed uncountable (there are an uncountable number of $x$ in the interval $\left[\frac{1}{2}, 1\right)$), and trivially every $x$ is contained by some open interval in $\{O_x\}$, namely the interval $O_x = (x - \delta, x + \delta)$. \\
+
+\indent These are all examples of covers. A natural question to ask is (especially when considering infinite covers): Given a cover of $E$, do we need all the sets $O_i$ to cover $E$? Using our previous example of the interval $\left[ \frac{1}{2}, 1 \right)$ and its cover $\{O_n\}^\infty_{n=3} = \left\{\left(\frac{1}{n}, 1 - \frac{1}{n}\right)\right\}$, we should notice that since $\left(\frac{1}{3}, 1 - \frac{1}{3}\right) \subset \left(\frac{1}{4}, 1 - \frac{1}{4}\right)$, we can throw away the first open set at $n = 3$ and still cover our interval. In fact, we can throw away any finite number of open sets from $\{O_n\}^\infty_{n = 3}$ since eventually there will be some $k$ sufficiently large such that all removed intervals will be wholly contained by $\left(\frac{1}{k}, 1 - \frac{1}{k}\right)$. \\
+
+\indent What about the cover $\{O_n\} = \{(0, 2)\}$? Well, we can consider the trivial subcover, the cover itself, but if we remove any open set in the collection (i.e. we remove the only open set $(0, 2)$ in $\{O_n\}$) then we will not longer be able to cover our original interval $\left[\frac{1}{2},1\right)$. \\
+
+\indent What about our uncountable covering $\{O_x\}_{x\in\left[\frac{1}{2},1\right)} = \{(x - \delta, x + \delta)\}_{x\in\left[\frac{1}{2},1\right)}, \delta > 0$? Well, lets consider the case where $\delta = \frac{1}{10}$. We should be able to see that we can {\em completely} cover $\left[ \frac{1}{2},1\right)$ by taking the collection of open sets
+\begin{align*}
+	x = \frac{1}{2} \mapsto \left(\frac{1}{2} - \frac{1}{10}, \frac{1}{2} + \frac{1}{10}\right) &= \left(\frac{4}{10}, \frac{6}{10}\right) \\
+	x = \frac{6}{10} \mapsto \left(\frac{6}{10} - \frac{1}{10}, \frac{6}{10} + \frac{1}{10}\right) &= \left(\frac{5}{10}, \frac{7}{10}\right) \\
+	x = \frac{7}{10} \mapsto \left(\frac{7}{10} - \frac{1}{10}, \frac{7}{10} + \frac{1}{10}\right) &= \left(\frac{6}{10}, \frac{8}{10}\right) \\
+	x = \frac{8}{10} \mapsto \left(\frac{8}{10} - \frac{1}{10}, \frac{8}{10} + \frac{1}{10}\right) &= \left(\frac{7}{10}, \frac{9}{10}\right) \\
+	x = \frac{9}{10} \mapsto \left(\frac{9}{10} - \frac{1}{10}, \frac{9}{10} + \frac{1}{10}\right) &= \left(\frac{8}{10}, 1\right) \\	
+\end{align*}
+
+so that their union is a cover for $\left[ \frac{1}{2}, 1 \right)$
+\begin{align*}
+\left[ \frac{1}{2}, 1\right) \subset \left(\frac{4}{10}, \frac{6}{10}\right) \cup \left(\frac{5}{10}, \frac{7}{10}\right) \cup \left(\frac{6}{10}, \frac{8}{10}\right) \cup \left(\frac{7}{10}, \frac{9}{10}\right) \cup \left(\frac{8}{10}, 1\right) \\
+\end{align*}
+
+\indent That is, we have found not only a subcover from a uncountable cover, but we have found a finite subcover containing 5 open sets from an uncountable set. \\
+
+\indent On the topic of finite subcovers, lets go back to our cover $\{O_n\}^\infty_{n=3} = \left\{\left(\frac{1}{n}, 1 - \frac{1}{n}\right)\right\}$ of $\left[ \frac{1}{2}, 1\right)$. We said that we could construct many subcovers by removing any finite number of open intervals contained in the cover. However, we {\em cannot} construct a finite subcover from this particular cover since stopping at any finite $n$ yielding the interval $\left(\frac{1}{n}, 1 - \frac{1}{n}\right)$ will still leave some points in $\left[\frac{1}{2},1\right)$ uncovered. That is, we require infinitely many elements in our cover in order to successfully construct a cover for $\left[ \frac{1}{2}, 1\right)$. \\
+
+We are now in a good position to define what a compact set is. \\
+
+{\bf Definition}: {\em (Compact set)} A subset $A$ of the reals is called \underline{compact} if every open cover of $A$ contains a finite subcover. That is, we call a subset $A \subset \R$ \underline{compact} if whenever 
+\begin{equation*}
+	A \subset \bigcup_{i \in I} O_i, \quad O_i \text{ open sets}
+\end{equation*}
+
+then there is a finite subset $J$ of $I$ such that
+\begin{equation*}
+	A \subset \bigcup_{i \in J} O_i
+\end{equation*}
+
+\indent From our previous work it is easy to see that $\left[ \frac{1}{2}, 1\right)$ is {\em not} compact since we had found a cover of $\left[ \frac{1}{2}, 1\right)$ that did not contain a finite subcover of $A$. \\
+
+{\bf Example}: {\em ($\R$ is not compact)} In order to show that $\R$ is not compact we must demonstrate that no finite collection of open sets can cover $\R$. \\
+
+Suppose we try to cover $\R$ by the collection of sets
+\begin{equation*}
+	\R = \bigcup_{n\in\N} (-n, n)
+\end{equation*}
+
+Clear $\R$ is the union of these connected open sets. However, we cannot form a union of a {\em finite} number of open sets from this collect, i.e.
+\begin{equation*}
+	\nexists\, (-n_1, n_1) \cup (-n_2, n_2) \cup \cdots \cup (-n_k, n_k)
+\end{equation*}
+
+such that
+\begin{equation*}
+	\R = \bigcup_{i\in\{1,...,k\} \text{ finite}} (-n_i, n_i)
+\end{equation*}
+
+and so $\R$ fails our definition of compactness. \\
+
+{\bf Example}: {\em (Is $\{2,7\}$ compact?)} Yes! Any cover of $\{2, 7\}$ must contain either one or two open sets containing $\{2, 7\}$. Removing all open sets from the cover, we are left with at most two open sets. That is, we are left with a finite subcover for all covers of $\{2, 7\}$, and so $\{2, 7\}$ is compact. In fact, from this example it should be fairly easy to see that any finite subset of $\R$ is compact. \\
+
+\subsection{Lindel\"{o}f Condition}
+
+\indent We wish to generalize the notion of compactness to consider the case of a countably infinite number of subcovers for every cover of a given set. This generalization is the Lindel\"{o}f Condition and is as follows: \\
+
+{\bf Lindel\"{o}f Condition}: If $U$ is a collection of open sets $U = \{O_i\} = \bigcup O_i$ of $\R$, then $U$ is a union of \underline{countably many open sets $O_i$}. That is, if $U = \bigcup O_i$ is a set of real numbers then
+\begin{equation*}
+	U = \bigcup O_i = \bigcup^\infty_{i = 1} O_i
+\end{equation*}
+
+\indent Notice that this is a weakening the definition of compactness to include countable unions in $\R$. So one may think of the Lindel\"{o}f condition as the weakening of compactness.
+
+\begin{proof} Let $U$ be a collection of potentially an uncountable number of open sets $\{O_i\}$. Let $x \in U$ be an arbitrary real number. By construction of $U$, since $x \in U$, we must have at least one open set $O_i$ in our (potentially uncountable) collection $\{O_i\}$ such that $x \in O_i$. Since $O_i$ is open there exists an open interval $I_x = (a, b)$ so that $x \in (a_x,b_x) = I_x \subset O_i$, for $a_x < b_x$ real numbers. Recall that between any two reals there is a rational and so we may pick rational numbers $p_x, q_x$ such that $a_x < p_x < x < q_x < b$ and construct the open interval with rational endpoints $(p_x, q_x)$ such that
+\begin{equation*}
+	x \in (p_x, q_x) \subset (a_x, b_x) = I_x \subset O_i \subset U
+\end{equation*}
+
+\indent We have shown before that the collection of all intervals with rational endpoints $(p_x, q_x)$ is countable. However, we can construct $U$ by the union 
+\begin{equation*}
+	U = \bigcup_{x \in U} (p_x, q_x)
+\end{equation*}
+
+\indent For each interval in the collection of intervals with rational endpoints $\{(p_x, q_x)\}$ select any single set $O_i$ in the (potentially uncountable) original collection $\{O_i\}$ that contains $(p_x, q_x)$, $(p_x, q_x) \subset O_i$. This gives us our bijection $(p_x, q_x) \leftrightarrow O_i$ and so we may conclude that since
+\begin{equation*}
+	U = \bigcup_{x \in U} (p_x, q_x)
+\end{equation*}
+
+then since $(p_x, q_x) \subset O_i$, we have, for countably many $O_i$
+\begin{equation*}
+	U = \bigcup^\infty_{i = 1} O_i
+\end{equation*}
+
+as desired.
+\end{proof}
+
+\indent Critically, notice that we're presenting the Lindel\"{o}f condition is the context of subsets of $\R$. It may not be the case that any arbitrary collection of sets is Lindel\"{o}f. In general, a collection of sets $C$ may or may not have the \underline{Lindel\"{o}f property}:
+
+\begin{quote} A collection $C$ of sets is said to be \underline{Lindel\"{o}f} if every open cover has a countable subcover.
+\end{quote}
+
+In relation to this definition we see the obvious weakening of \underline{compactness}:
+\begin{quote}
+	A collection $C$ of sets is said to be \underline{compact} if every open cover has a finite subcover.
+\end{quote}
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

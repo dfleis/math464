@@ -1,0 +1,352 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{bm} % bold in mathmode \bm
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{dsfont} % for indicator function \mathds 1
+\usepackage{tikz,pgf,pgfplots}
+\usepackage{enumerate} 
+\usepackage[multiple]{footmisc} % for an adjascent footnote
+\usepackage{graphicx,float} % figures
+\usepackage{centernot} % for \centernot\implies (wrapped in \nimplies)
+
+%% set noindent by default and define indent to be the standard indent length
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%% some math macros
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % vector norm
+\newcommand*{\vv}[1]{\vec{\mkern0mu#1}} % \vec with arrow on top
+\renewcommand{\Re}{\mathfrak {Re}}
+\renewcommand{\Im}{\mathfrak {Im}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\X}{\mathbb X}
+\newcommand{\powerset}{\mathcal P}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\gm}{\mathrm{gm~}}
+\newcommand{\am}{\mathrm{am~}}
+\newcommand{\trace}{\mathrm{trace~}}
+\newcommand{\Trace}{\mathrm{Trace~}}
+\newcommand{\rank}{\mathrm{rank~}}
+\newcommand{\Rank}{\mathrm{Rank~}}
+\newcommand{\Span}{\mathrm{Span~}}
+\newcommand{\card}{\mathrm{card}}
+\newcommand{\Card}{\mathrm{Card}}
+\newcommand{\limplies}{~\Longleftarrow ~} % leftwards implies, for some reason requires spacing to mirror the formatting of \implies (and therefore \rimplies below)
+\newcommand{\rimplies}{\implies} % rightwards implies (for consistency)
+\newcommand{\nimplies}{\centernot\implies} % rightwards implies with line struck through
+\newcommand{\indist}{\,{\buildrel \mathcal D \over \sim}\,}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny 
+	def}}}{=}}} % equal sign with def above
+\newcommand{\cl}{\mathrm{cl}} % closure of a set cl(X)
+\newcommand{\Cl}{\mathrm{Cl}} % closure of a set Cl(X)
+\newcommand{\closure}{\mathrm{closure}} % closure of a set closure(X)
+\newcommand{\Closure}{\mathrm{Closure}} % closure of a set Closure(X)
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Real Analysis\\Lecture Notes}
+\author{Metric Spaces}
+\date{November 28 2016 \\ Last update: \today{}}
+\maketitle
+
+\section{Baire Categories}
+
+%
+% Baire Category Theory
+%
+{\bf Baire Category Theorem:} Let $X$ be a complete metric space and take a countable family of dense open sets $\{O_i\}^\infty_{i = 1}$ from $X$. The intersection
+\begin{equation*}
+	\bigcap^\infty_{i = 1} O_i
+\end{equation*}
+
+is dense. 
+
+\begin{proof} Take a nonempty open set $U$ of $X$. Since we claim that the countable intersection $\bigcap^\infty_{i = 1} O_i$ is dense in $X$ we wish to prove that
+\begin{equation*}
+	U \cap \left( \bigcap^\infty_{i = 1} O_i \right) \neq \emptyset
+\end{equation*}
+
+\indent It turns out that this nonemptyness will emerge as a consequence of completeness. We rewrite this intersection as
+\begin{equation*}
+	U \cap \left( \bigcap^\infty_{i = 1} O_i \right) = \bigcap^\infty_{i = 1} \left( U \cap O_i \right)
+\end{equation*}
+
+and the intersection of each $\left( U \cap O_i \right) \neq \emptyset$ since $O_i$ is each $O_i$ is dense in $X$ so that $\overline{O_i} = X$. \\
+
+\indent Take $x_1 \in U \cap O_1$. Since $U$ and each $O_i$ is open we have that each $\left( U \cap O_i \right)$ is open and so we can form the open spheres
+\begin{equation*}
+	S_{x_1, r_1} \equiv S_1 \subset U \cap O_1
+\end{equation*}
+
+\indent Thus, we remain within our open subset $U$ by remaining within the open sphere $S_1$ since $S_1 \subset U \cap O_1$ and so $S_1 \subset U$. \\
+
+\indent Now, pick $O_2$ in our intersection. We have that $O_2$ is dense and open in $X$. Therefore, much like $O_1$,
+\begin{equation*}
+	O_2 \cap S_1 \neq \emptyset
+\end{equation*}
+
+and $O_2 \cap S_1$ is open since both sets are open. Take $x_2 \in O_2 \cap S_1$ and note that since this intersection is open we may take some open sphere $S_2$ such that
+\begin{equation*}
+	S_2 = S_{x_2, r_2} \subset O_2 \cap S_1
+\end{equation*}
+
+\indent From these points $x_1$ and $x_2$ we have the distance $\rho(x_1, x_2) < r_1 - r_2$ since $x_1 \in S_1 \equiv S_{x_1, r_1}$ and $x_2 \in S_2 \equiv S_{x_2, r_2}$ (draw a diagram). \\
+
+In addition to this construction of $S_1$ and $S_2$ let us insist that $r_2$ is bound above by
+\begin{equation*}
+	r_2 < \frac{1}{2}r_1
+\end{equation*}
+
+so that our sequence of radii $r_n \to 0$. \\
+
+{\bf Claim}: We claim that the closure of $S_2$ is a subset of $S_1$, $\overline{S_2} \subset S_1$. To show this let $y \in \overline{S}_2 \setminus S_2$ so that $y$ is a bound along the closed boundary of $\overline{S}_2$. We find that
+\begin{align*}
+	\rho(y,x_2) &= r_2 \\
+	\rho(y,x_1) &\leq \rho(y, x_2) + \rho(x_2, x_1) \\
+	&< r_2 + (r_1 - r_2) \\
+	&= r_1 \\
+	\implies \rho(y,x_1) &< r_1
+\end{align*}
+
+Therefore,
+\begin{align*}
+	y &\in \overline{S}_2 \setminus S_2 \\
+	\implies y &\in S_1 \\
+	\implies \overline{S}_2&\setminus S_2 \subset S_1 \\
+	\implies \overline{S}_2 &\subset S_1
+\end{align*}
+
+Now, take $O_3 \cap S_2$ and $x_3 \in O_3 \cap S_2$ and take the sphere $S_3$
+\begin{equation*}
+	S_3 = S_{x_3, r_3}
+\end{equation*}
+
+such that
+\begin{equation*}
+	r_3 < \frac{1}{2} r_2 < \frac{1}{4} r_1
+\end{equation*}
+
+Then, once again, we have that $\overline{S}_3 \subset S_2$ by the same argument as above. \\
+
+Repeating this process inductively we get 
+\begin{equation*}
+	r_n < \frac{1}{2(n - 1)} r_1 \longrightarrow 0 \quad \text{as } n\longrightarrow\infty	
+\end{equation*}
+
+\indent Thus, our radii of open spheres $S_n \subset O_n\cap S_{n - 1}$ vanish as $n\to\infty$. By this construction we find our sequence of centers $(x_n) = (x_1, x_2, ...)$ is Cauchy since the radii of the open spheres around these points $r_n\to 0$ and so these points must be getting arbitrarily close together. \\
+
+Therefore, by the assumption of the completeness of $X$ we have that $(x_n)\longrightarrow x\in X$. \\
+
+Now, let $N$ be some fixed natural number sufficiently large so that
+\begin{equation*}
+	x_n \in S_{N + 1} \quad \text{for } n = N + 1, N + 2
+\end{equation*}
+
+and since $(x_n) \to x$ we have that $x$ must also be a limit point of this subsequence $(x_{N + 1}, x_{N + 2},...)$. However, by construction of $x_n \in S_{N + 1}$ we have
+\begin{equation*}
+	\{ x_{N + 1}, x_{N + 2}, x_{N + 3}, ... \} \subset S_{N + 1}
+\end{equation*}
+
+Therefore
+\begin{equation*}
+	x \in \overline{S}_{N + 1}
+\end{equation*}
+
+but
+\begin{equation*}
+	\overline{S}_{N + 1} \subset S_N \subset O_N
+\end{equation*}
+
+hence
+\begin{align*}
+	x &\in O_N \quad \forall\,N \\
+	\implies x &\in \bigcap^N_{i = 1} O_i
+\end{align*}
+
+and so 
+\begin{align*}
+	x &\in U \cap \left( \bigcap^\infty_{i = 1} O_i \right) \\
+	\implies U &\cap \left( \bigcap^\infty_{i = 1} O_i \right) \neq \emptyset
+\end{align*}
+
+\indent Therefore, since $U$ was an arbitrary open subset of $X$ we have that the countable intersection $\bigcap^\infty_{i = 1} O_i$ is dense in $X$, as desired.
+\end{proof}
+
+%
+% Lemma
+%
+{\bf Lemma:} Let $A$, $B$, and $C$ be metric spaces such that $A \subset B \subset C$. Suppose that $A$ is dense in $C$. Then, subspace $A$ is also dense in $B$.
+
+\begin{proof} Let $O \subset B$ be some nonempty open set in $B$. To show that $A$ is dense in $B$ we must show that 
+\begin{equation*}
+	O \cap A \stackrel{?}{\neq} \emptyset
+\end{equation*}
+
+Since $B \subset C$ we have some open set in $C$ such that
+\begin{equation*}
+	V \cap B = O
+\end{equation*}
+
+Since $O \neq \emptyset$ we must have $V \neq \emptyset$ and so
+\begin{equation*}
+	A \cap V \neq \emptyset
+\end{equation*}
+
+Thus
+\begin{align*}
+	A \cap V &= \left( A \cap V \right) \cap B \\
+	&= A \cap \left( V \cap B \right) \\
+	&= A \cap O \\
+	\implies A \cap O &\neq \emptyset
+\end{align*}
+
+and so $A$ is dense in $B$, as desired.
+\end{proof}
+
+%
+% Claim
+%
+{\bf Claim:} The set of irrationals $\R\setminus\Q$ has the Baire Category property. \\
+
+\indent Note that we have found a Cauchy sequence $(x_n)$ from $\R\setminus\Q$ that does not converge in $\R\setminus\Q$, in particular
+\begin{equation*}
+	\left( \frac{\pi}{n} \right) \longrightarrow 0
+\end{equation*}
+
+and so $\R\setminus\Q$ is {\em not} complete. Thus, if our claim is true we see that the Baire Category property {\em does not imply} completeness. 
+
+\begin{proof} Suppose $O_1, O_2, ...$ are dense and open in $\R\setminus\Q$. We can find an open set $V_1 \subset \R$ such that
+\begin{equation*}
+	V_1 \cap \left( \R \setminus \Q \right) = O_1
+\end{equation*}
+
+Is $V_1$ dense in $\R$? \\
+
+Suppose $P_1 \neq \emptyset$ is open in $\R$ and $P \cap V_1 = \emptyset$. Then
+\begin{align*}
+	P &\cap \left( \R\setminus\Q \right) \quad \text{is open in $\R\setminus\Q$, and} \\
+	P &\cap \left( \R\setminus\Q \right) \neq \emptyset
+\end{align*}
+
+since $\R\setminus\Q$ is dense in $\R$ (and so an intersection of an open set with a dense set is nonempty). \\
+
+Since $O_1$ is dense in $\R\setminus\Q$ by assumption we have (since $P \cap \left( \R\setminus\Q \right) \neq \emptyset$)
+\begin{align*}
+	\left( P \cap \left( \R\setminus\Q \right) \right) \cap O_1 &\neq \emptyset \\
+	\left( P \cap \left( \R\setminus\Q \right)\right) \cap O_1 &\subset V_1 \cap \left( \R\setminus\Q \right)
+\end{align*}
+
+Therefore, the countable intersection
+\begin{align*}
+	\left( \bigcap^\infty_{n = 1} \underbrace{V_n}_{\text{dense and open in $\R$}} \right) \bigcap_{q\in\Q} \underbrace{\left(\R\setminus\{q\}\right)}_{\text{open and dense in $\R$}} &= \bigcap^\infty_{n = 1} V_n \cap \left( \R\setminus\Q \right) \\
+	&= \bigcap^\infty_{n = 1} \left( V_n \cap \left(\R\setminus\Q\right)\right) \\
+	&= \bigcap^\infty_{n = 1} O_n
+\end{align*}
+
+\indent Since each $O_n$ is dense in $\R$ we have by our lemma each $O_n$ is dense in $\R\setminus\Q$. Thus, the Baire Category property is satisfied for $\R\setminus\Q$ since each $O_n$ are dense. Therefore, we have found a metric space satisfying the Baire Category property that is not complete.
+\end{proof}
+
+%
+% Example
+%
+{\bf Example:} Is $[0,1]$ countable? Since $[0,1]$ is closed and bounded we have that it must be compact. Since $[0,1]$ is compact we then have that it is totally bounded, and since total boundedness $\implies$ completeness we see that $[0,1]$ is complete. \\
+
+Now, suppose $[0,1]$ is countable. Take $r \in [0,1]$ and look at the intersection
+\begin{equation*}
+	[0,1]\setminus\{r\}
+\end{equation*}
+
+\indent Since $\{r\}$ is closed we have $[0,1]\setminus\{r\}$ is dense and open. However, the intersection over all elements of $[0,1]$ is
+\begin{equation*}
+	\bigcap_{r\in[0,1]} [0,1]\setminus\{r\} = \emptyset
+\end{equation*}
+
+\indent If $[0,1]$ {\em were} countable then this intersection would have been a countable intersection of open sets. Therefore, since $[0,1]$ is also complete, we may use the Baire Category theorem to conclude that this countable union of dense open sets $[0,1]\setminus\{r\}$ would itself be dense. However, $\emptyset$ is clearly not dense in $[0,1]$ and so we must conclude that $[0,1]$ is, in fact, uncountable.
+
+%
+% Example
+%
+{\bf Example:} Consider the set of natural numbers $\N$. We know that $\N$ is complete since any Cauchy sequence will eventually have $\epsilon$ so small that $|x_n - x_m| < \epsilon$ implies $x_n = x_m$. Furthermore, $\N$ is countable, but the countable intersection from this complete space
+\begin{equation*}
+	\bigcap_{n\in\N} \N\setminus\{n\} = \emptyset
+\end{equation*}
+
+\indent This {\em does not} violate the Baire Category Theorem since the intersections $\N\setminus\{n\}$ is not dense because the closure $\overline{\N\setminus\{n\}} \neq \N$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

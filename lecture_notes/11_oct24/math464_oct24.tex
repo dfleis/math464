@@ -1,0 +1,457 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{bm} % bold in mathmode \bm
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{dsfont} % for indicator function \mathds 1
+\usepackage{tikz,pgf,pgfplots}
+\usepackage{enumerate} 
+\usepackage[multiple]{footmisc} % for an adjascent footnote
+\usepackage{graphicx,float} % figures
+\usepackage{centernot} % for \centernot\implies (wrapped in \nimplies)
+
+%% set noindent by default and define indent to be the standard indent length
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%% some math macros
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % vector norm
+\newcommand*{\vv}[1]{\vec{\mkern0mu#1}} % \vec with arrow on top
+\renewcommand{\Re}{\mathfrak {Re}}
+\renewcommand{\Im}{\mathfrak {Im}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\X}{\mathbb X}
+\newcommand{\powerset}{\mathcal P}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\gm}{\mathrm{gm~}}
+\newcommand{\am}{\mathrm{am~}}
+\newcommand{\cl}{\mathrm{cl~}}
+\newcommand{\trace}{\mathrm{trace~}}
+\newcommand{\Trace}{\mathrm{Trace~}}
+\newcommand{\rank}{\mathrm{rank~}}
+\newcommand{\Rank}{\mathrm{Rank~}}
+\newcommand{\Span}{\mathrm{Span~}}
+\newcommand{\card}{\mathrm{card~}}
+\newcommand{\Card}{\mathrm{Card~}}
+\newcommand{\limplies}{~\Longleftarrow ~} % leftwards implies, for some reason requires spacing to mirror the formatting of \implies (and therefore \rimplies below)
+\newcommand{\rimplies}{\implies} % rightwards implies (for consistency)
+\newcommand{\nimplies}{\centernot\implies} % rightwards implies with line struck through
+\newcommand{\indist}{\,{\buildrel \mathcal D \over \sim}\,}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny 
+	def}}}{=}}} % equal sign with def above
+\renewcommand{\cl}{\mathrm{cl~}} % closure of a set cl(X)
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Real Analysis\\Lecture Notes}
+\author{Metric Spaces}
+\date{October 24 2016 \\ Last update: \today{}}
+\maketitle
+
+\section{Separable Metric Spaces}
+
+\subsection{Quick Review of Last Lecture}
+
+\indent The last few lectures we've been working in metric spaces $(X, \rho)$ where a metric $\rho$ must satisfy, for $x, y, z \in X$,
+\begin{align*}
+	\rho(x, y) &\geq 0 \\
+	\rho(x, y) &= \rho(y, x) \\
+	\rho(x, y) &= 0 \iff x = y \\
+	\rho(x, y) + \rho(y, z) &\geq \rho(x, z)
+\end{align*}
+
+and in the previous lecture we introduced the notion of an \underline{open sphere} $S_{x,\delta}$ in a metric space $(X,\rho)$ defined as: \\
+
+%
+% Definition: Open sphere.
+%
+{\bf Definition: {\em Open sphere}}: An \underline{open sphere} $S_{x,\delta}$ in a metric space $(X, \rho)$ is the set
+\begin{equation*}
+	S_{x,\delta} = \{ y \in X ~:~ \rho(x, y) < \delta\}
+\end{equation*}
+
+The notion of an \underline{open set} in a metric space $O \subset X$ defined as: \\
+
+%
+% Definition: Open set.
+%
+{\bf Definition: {\em Open set}}: A set $O \subset X$ in a metric space $(X, \rho)$ is said to be \underline{open} if
+\begin{equation*}
+	\forall\, x \in O, ~\exists\,\delta > 0 \text{ such that } S_{x,\delta} \subset O
+\end{equation*}
+
+where $O$ is a union of open sets of the form $S_{x,\delta}$. That is, an open set can be expressed as the union of open spheres. From these definitions we proved the following lemma: \\
+
+%
+% Lemma.
+%
+{\bf Lemma}: If $S_{z,\epsilon}$ and $S_{x, \delta}$ are open spheres such that 
+\begin{equation*}
+	0 < \epsilon < \delta - \rho(x, z) 
+\end{equation*}
+
+then
+\begin{equation*}
+	S_{z,\epsilon} \subset S_{x,\delta}
+\end{equation*}
+
+That is, since $0 < \epsilon < \delta - \rho(x, z)$ we have
+\begin{align*}
+	0 &< \epsilon \\
+	\rho(x, z) &< \delta \\
+	\epsilon + \rho(x, z) &< \delta
+\end{align*}
+
+\indent So $S_{z, \epsilon}$ is some open sphere centered at $z$ with radius $\epsilon$ such that the sum of $\epsilon$ with the distance between $x$ and $z$ given by $\rho(x, z)$ must be less than $\delta$. So, since this radius bound above $\delta$ and the distance $\rho(x, z) < \delta$ we have that $S_{z,\epsilon}$ must be some open sphere located within $S_{x,\delta}$, which is precisely the desired result
+\begin{equation*}
+	S_{z,\epsilon} \subset S_{x,\delta}
+\end{equation*}
+
+\begin{proof} The more formal proof of this was that with for some $t \in S_{z, \epsilon}$ we require this $t$ to also be an element of $S_{x,\delta}$. Thus, for $t \in S_{z,\epsilon}$ we find
+\begin{equation*}
+	\rho(z, t) < \epsilon
+\end{equation*}
+
+by definition of $t \in S_{z,\epsilon}$. However, $0 < \epsilon < \delta - \rho(x, z)$ gives us 
+\begin{equation*}
+	0 < \epsilon + \rho(x, z) < \delta
+\end{equation*}
+
+but by the definition of a metric $\rho$ we have
+\begin{equation*}
+	0 < \rho(x, t) < \rho(x, z) + \rho(z, t)
+\end{equation*}
+
+thus
+\begin{equation*}
+	0 < \rho(x, t) < \rho(x, z) + \rho(z, t) < \rho(x, z) + \epsilon < \delta
+\end{equation*}
+
+That is,
+\begin{equation*}
+	\rho(x, t) < \delta
+\end{equation*}
+
+which is precisely the requirement for
+\begin{equation*}
+	t \in S_{x,\delta}
+\end{equation*}
+
+as desired. 
+\end{proof}
+
+\indent A natural question consequence of the definitions of an open sphere $S_{x,\delta}$ and an open set $O$ in a metric space is to consider {\em closed} sets in a metric space. To do so we first gave the definition of a \underline{point of closure} of some set $E \subset X$ in a metric space $(X, \rho)$:  \\
+
+%
+% Definition: Point of closure.
+%
+{\bf Definition: {\em Point of closure}.} A point $x \in X$ in a metric space $(X, \rho)$ is called a \underline{point of closure} of a set $E \subset X$, denoted by $\cl(E)$ or $\overline{E}$, if
+\begin{equation*}
+	\forall\,\delta > 0,~\exists\,y\in E,~ \rho(x, y) < \delta
+\end{equation*}
+
+which is equivalent to
+\begin{equation*}
+	\forall\,\delta > 0, ~ S_{x,\delta} \cap E \neq \emptyset
+\end{equation*}
+
+where the above $y \in E$ is found in the intersection $y \in S_{x,\delta} \cap E$. For example, if we consider the set $E = (0, 1)$ and $x = 0$ we see that for all $\delta > 0$ we are guaranteed that a small open sphere centered at $x = 0$ is guaranteed to have a nonempty intersection with $E = (0, 1)$. Then, with the definition of a point of closure we may introduce the definition of a \underline{closed set}: \\
+
+%
+% Definition: Closed set.
+%
+{\bf Definition: {\em Closed set}.} A set $F$ is \underline{closed} if $\overline{F} = F$. That is, the points of closure of $F$ are contained within $F$ and the points of $F$ are contained within $\overline{F}$. \\
+
+\indent We ended the lecture with the definition of a \underline{separable metric space}. Before doing so it will be useful to reintroduce the definition of a \underline{dense} set: \\
+
+%
+%
+%
+{\bf Definition: {\em Dense set}.} A set $A \subset X$ in a topological space $X$ is said to be {\underline{dense} if every point $x \in X$ is {\em either} an element of $A$, $x \in A$ {\em or} a limit point of $A$, where a limit point $x$ satisfies
+\begin{equation*}
+	(x - \delta, x + \delta) \cap A = S_{x,\delta} \cap A \neq \emptyset
+\end{equation*}
+
+That is, $A$ is \underline{dense in $X$} if all $x \in X$ we satisfy either
+\begin{align*}
+	x &\in A \quad \text{or} \\
+	\exists\,y \in A \quad \text{such that} \quad y &\in S_{x, \delta} \cap A
+\end{align*}
+
+\indent For example, the set of rational numbers $\Q$ is clearly dense in $\R$ since for arbitrary $r \in \R$ we have that either $r \in \Q$ or
+\begin{equation*}
+	\exists\,q\in \Q \text{ such that } q \in S_{r,\delta} \cap \Q
+\end{equation*}
+
+\indent We can also see that the second criteria may be satisfied by the sequence $\{q_n ~:~ q_n \in \Q\}^\infty_{n = 1}$ such that $q_n \to r$. On the other hand $\N$ is clearly not dense in $\Q$ since for some $r \in \R$ we can build a sufficiently small open sphere $S_{x,\delta}$, $\delta > 0$, such that the intersection $S_{x,\delta} \cap \N = \emptyset$. Finally, we may give the definition of a \underline{separable metric space}: \\
+
+%
+% Seperable metric space.
+%
+{\bf Definition: {\em Separable metric space}.} A metric space $(X, \rho)$ is said to be \underline{separable} if it contains a countable and dense subset $D \subset X$ such that the closure of $D$, denoted $\overline{D}$, is $\overline{D} = X$. 
+
+\subsection{Elaborating on Separability}
+
+We first require the notion of a \underline{base} $B$ of a topological space $X$: \\
+
+%
+% Definition: Base of a topological space
+%
+{\bf Definition: {\em Base of a topological space}.} A family $B = \{O_i\}_{i \in I}$ of open sets is said to be a \underline{base} of a topological space $X$ if $B$ 
+\begin{enumerate}
+	\item The family $B$ covers $X$.
+	\item Any open set $O \subset X$ is a union of sets in the base
+	\begin{equation*}
+		O = \bigcup_{i \in J \subset I} O_i
+	\end{equation*}
+\end{enumerate}
+
+{\bf Theorem: {\em Equivalent statements to separability}.} Let $(X, \rho)$ be a metric space. The following are equivalent:
+\begin{enumerate}
+	\item $X$ is separable.
+	\item $X$ has a countable base $\{O_i\}$. That is, for all open sets $O \subset X$ we have
+	\begin{equation*}
+		O = \bigcup^\infty_{n = 1} O_i
+	\end{equation*}
+\end{enumerate}
+
+\indent This is {\em not} true in general. Bases for an arbitrary topological space may not be separable. Fortunately for us, this turns out to be true for metric spaces. \\
+
+\begin{proof} $((1) \implies (2))$. Since $X$ is separable we have that $X$ must have a countable dense subset. Let $D = \{x_n\}^\infty_{n = 1} \subset X$, $\overline{D} = X$, be such a subset. Consider all open spheres centered at each $x_n$ of rational radius $q \in \Q$, i.e. consider the open spheres
+\begin{equation*}
+	\{ S_{x_n, q} \}
+\end{equation*}
+
+\indent Since $x_n \in \{x_n\}^\infty_{n = 1} = D \subset X$ is countable and $q \in \Q$ is countable we see that the family of open spheres $\{S_{x_n, q}\}$ must be countable. We claim that this family $\{S_{x_n, q}\}$ forms a countable base for $X$. That is, we wish to show that if $O$ is any open set and $y \in O \subset X$ then
+\begin{equation*}
+	y \in O_i \subset O
+\end{equation*}
+
+\indent Consider an open set $O \subset X$ (nonempty) and take $y \in O$. Since $O$ is open we must have some open sphere $S_{x,\delta}$ contained in $O$:
+\begin{equation*}
+	\exists\,\delta > 0,~ S_{y,\delta} \subset O
+\end{equation*}
+
+\indent Without loss of generality (since $\Q$ is dense in $\R$ so we may take $\delta$ even smaller such that $\delta$ is now rational) take $\delta \in \Q$. Since $D$ is dense in $X$ we have that $\overline{D}$ and so we may choose $y \in O \subset X$ such that $y \in \overline{D} = X$. That is, since $y$ is taken to be a point of closure of $D$
+\begin{align*}
+	\forall\,\delta > 0,~\exists\,z\in D, &\quad \rho(z, y) < \frac{\delta}{2}, \quad \text{or equivalently} \\
+	\forall\,\delta > 0, &\quad S_{y,\delta} \cap D \neq \emptyset
+\end{align*}
+
+Using the first definition we note that since $D = \{x_n\}$ is countable we may restate this as
+\begin{equation*}
+	\forall\,\delta > 0, ~\exists\,x_n\in D \quad \text{such that} \quad \rho(y, x_n) < \frac{\delta}{2}
+\end{equation*}
+
+\indent That is, we have some $x_n \in D$ such that $x_n \in S_{y, \delta}$ and the distance between $x_n$ and $y$ is bound above by
+\begin{equation*}
+	\rho(x_n, y) = \rho(y, x_n) = \frac{\delta}{2}
+\end{equation*}
+
+By our earlier result stating for $0 < \epsilon < \delta - \rho(x, z)$, $S_{z,\epsilon} \subset S_{x, \delta}$, with $\epsilon = \frac{\delta}{2}$ with
+\begin{equation*}
+	0 < \frac{\delta}{2} < \delta - \rho(x_n, y)
+\end{equation*}
+
+we have
+\begin{equation*}
+	y \in S_{x_n,\frac{\delta}{2}} \subset S_{y,\delta}
+\end{equation*}
+
+hence
+\begin{align*}
+	y &\in y \in S_{x_n,\frac{\delta}{2}} \subset S_{y,\delta} \subset O \\
+	\implies y &\in S_{x_n,\frac{\delta}{2}} \subset O
+\end{align*}
+
+and so the open spheres $\left\{S_{x_n, \frac{\delta}{2}}\right\}$ form our countable base of $X$, as desired. \\
+
+$((2) \implies (1))$ Let $X$ have a countable base $\{O_i\}$ so that for all open sets $O \subset X$ so that
+\begin{equation*}
+	O = \bigcup_{i = 1} O_i
+\end{equation*}
+
+\indent Without loss of generality all $O_n$ are nonempty. For each $n$ choose a point $x_n \in O_n$. Clearly the set 
+\begin{equation*}
+	D = \{x_n\}^\infty_{n = 1} 
+\end{equation*}
+
+is a countable subset of $X$. So, to complete the proof we wish to show that $D$ is dense in $X$. That is, we must show that any open sphere $S_{x, \delta}$, $x \in X$, will have a nonempty intersection
+\begin{equation*}
+	S_{x,\delta} \cap D \neq \emptyset
+\end{equation*}
+
+\indent Let $x \in X$ be arbitrary and take any open sphere centered at $x$, $S_{x,\delta}$, $\delta > 0$. Since $\{O_n\}$ is a base for $X$ we must have that every open set in $X$ can be expressed as a union of the base elements $O_n$. Therefore, all open spheres $S_{x,\delta}$ can be written as
+\begin{equation*}
+	S_{x,\delta} = \bigcup_{n} O_n
+\end{equation*}
+
+so, there exists some $n$ such that
+\begin{equation*}
+	O_n \subset S_{x,\delta}
+\end{equation*}
+
+Clearly this gives us that $x_n \in O_n \implies x_n \in S_{x, \delta}$. Therefore, since $x_n \in S_{x, \delta}$
+\begin{equation*}
+	\forall\,\delta > 0,~ S_{x,\delta} \cap \{x_n\} \neq \emptyset, \quad \{x_n\} = D
+\end{equation*}
+
+which is precisely the statement that $X = \overline{D}$ and so $D$ is indeed dense in $X$, as desired.
+\end{proof}
+
+\subsection{Sorgenfry Line}
+
+\indent We will change the topology on $\R$ to construct the {\em ``Sorgenfry line''}. To get the usual topology on $\R$ we take $a, b \in \R$, $a < b$ and let $(a, b)$ be the interval defined by the set
+\begin{equation*}
+	(a, b) = \{x \in \R ~:~ a < x < b \} 
+\end{equation*}
+
+\indent For the Sorgenfry line we now define intervals of the form $[a,b)$ to be open sets. We will denote the Sorgenfry line by $\mathbb S$ just as the real line is denoted by $\R$. This leads to the following remarks:
+\begin{enumerate}
+	\item $\mathbb S$ has a countable dense subset, namely $\Q$. That is,
+	\begin{equation*}
+		\forall\,a < b, ~ [a,b) \cap \Q \neq \emptyset
+	\end{equation*}	 
+	
+	and so the Sorgenfry line must be separable.
+	
+	\item Claim: The interval $(a, b)$ is open in $\mathbb S$. This will give us that all open sets in $\mathbb S$ are open set since all open sets can be constructed by a countable union of open intervals
+	\begin{equation*}
+		O = \bigcup (a, b) \quad \text{or} \quad O = \bigcup (a, b]
+	\end{equation*}
+	
+	To show this take the union 
+	\begin{equation*}
+		\bigcup^\infty_{n = 1} \left[a + \frac{1}{n}, b\right), \quad a - 1 < b
+	\end{equation*}
+	
+	\indent Note that $a$ is never reached in this countable union since we are always a nonzero distance $\frac{1}{n}$ away. However, any point $a + \epsilon$, $\epsilon > 0$ is an element of this union since for any $\epsilon > 0$ we can make $n$ sufficiently large such that $a + \frac{1}{n} < a + \epsilon$. By definition this countable union of open intervals must itself be open. Therefore, since $a$ is {\em not} within this union we have
+	\begin{equation*}
+		\bigcup^\infty_{n = 1} \left[a + \frac{1}{n}, b \right) = (a, b) \quad \text{is open.}
+	\end{equation*}
+	
+	\item Claim: The interval $[a,b)$ is also {\em closed} in $\mathbb S$. To see this consider the union
+	\begin{equation*}
+		[b, b + 1) \cup [b + 1, b + 2) \cup \cup [b + 2, b + 3) \cup \cdots = [b, \infty)
+	\end{equation*}
+	
+	\indent Since this is a union of open sets we have that $[b, \infty)$ must be open. Furthermore, the union 
+	\begin{equation*}
+		\cdots \cup [a - 3, a - 2) \cup [a - 2, a - 1) \cup [a - 1, a) = (-\infty, a)
+	\end{equation*}
+	
+	is also open by the same reasoning. Therefore, taking the union of these two open sets
+	\begin{equation*}
+		(-\infty, a) \cup [b, \infty) \quad \text{is open.}
+	\end{equation*}
+	
+	and taking the complement of this open set
+	\begin{equation*}
+		\Big( (-\infty, a) \cup [b, \infty) \Big)^c = [a, b) \quad \text{is closed.}
+	\end{equation*}
+	
+	We say that such an interval $[a,b)$ under the Sorgenfry topology is {\em ``clopen''}.
+	
+	\item Claim: Any compact\footnote{Compactness: All open covers have a finite subcover.}~subsets of $\mathbb S$ are countable. Note that this contrasts with $\R$ under the usual topology since $[1, 2]$ is compact by the Heine-Borel theorem.\footnote{All bounded closed intervals (sets?) are compact.}
+	
+	\begin{proof} {\em (Start of the proof)} Begin with $C$ some compact set and take $x \in C$. Consider the family of intervals of the form
+	\begin{equation*}
+		[x, \infty) \text{ and } \left( -\infty, x - \frac{1}{n} \right), \quad n \in \N
+	\end{equation*}
+	
+	\indent Under $\mathbb S$ the interval $[x,\infty)$ was shown to be open. We should be able to see that this family of sets covers $(-\infty,\infty)$ over all $n \in \N$. \\
+	
+	{\em (And then the proof stops here...)}
+	\end{proof}
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

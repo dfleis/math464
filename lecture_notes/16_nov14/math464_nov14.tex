@@ -1,0 +1,332 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{bm} % bold in mathmode \bm
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{dsfont} % for indicator function \mathds 1
+\usepackage{tikz,pgf,pgfplots}
+\usepackage{enumerate} 
+\usepackage[multiple]{footmisc} % for an adjascent footnote
+\usepackage{graphicx,float} % figures
+\usepackage{centernot} % for \centernot\implies (wrapped in \nimplies)
+
+%% set noindent by default and define indent to be the standard indent length
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%% some math macros
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % vector norm
+\newcommand*{\vv}[1]{\vec{\mkern0mu#1}} % \vec with arrow on top
+\renewcommand{\Re}{\mathfrak {Re}}
+\renewcommand{\Im}{\mathfrak {Im}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\X}{\mathbb X}
+\newcommand{\powerset}{\mathcal P}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\gm}{\mathrm{gm~}}
+\newcommand{\am}{\mathrm{am~}}
+\newcommand{\trace}{\mathrm{trace~}}
+\newcommand{\Trace}{\mathrm{Trace~}}
+\newcommand{\rank}{\mathrm{rank~}}
+\newcommand{\Rank}{\mathrm{Rank~}}
+\newcommand{\Span}{\mathrm{Span~}}
+\newcommand{\card}{\mathrm{card}}
+\newcommand{\Card}{\mathrm{Card}}
+\newcommand{\limplies}{~\Longleftarrow ~} % leftwards implies, for some reason requires spacing to mirror the formatting of \implies (and therefore \rimplies below)
+\newcommand{\rimplies}{\implies} % rightwards implies (for consistency)
+\newcommand{\nimplies}{\centernot\implies} % rightwards implies with line struck through
+\newcommand{\indist}{\,{\buildrel \mathcal D \over \sim}\,}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny 
+	def}}}{=}}} % equal sign with def above
+\newcommand{\cl}{\mathrm{cl}} % closure of a set cl(X)
+\newcommand{\Cl}{\mathrm{Cl}} % closure of a set Cl(X)
+\newcommand{\closure}{\mathrm{closure}} % closure of a set closure(X)
+\newcommand{\Closure}{\mathrm{Closure}} % closure of a set Closure(X)
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Real Analysis\\Lecture Notes}
+\author{Metric Spaces}
+\date{November 14 2016 \\ Last update: \today{}}
+\maketitle
+
+\section{Compactness}
+
+\indent Last class we expanded on the definition of compactness. We now elaborate further by fleshing out a few more relationships relating to compact sets.
+
+%
+% Definition
+%
+{\bf Definition: {\em (Sequentially compact)}.} Set $X$ is said to be \underline{sequentially compact} if every infinite sequence $(x_n)$ from $X$ has a convergent subsequence. \\
+
+%
+% Lemma
+%
+{\bf Lemma:} A metric space has the Bolzano-Weierstrass property if and only if it is sequentially compact.
+
+\begin{proof} $(\limplies)$ Assume $X$ is sequentially compact so that every sequence $(x_n)$ from $X$ has a convergent subsequence. The definition of the Bolzano-Weierstrass Property requires every infinite sequence $(x_n)$ to have some cluster point. This is clearly satisfied since $(x_n)$ has a convergent subsequence $\left(x_{n_k}\right) \to x$ by assumption, which is precisely the definition for $x$ to be a cluster point. Thus, $X$ has the Bolzano-Weierstrass property, as desired. \\
+
+$(\implies)$ Assume that $X$ has the Bolzano-Weierstrass property. Let the sequence 
+\begin{equation*}
+	(x_n) = \left(x_1, x_2, x_3, ...\right)
+\end{equation*}
+
+be some infinite sequence from $X$. Since $X$ has the Bolzano-Weierstrass property this sequence must have some cluster point $x$ for which a subsequence of $(x_n)$ converges to $x$. \\
+
+\indent Consider the open sphere $S_{x,1}$ in $X$ centered at $x$ with radius $\epsilon = 1$ Since $x$ is a cluster point of $(x_n)$ and our sphere $S_{x,1}$ is open, we must have some $x_{n_1} \in S_{x,1}$ since $S_{x, 1}$ is open and we may get arbitrarily close to $x$ by elements of $X$. \\
+
+\indent Next, consider the open sphere $S_{x,\frac{1}{2}}$ centered at $x$ with radius $\epsilon = \frac{1}{2}$. Since $x$ is a cluster point of $(x_n)$ there must exist some $x_{n_2} \in S_{x,\frac{1}{2}}$ from $(x_n)$, such that $n_1 < n_2$, since we may get arbitrarily close to $x$. \\
+
+\indent In general, for some $k \in \N$, take the open sphere $S_{x,\frac{1}{k}}$ centered at $x$ with radius $\epsilon = \frac{1}{k}$. We may find some $x_{n_k} \in S_{x,\frac{1}{k}}$ with $n_{k - 1} < n_k$ since $S_{x,\frac{1}{k}}$ is open and we may get arbitrarily close to $x$ with elements of $X$. \\
+
+By this construction we generate the subsequence
+\begin{equation*}
+	\left(x_{n_k}\right) = \left( x_{n_1}, x_{n_2}, x_{n_3}, ... \right) \longrightarrow x
+\end{equation*}
+
+of $(x_n)$ which converges to $x$ by taking $\epsilon = \frac{1}{k}$ since
+\begin{equation*}
+	\rho\left( x_{n_k}, x \right) < \frac{1}{k} \quad \forall\, k \in \N
+\end{equation*}
+
+since $x_{n_k} \in S_{x,\frac{1}{k}}$. Thus, with $X$ a metric space with the Bolzano-Weierstrass property then some infinite sequence $(x_n)$ has a convergent subsequence, and so $X$ is sequentially compact. \\
+
+Thus,
+\begin{equation*}
+	\text{A metric space $X$ has the Bolzano-Weierstrass property $\iff$ $X$ is sequentially compact}
+\end{equation*}
+
+as desired.
+\end{proof}
+
+%
+% Aside
+%
+{\bf Aside:} Recall that we originally defined compactness by saying that every open cover of a compact set $X$ has a finite subcover. Thus, to fill out our relationships surrounding compactness we have:
+\begin{align*}
+	\text{$X$ is closed-bounded} &\implies \text{$X$ is compact set} \stackrel{\text{def}}{\iff} \text{All open covers of $X$ have a finite subcover}\\
+	&\implies \text{Infinite sequences from $X$ has a cluster point} \\
+	&\stackrel{\text{def}}{\iff} \text{$X$ has the Bolzano-Weierstrass property} \\
+	&\iff \text{$X$ is sequentially compact} \\
+	&\stackrel{\text{def}}{\iff} \text{Every infinite sequence has a convergent subsequence}
+\end{align*}
+
+%
+% Result
+%
+{\bf Result:} In some metric space $X$ a continuous function $f~:~X\to\R$ maps convergent sequences to convergent sequences. \\
+
+\begin{proof} Let $f$ be some continuous function $f~:~X\to\R$ and consider the sequence $(y_n)$ so that
+\begin{equation*}
+	(y_1, y_2, y_3, ...) \longrightarrow y
+\end{equation*}
+
+Applying $f$ to elements of $(y_n)$ yields the sequence
+\begin{equation*}
+	(f(y_1), f(y_2), f(y_3), ...) 
+\end{equation*}
+
+We wish to show that this sequence $(f(y_n))$ converges to $f(y)$. To do so let $\epsilon = \frac{1}{n}$ be rational and fixed. We will show that
+\begin{equation*}
+	|f(y) - f(y_m)| < \frac{1}{n} \quad \forall\,n\geq N
+\end{equation*}
+
+for some $N \in \N$. Note that the interval $S_{f(y), \frac{1}{n}}$ given by
+\begin{equation*}
+	\left( f(y) - \frac{1}{n}, f(y) + \frac{1}{n} \right)
+\end{equation*}
+
+\indent Clearly such a set is open. However, we have shown that for some open set $O$ the pre-image of $O$ under a function function $f$ given by $A = f^{-1}(O)$ must also be open. Thus,
+\begin{equation*}
+	A = f^{-1}\left( f(y) - \frac{1}{n}, f(y) + \frac{1}{n} \right)
+\end{equation*}
+
+is an open set. By definition of the preimage of such an open interval we see that $y \in A$. Therefore, using $y$ as our center we may find some $\delta > 0$ so that
+\begin{equation*}
+	(y - \delta, y + \delta) \subset A
+\end{equation*}
+
+Therefore, by the Archimedean property we see that, for $y_m \in (y - \delta, y + \delta)$
+\begin{equation*}
+	\exists\,N\in\N,~ |y_m - y| < \delta \quad \text{if $m \geq N$}
+\end{equation*}
+
+\indent Hence, for such a sequence $(y_n) \longrightarrow y$ we may find some $N \in \N$ and this $y_m$ for $m \geq N$ so that
+\begin{equation*}
+	\forall\,m\geq N,~ |f(y) - f(y_m)| < \frac{1}{n}
+\end{equation*}
+
+as desired.
+\end{proof}
+
+%
+% Claim
+%
+{\bf Claim:} Let $X$ be some sequentially compact space so that every infinite sequence has a convergent subsequence and let $f~:~X\to\R$ be a continuous function. We claim that if $X$ is a {\em bounded/finite set}, so that there is some $\min$ and $\max$ of $X$, then $f$ must be bounded. That is,
+\begin{equation*}
+	\text{A continuous function on a bounded and sequentially compact set is bounded.}
+\end{equation*}
+
+\begin{proof} Let $M$ be some real number so that
+\begin{equation*}
+	M = \sup \{f(x) ~:~ x\in X\}
+\end{equation*}
+
+permitting $M = +\infty$. Consider the following cases:
+\begin{enumerate}[{Case} 1:]
+	\item $M = +\infty$. Take $x_1 \in X$ and consider the mapping $f(x_1)$. If $M = +\infty$ then we must have
+	\begin{equation*}
+		f(x_1) + 1 < M
+	\end{equation*}
+	
+	and, since $M = +\infty$, there exists some $x_2$ so that
+	\begin{equation*}
+		f(x_1) + 1 < f(x_2)
+	\end{equation*}
+	
+	Similarly, there exists some $x_3$ so that
+	\begin{equation*}
+		f(x_2) + 1 < f(x_3)
+	\end{equation*}	
+	
+	Continue defining this sequence $(f(x_n))$ in such a manner. Clearly
+	\begin{equation*}
+		\left( f(x_1), f(x_2), f(x_3), ...\right) \longrightarrow \infty = M
+	\end{equation*}
+	
+	\indent However, $X$ is assumed to be {\em sequentially compact}. Therefore, $(x_n)$ must have some convergent subsequence $(x_n)\longrightarrow x \in X$
+	\begin{equation*}
+		(x_{n_1}, x_{n_2}, x_{n_3}, ...) \longrightarrow x
+	\end{equation*}
+	
+	\indent If $f$ is a continuous function then we have shown that $(f(x_{n_k}))$ must also be convergent so that $(f(x_{n_k}))\to f(x)$ for finite $f(x) \in \R$. However, we have assumed that $(f(x_n))\longrightarrow \infty$ is nonfinite. Contradiction! Therefore $M \neq +\infty$.
+	
+	\item $M$ is finite. We have $M = \sup_{x\in X} f(x) < \infty$. We seek some $x$ so that $f(x) = M$ to show us that $f$ is indeed bounded by $f(x) = M$. \\
+	
+	\indent Take $x_1 \in X$. Clearly $f(x_1) \leq M$ since $\sup_{x\in X} f(x) = M$. If $f(x_1) = M$ then we're done. \\
+	
+	\indent If not, take $x_2 \in X$ such that $f(x_2) > M - \frac{1}{2}$ and $f(x_2) > f(x_1)$. If $f(x_2) = M$ then we're done. \\
+	
+	\indent If not, take $x_3 \in X$ such that $f(x_3) > M - \frac{1}{3}$ and $f(x_3) > f(x_2)$... etc. \\
+	
+	\indent Continue is this manner. If we never get some $x_n \in X$ so that $f(x_n) = M$ we construct the sequence $(x_n) = (x_1, x_2, x_3, ...)$ such that
+	\begin{equation*}
+		\left( f(x_1), f(x_2), f(x_3), ... \right) \longrightarrow M
+	\end{equation*}
+	
+	\indent However, $X$ is sequentially compact, and so our sequence $(x_n)$ from $X$ has a convergent subsequence $(x_{n_k}) \to x$. Now, since $(f(x_n)) \longrightarrow M$ we clearly have its infinite subsequence 
+	\begin{equation*}
+	\left( f(x_{n_1}), f(x_{n_2}), f(x_{n_3}), ... \right) \longrightarrow M
+	\end{equation*}
+	
+	and so for this definition of $M$ we have that $f$ is finite and bounded above by $M$. Similarly, since $f$ is a continuous function we have that $-f$ is continuous. Thus, since $-f$ is continuous on a bounded set $X$ it must achieve its minimum at some point on $X$, say $-m$.
+\end{enumerate}
+
+\indent Therefore, for this continuous $f$ on a sequentially compact $X$ we find that $f$ is bounded between $-m \leq f \leq M$, as desired.
+\end{proof}
+
+
+%
+% Aside:
+%
+{\bf Aside: {\em (Alternate definition of boundedness)}.} An alternate definition for boundedness is that if $X$ is a bounded set then for all $x, y \in X$ we find $\rho(x, y) \leq M$. \\
+
+%
+% Definition
+%
+{\bf Definition: {\em (Bounded subspaces)}.} Let $X$ be some metric metric and $A$ a subspace of $X$ so that $A \subset X$. We say that $A$ is a \underline{bounded subspace of $X$} if there is some finite $M \in \R$ such that
+\begin{equation*}
+	\forall\,a,b\in A,~\rho(a, b) < M
+\end{equation*}
+
+%
+% Examples
+%
+{\bf Examples:} Under this definition of a bounded subspace we see that 
+\begin{align*}
+	X = \R, ~ A = \R &\implies \text{ $A$ is not bounded in $X$ } \\
+	X = \R, ~ A = \N &\implies \text{ $A$ is not bounded in $X$ } \\
+	X = \R, ~ A = [1,3] &\implies \text{ $A$ is bounded in $X$ } \\
+	X = \R, ~ A = (2,7) &\implies \text{ $A$ is bounded in $X$ }
+\end{align*}
+
+%
+% Example
+%
+{\bf Example:} Take $Y = \R$ under the discrete metric $\rho_d(x, y)$ defined by
+\begin{equation*}
+	\rho_d(x,y) = 
+	\begin{cases}
+		1 & \text{if $x \neq y$} \\
+		0 & \text{else}
+	\end{cases}
+\end{equation*}
+
+\indent What are some bounded subsets of $Y$? For $A \subset Y$ to be a bounded subset we require some $M \in \R$ such that $\forall\,a,b\in A$ we find $\rho_d(a,b) < M$. Therefore, all subsets of $Y$ are bounded sets! In particular, if we take $M = 2$ we may generate any subset of $Y$ and it will be a bounded set. \\
+
+%
+% Definition
+%
+{\bf Definition: {\em (Totally bounded space)}.} A metric space $X$ is \underline{totally bounded} if for any $\epsilon > 0$ there are only finitely many points $x_1, x_2, ..., x_n \in X$ satisfying
+\begin{equation*}
+	X = \bigcup^n_{i = 1} S_{x_i,\epsilon} 
+\end{equation*}
+
+That is, $X$ is \underline{totally bounded} if $X$ is the union of finitely many open spheres of radius $\epsilon$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

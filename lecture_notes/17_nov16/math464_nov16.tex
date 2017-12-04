@@ -1,0 +1,536 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{bm} % bold in mathmode \bm
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{dsfont} % for indicator function \mathds 1
+\usepackage{tikz,pgf,pgfplots}
+\usepackage{enumerate} 
+\usepackage[multiple]{footmisc} % for an adjascent footnote
+\usepackage{graphicx,float} % figures
+\usepackage{centernot} % for \centernot\implies (wrapped in \nimplies)
+
+%% set noindent by default and define indent to be the standard indent length
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+%% some math macros
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % vector norm
+\newcommand*{\vv}[1]{\vec{\mkern0mu#1}} % \vec with arrow on top
+\renewcommand{\Re}{\mathfrak {Re}}
+\renewcommand{\Im}{\mathfrak {Im}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\renewcommand{\P}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\X}{\mathbb X}
+\newcommand{\powerset}{\mathcal P}
+\renewcommand{\L}{\mathcal L}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\cov}{\mathrm{Cov}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\gm}{\mathrm{gm~}}
+\newcommand{\am}{\mathrm{am~}}
+\newcommand{\trace}{\mathrm{trace~}}
+\newcommand{\Trace}{\mathrm{Trace~}}
+\newcommand{\rank}{\mathrm{rank~}}
+\newcommand{\Rank}{\mathrm{Rank~}}
+\newcommand{\Span}{\mathrm{Span~}}
+\newcommand{\card}{\mathrm{card}}
+\newcommand{\Card}{\mathrm{Card}}
+\newcommand{\limplies}{~\Longleftarrow ~} % leftwards implies, for some reason requires spacing to mirror the formatting of \implies (and therefore \rimplies below)
+\newcommand{\rimplies}{\implies} % rightwards implies (for consistency)
+\newcommand{\nimplies}{\centernot\implies} % rightwards implies with line struck through
+\newcommand{\indist}{\,{\buildrel \mathcal D \over \sim}\,}
+\newcommand\defeq{\mathrel{\stackrel{\makebox[0pt]{\mbox{\normalfont\tiny 
+	def}}}{=}}} % equal sign with def above
+\newcommand{\cl}{\mathrm{cl}} % closure of a set cl(X)
+\newcommand{\Cl}{\mathrm{Cl}} % closure of a set Cl(X)
+\newcommand{\closure}{\mathrm{closure}} % closure of a set closure(X)
+\newcommand{\Closure}{\mathrm{Closure}} % closure of a set Closure(X)
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Real Analysis\\Lecture Notes}
+\author{Metric Spaces}
+\date{November 16 2016 \\ Last update: \today{}}
+\maketitle
+
+\section{Compactness}
+
+\indent We continue our work on expanding the properties of compact sets and its relationships to other definitions. In particular, we have found so far that
+\begin{align*}
+	\text{$X$ is closed-bounded} &\implies \text{$X$ is compact set} \stackrel{\text{def}}{\iff} \text{All open covers of $X$ have a finite subcover}\\
+	&\implies \text{Infinite sequences from $X$ has a cluster point} \\
+	&\stackrel{\text{def}}{\iff} \text{$X$ has the Bolzano-Weierstrass property} \\
+	&\iff \text{$X$ is sequentially compact} \\
+	&\stackrel{\text{def}}{\iff} \text{Every infinite sequence has a convergent subsequence}
+\end{align*}
+
+\indent We then reintroduced some definitions and properties of continuous functions and bounded sets. We now move on to a new definition: \\
+
+%
+% Definition
+%
+{\bf Definition: {\em (Totally bounded space)}.} A metric space $X$ is \underline{totally bounded} if for any $\epsilon > 0$ there are only finitely many points $x_1, x_2, ..., x_n \in X$ satisfying
+\begin{equation*}
+	X \subset \bigcup^n_{i = 1} S_{x_i,\epsilon} 
+\end{equation*}
+
+That is, $X$ is \underline{totally bounded} if $X$ is the union of finitely many open spheres of radius $\epsilon$. \\
+
+%
+% Example
+%
+{\bf Example:} Consider the bounded set $[2,3]$. Note that $[2,3]$ is compact by the Heine-Borel Theorem since it is closed and bounded. Therefore, for all open covers there is a corresponding finite subcover. Thus, for the open cover $\left\{S_{x,\epsilon}\right\}_{x\in [2,3]}$ we may produce the finite subcover $\left\{S_{{x_i},\epsilon}\right\}^n_{i = 1}$ so that
+\begin{equation*}
+	X \subset \bigcup^n_{i = 1} S_{{x_i},\epsilon}
+\end{equation*}
+
+and so $[2,3]$ is totally compact by definition. \\
+
+%
+% Example
+%
+{\bf Example:} In general, for all sets $[a,b]$ we find that $[a,b]$ is compact by the Heine-Borel Theorem. For all $x \in [a,b]$ let $O_x$ be the open interval
+\begin{equation*}
+	O_x = (x - \epsilon, x + \epsilon)
+\end{equation*}
+
+then the family of $O_x$ given by $\{O_x ~:~ x \in [a,b]\}$ covers our interval $[a,b]$. However, $[a,b]$ is compact. Therefore, all open covers of $[a,b]$ have some finite subcover $\{O_{x_1}, O_{x,2}, ...\}$ so that
+\begin{equation*}
+	[a,b] \subset \bigcup^n_{i = 1} O_{x_i} = \bigcup^n_{i = 1} (x_i - \epsilon, x_i + \epsilon)
+\end{equation*}
+
+and so our bounded set $[a,b]$ is totally compact. \\
+
+%
+% Proposition
+%
+{\bf Proposition: {\em Compactness $\implies$ totally bounded}.}
+\begin{proof} By the same argument as our example above we find that a metric space $X$ is compact $\implies X$ is totally bounded.
+\end{proof} 
+
+%
+% Example
+%
+{\bf Example:} Let $X = \R$ under the discrete metric
+\begin{equation*}
+	\rho_d(x,y) =
+	\begin{cases}
+		1 & \text{if $x \neq y$} \\
+		0 & \text{else}
+	\end{cases}
+\end{equation*}
+
+\indent We have found that such a metric space is bounded since the distance between points is always less than $M = 2$. However, is this $X = \R$ totally bounded? Take $\epsilon = \frac{1}{2}$ and note that under $\rho_d$ the sphere defined by $S_{x,\frac{1}{2}}$ is
+\begin{equation*}
+	S_{x,\frac{1}{2}} = \{x\}
+\end{equation*}
+
+Therefore any finite union of such spheres $S_{x_i,\frac{1}{2}}$ will be
+\begin{equation*}
+	\bigcup^n_{i = 1} S_{x_i,\frac{1}{2}} = \{x_i\}^n_{i = 1} \neq \R
+\end{equation*}
+
+\indent That is, since $n$ was arbitrary, we have shown that no finite set of open spheres on $\R$ in the discrete metric will be able to cover $\R$, and so $\R$ under $\rho_d$ is {\em not} totally bounded. \\
+
+\indent This example gives us a sense of the distinction between {\em boundedness}, which $\R$ under $\rho_d$ clearly is, and {\em total boundedness}, which $\R$ under $\rho_d$ has shown to not be. Under the standard Euclidean metric $\rho(x,y) = |x - y|$ there is no such distinction in $\R$, but we have just seen at least one metric in which such a difference emerges. \\
+
+%
+% Proposition
+%
+{\bf Proposition: {\em Total boundedness $\implies$ boundedness}.} 
+
+\begin{proof} For boundedness we require $\sup \rho(x,y) \leq M$ for all $x,y \in X$. Let $\epsilon = 1$. Then, assuming $X$ is totally bounded, there exists finitely many points $x_1, x_2, ..., x_n$ such that
+\begin{equation*}
+	X \subset \bigcup^n_{i = 1} S_{x_i, 1}
+\end{equation*}
+
+Now, take any two points $y_1, y_2 \in X$ such that
+\begin{align*}
+	y_1 &\in S_{x_1, 1} \\
+	y_2 &\in S_{x_2, 1}
+\end{align*}
+
+By the definition of a metric we have the inequality
+\begin{align*}
+	\rho(y_1, y_2) &\leq \rho(y_1, x_{n_1}) + \rho(x_{n_1}, x_{n_2}) + \rho(x_{n_2}, y_2) \\
+	&= 1 + \rho(x_{n_1}, x_{n_2}) + 1 \\
+	&= \rho(x_{n_1}, x_{n_2}) + 2
+\end{align*}
+
+\indent Although we don't know the distance $\rho(x_{n_1}, x_{n_2})$ we do know that there are only finitely many such points. Thus, take the largest such distance
+\begin{equation*}
+	\sup \left\{ \rho(x_{n_i}, x_{n_j}) \right\}_{i,j = 1, 2, ..., n} = M
+\end{equation*}
+
+\indent Since $X$ is totally bounded there are only finitely many spheres covering $X$, and so this largest distance between points $M$ is itself finite. Therefore,
+\begin{align*}
+	\rho(y_1, y_2) &\leq \rho(y_1, x_{n_1}) + \rho(x_{n_1}, x_{n_2}) + \rho(x_{n_2}, y_2) \\
+	&= \rho(x_{n_1}, x_{n_2}) + 2 \\
+	&= M + 2
+\end{align*}
+
+\indent That is, $M + 2$ is some bound between arbitrary points $y_1, y_2 \in X$, and so $X$ is indeed bounded. Hence
+\begin{equation*}
+	\text{A totally bounded metric space $X \implies X$ is bounded,}
+\end{equation*}
+
+as desired.
+\end{proof}
+
+%
+% Proposition
+%
+{\bf Proposition: {\em Sequentially compact $\implies$ totally bounded}.} 
+
+\begin{proof} Suppose {\em not}. That is, suppose that there exists some $\epsilon > 0$ so that $X$ is {\em not} covered by finitely many spheres $S_{x,\epsilon}$. \\
+
+\indent Pick any point $x_1 \in X$. Note that under our contradictory assumption we have that $S_{x_1, \epsilon} \subsetneq X$. Since there is a point $x_2$ outside of $S_{x_1, \epsilon}$ take the union
+\begin{equation*}
+	S_{x_1, \epsilon} \cup S_{x_2,\epsilon} \subsetneq X
+\end{equation*}
+
+Similarly, there exists some $x_3 \in X$ so that
+\begin{align*}
+	\rho(x_1, x_3) &\geq \epsilon \\
+	\rho(x_2, x_3) &\geq \epsilon
+\end{align*}
+
+with union
+\begin{equation*}
+	S_{x_1, \epsilon} \cup S_{x_2,\epsilon} \cup S_{x_3, \epsilon} \subsetneq X
+\end{equation*}
+
+\indent Continue defining points $x_n$ so that we produce the sequence. However, recall that if $X$ is sequentially compact then all subsequences have convergent subsequences. Therefore our sequence $(x_1, x_2, x_3, ...)$ has some convergent subsequence $(x_{n_k})$ in which the distance
+\begin{equation*}
+	\rho(x_i, x_j) < \frac{\epsilon}{2}
+\end{equation*}
+
+However, we have defined $x_n$ to satisfy
+\begin{equation*}
+	\rho(x_i, x_j) \geq \epsilon
+\end{equation*}
+
+Contradiction! Therefore, is $X$ is totally bounded. That is, 
+\begin{equation*}
+	\text{If a metric space $X$ sequentially compact then it must be totally bounded,}
+\end{equation*}
+
+as desired.
+\end{proof}
+
+%
+% Example
+%
+{\bf Example:} Consider now some metric space $X$ and $\mathcal U$ an open cover of $X$ so that
+\begin{equation*}
+	\mathcal U = \{O_i\}
+\end{equation*}
+
+and
+\begin{equation*}
+	X \subset \bigcup_{i\in I} O_i
+\end{equation*}
+
+Consider some open set $O_x$ containing a point $x$ and produce the open sphere $S_{x,\delta}$ so that 
+\begin{equation*}
+	S_{x,\epsilon} \subset O_x
+\end{equation*}
+
+\indent Note that every point $x$ has will have its own $\delta$ so that $S_{x,\delta} \subset O_x$. In general, as we approach the boundaries of $X$ we will find this radius $\delta\to 0$. \\
+
+%
+% Example
+%
+{\bf Example:} Cover the set of naturals $\N$ by the open covers $\left\{\left(n - \frac{1}{n}, n + \frac{1}{n}\right)\right\}$ where $\delta = \frac{1}{n}$. Clearly as $n \to \infty$ we will find $\delta\to 0$. However, since with $\delta = 0$ we have the covers $\{n\}$, which still covers $\N$. \\
+
+%
+% Definition
+%
+{\bf Definition: {\em (Lebesgue Number)}.} Let $\mathcal U$ be some covering of $X$ with $\mathcal U = \{U_i\}$. The value $\epsilon > 0$ is called a \underline{Lebesgue number} of the covering if, for all $\delta < \epsilon$,
+\begin{equation*}
+	\forall\,x\in X,~\exists\,O\in\mathcal U,~S_{x,\delta} \subset O
+\end{equation*}
+
+%
+% Example
+%
+{\bf Example:} Let $X = \R$ under the discrete metric $\rho_d$
+\begin{equation*}
+	\rho_d(x,y) =
+	\begin{cases}
+		1 & \text{if $x \neq y$} \\
+		0 & \text{else}
+	\end{cases}
+\end{equation*}
+
+\indent Let $\mathcal U$ be an open covering of $X$. Does $\mathcal U$ have a Lebesgue number? We may be able to see that $\epsilon = 1$ works as a Lebesgue number since for all $\delta < \epsilon = 1$ we find that $\rho(x, y) < \delta < \epsilon = 1 \implies x = y \iff \rho_d(x,y) = 0$, so with our open spheres $S_{x,\delta}$
+\begin{equation*}
+	S_{x,\delta} = \{x~:~\rho_d(x,y) < \delta\}
+\end{equation*}
+
+we see that for this $\epsilon = 1$
+\begin{equation*}
+	\forall\,x\in X,~\exists\,O\in\mathcal U,~S_{x,\delta} \subset O
+\end{equation*}
+
+and so $\epsilon = 1$ is indeed a Lebesgue number for $X = \R$ under the discrete metric. \\
+
+%
+% Proposition
+% 
+{\bf Proposition: {\em If $X$ is a sequentially compact metric space and $\mathcal U$ some open covering of $X$ then $\mathcal U$ has a Lebesgue number}.}
+\begin{proof} {\em (Proof later)}
+\end{proof}
+
+%
+% Borel-Lebesgue Theorem
+%
+{\bf Borel-Lebesgue Theorem:} Let $X$ be a metric space. The following are equivalent:
+\begin{enumerate}
+	\item $X$ is compact.
+	\item $X$ has the Bolzano-Weierstrass property.
+	\item $X$ is sequentially compact.
+\end{enumerate}
+
+\begin{proof} We have already proven that $1 \implies 2 \implies 3$. All that remains is to prove that $3 \implies 1$. That is, all we must prove is that if $X$ is sequentially compact then $X$ is compact. \\
+
+\indent Assume that $X$ is sequentially compact. Take an open covering $\mathcal U$ of $X$. We have two tools under our disposal: (a) From an earlier result, $X$ is totally bounded and (b) From our above Theorem, $X$ has a Lebesgue number. \\
+
+\indent In particular, let $\epsilon > 0$ be the Lebesgue number of the covering $\mathcal U$. Take $0 < \delta < \epsilon$. Since $X$ is sequentially compact we have that $X$ is totally bounded from our previous work. Therefore, by total boundedness of $X$, there exists finitely many open covers $\{S_{x_i,\delta}\}^n_{i = 1}$ that cover $X$. \\
+
+\indent Since $\delta < \epsilon$ and $\epsilon$ is the Lebesgue number of $\mathcal U$, each of these open spheres in $X$ must lie within an open set $U_i$ from $\mathcal U$. That is,
+\begin{align*}
+	S_{x_1,\delta} &\subset O_1 \\
+	S_{x_2,\delta} &\subset O_2 \\
+	&\vdots \\
+	S_{x_n,\delta} &\subset O_n
+\end{align*}
+
+Since $S_{x_i,\delta} \subset O_i$ and $X \subset \bigcup^n_{i = 1} S_{x_i,\delta}$ by total boundedness, we conclude that
+\begin{equation*}
+	X \bigcup^n_{i = 1} O_i \quad O_i \in \mathcal U
+\end{equation*}
+
+and so, for any open cover $\mathcal U$ there is a finite subcover $\{O_i\}^n_{i = 1} \subset \mathcal U$. That is, if $X$ is sequentially compact then $X$ is compact, as desired.
+\end{proof}
+
+%
+% Proposition
+% 
+{\bf Proposition: {\em A closed subset of a compact space is compact}.} 
+
+\begin{proof} Let $X$ be some compact space and $F$ a closed subset of $X$, $F \subset X$. Take any open covering $\mathcal O = \{O_i\}$ so that
+\begin{equation*}
+	F \subset \bigcup_{i \in I} O_i
+\end{equation*}
+
+\indent Consider the complement $X\setminus F$. Since $F \subset \bigcup_{i \in I} O_i$ we find that our compact space $X$ is covered by the union
+\begin{equation*}
+	X \subset \left(X\setminus F\right) \cup \{O_i\}_{i\in I}
+\end{equation*}
+
+However, $X$ is compact. Thus, we can find finitely many such sets
+\begin{equation*}
+	X \subset \left(X\setminus F\right) \cup \{O_i\}^n_{i = 1}
+\end{equation*}
+
+and since $X\setminus$ obviously does not contain $F$ and $F\subset X$ we see that all points in $F$ must be contained by the finite set $\{O_i\}^n_{i = 1}$ so that
+\begin{equation*}
+	F \subset X \subset \left(X\setminus F\right) \cup \{O_i\}^n_{i = 1}
+\end{equation*}
+
+In particular,
+\begin{equation*}
+	F \subset X \subset \{O_i\}^n_{i = 1}
+\end{equation*}
+
+since $F \cap \left(X\setminus F\right) = \emptyset$. Thus, $F$ is covered by finitely many open sets $\{O_i\}^n_{i = 1}$ and so $F$ must be compact, as desired.
+\end{proof}
+
+%
+% Proposition
+%
+{\bf Proposition: {\em A compact subspace of a metric space is closed and bounded}.}
+
+\begin{proof} Let $X$ be a metric space and $K$ a compact subspace so that $K \subset X$. Let $y$ be some point of closure of $K$. We have proven that the function $f ~:~ K \to \R$ given by
+\begin{equation*}
+	f(x) = \rho(x,y)
+\end{equation*}
+
+is a continuous functon on $K$. Computing the infimum on $f$ we see that
+\begin{equation*}
+	\inf_{x\in K} f(x) = \inf_{x\in K} \rho(x,y) = 0
+\end{equation*}
+
+since $y$ is a point of closure of $K$. However, we have shown that a continuous function on a {\em sequentially compact} (and so compact) metric space must assume its infinum. Therefore, 
+\begin{equation*}
+	\exists\,z\in K,~f(z) = 0
+\end{equation*}
+
+but $f(z) = \rho(z,y)$ and
+\begin{equation*}
+	\rho(z,y) = 0 \iff z = y
+\end{equation*}
+
+\indent Therefore, $f$ assumes its infimum at $y \in K$. Similarly, since $f$ is continuous it must achieve its maximum on $K$, say at point $y'$, since $K$ is compact. Thus,
+\begin{equation*}
+		0 \leq f(x) \leq M \quad M \in \R
+\end{equation*}
+
+and so $K$ is indeed bounded. That is, $K$ a compact subspace of metric space $X$ is a closed and bounded set, as desired.
+\end{proof}
+
+%
+% Corollary
+%
+{\bf Corollary: {\em All compact subspaces of real numbers are closed and bounded (reverse of the Heine-Borel Theorem)}.}
+
+\begin{proof} This is an immediate consequence of the above proposition for $X = \R$.
+\end{proof}
+
+%
+% Proposition
+%
+{\bf Proposition: {\em A continuous image of a compact space is compact}.} That is, if $X$ is a compact space and $f:X\stackrel{\textrm{onto}}{\to}Y$ is a continuous surjective function then $Y$ is compact. That is, . It turns out that an analogous result holds for Linedelof spaces. That is, if $X$ is a Lindelof space and $f:X\stackrel{\text{onto}}{\to} Y$ is a continuous surjective function, then $Y$ Lindelof. \\
+
+\indent For example, if we have some function $f:[2,3]\to(0, 1)$ it must be the case that $f$ is {\em not} continous since $(0, 1)$ has been shown to not be compact.
+
+\begin{proof} Let $X$ be some compact space and $Y$ some continuous mapping $f:X\to Y$. Let $\mathcal O = \{O_i\}$ be some open covering of $Y$ such that
+\begin{equation*}
+	Y \subset \bigcup_{i\in I} O_i
+\end{equation*}
+
+\indent We wish to show that under $f$, $Y$ is covered by only finitely many such $O_i$. However, we already know that the preimage of a an open set under a continuous function is open. That is, if $O_i$ is an open set and $f$ is continuous
+\begin{equation*}
+	P_i = f^{-1}(O_i)
+\end{equation*}
+
+is open. Since $f$ is {\em onto} we have that $f(x) \in O_i \implies x \in X$ and so by the definition of $f^{-1}$ we have
+\begin{equation*}
+	X \subset \bigcup_{i\in I} f^{-1}(O_i)
+\end{equation*}
+
+So these sets $\left\{ f^{-1}(O_i) \right\}_{i\in I}$ cover our compact space $X$, and since $X$ is compact we can select finitely many such open sets and still cover $X$, i.e.
+\begin{equation*}
+	X \subset \bigcup^n_{i = 1} f^{-1}(O_i)
+\end{equation*}
+
+Applying $f$ to each $f^{-1}(O_i)$ yields $f\left(f^{-1}(O_i)\right) = O_i$ since $f$ is onto. Hence,
+\begin{align*}
+	f(X) &\subset \bigcup_{i\in I} f\left(f^{-1}(O_i)\right) \\
+	\iff Y &\subset \bigcup^n_{i = 1} O_i
+\end{align*}
+
+and so $Y$ is covered by finitely many such open sets $O_i$. Thus, $Y$ is indeed compact, as desired.
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
